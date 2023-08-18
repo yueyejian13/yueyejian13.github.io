@@ -1,0 +1,457 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GXYCTF2019 - Babysqli - Yueyejian’s Blog</title>
+<meta name="description" content="GXYCTF2019 - Babysqli 这道题肯定让很多人都一头雾水，不知道怎么下手，其实这道题和 WeChall 里的一道题基本相同，考察的是用户名和密码分开检验。高血压的这道题和 WeChall 的 Training: MySQL II 解题思路互通，Payload也互通。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="GXYCTF2019 - Babysqli">
+<meta property="og:url" content="http://localhost:4000/ctf/babysqli/">
+
+
+  <meta property="og:description" content="GXYCTF2019 - Babysqli 这道题肯定让很多人都一头雾水，不知道怎么下手，其实这道题和 WeChall 里的一道题基本相同，考察的是用户名和密码分开检验。高血压的这道题和 WeChall 的 Training: MySQL II 解题思路互通，Payload也互通。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-02-15T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/ctf/babysqli/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GXYCTF2019 - Babysqli">
+    <meta itemprop="description" content="GXYCTF2019 - Babysqli这道题肯定让很多人都一头雾水，不知道怎么下手，其实这道题和 WeChall 里的一道题基本相同，考察的是用户名和密码分开检验。高血压的这道题和 WeChall 的 Training: MySQL II 解题思路互通，Payload也互通。">
+    <meta itemprop="datePublished" content="2020-02-15T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">GXYCTF2019 - Babysqli
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-02-15T00:00:00+08:00">February 15, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#gxyctf2019---babysqli">GXYCTF2019 - Babysqli</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="gxyctf2019---babysqli">GXYCTF2019 - Babysqli</h1>
+<p>这道题肯定让很多人都一头雾水，不知道怎么下手，其实这道题和 WeChall 里的一道题基本相同，考察的是<strong>用户名和密码分开检验</strong>。高血压的这道题和 WeChall 的 Training: MySQL II 解题思路互通，Payload也互通。</p>
+
+<p>大家如果去做一下 WeChall 的下面这两道题的话，做这道题的思路就会清晰很多。</p>
+
+<p><img src="/images/ctf/babysqli/1.jpg" alt="" /></p>
+
+<p>给出两道题的地址：</p>
+
+<ul>
+  <li><a href="http://www.wechall.net/challenge/training/mysql/auth_bypass1/index.php">Training: MySQL I</a></li>
+  <li><a href="http://www.wechall.net/challenge/training/mysql/auth_bypass2/index.php">Training: MySQL II</a></li>
+</ul>
+
+<p>然后再来简单讲讲这道题，</p>
+
+<p>首先我们可以看到返回密码错误的页面源码里有一串字符串，base32再base64解密之后是</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="k">user</span> <span class="k">where</span> <span class="n">username</span> <span class="o">=</span> <span class="s1">'$name'</span>
+</code></pre></div></div>
+
+<p><img src="/images/ctf/babysqli/2.jpg" alt="" /></p>
+
+<p>然后用常规注入的手段可以测出user这个表一共有三列，猜测分别为id，username，password。</p>
+
+<p>之前我们有提到这道题考的是<strong>用户名和密码分开检验</strong>，也就是说它是先检验username，把username对应的所有字段都查出来后，再检验密码能不能和查出来的密码对上，检验密码的过程可能会有一个md5的加密。</p>
+
+<p>登录验证的流程已经说清楚了，先做一个小测试。</p>
+
+<p>用mysql创一个表叫user，创建三个列 id，username，password，这时如果执行一个查询语句：select * from user where username = 0 union select 1,’admin’,md5(‘abc’); 则会返回以下结果：</p>
+
+<p><img src="/images/ctf/babysqli/3.jpg" alt="" /></p>
+
+<p>这样的话思路就很清晰了，我们先在用户名处输入<code class="language-plaintext highlighter-rouge">1' union select 1,'admin','900150983cd24fb0d6963f7d28e17f72'#</code>，得到的是上图的结果。密码处我们再输入一个上图密码md5加密之前的密码 也就是abc 即可绕过检验，成功登陆admin账户</p>
+
+<p>Payload：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username = 1' union select 1,'admin','900150983cd24fb0d6963f7d28e17f72'#
+password = abc
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#ctf" class="page__taxonomy-item" rel="tag">ctf</a><span class="sep">, </span>
+    
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">sqli</a><span class="sep">, </span>
+    
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#ctf" class="page__taxonomy-item" rel="tag">ctf</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-02-15T00:00:00+08:00">February 15, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/ctf/shubianzhu/" class="pagination--pager" title="强网杯2019 - 随便注
+">Previous</a>
+    
+    
+      <a href="/ctf/tricks/web1/" class="pagination--pager" title="SWPU2019 - Web1
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

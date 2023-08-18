@@ -1,0 +1,501 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>LFI - 可利用敏感文件 - Yueyejian’s Blog</title>
+<meta name="description" content="windows C:\boot.ini  //查看系统版本   C:\Windows\System32\inetsrv\MetaBase.xml  //IIS配置文件   C:\Windows\repair\sam  //存储系统初次安装的密码   C:\Program Files\mysql\my.ini  //Mysql配置   C:\Program Files\mysql\data\mysql\user.MYD  //Mysql root   C:\Windows\php.ini  //php配置信息   C:\Windows\my.ini  //Mysql配置信息">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="LFI - 可利用敏感文件">
+<meta property="og:url" content="http://localhost:4000/tricks/lfi-files/">
+
+
+  <meta property="og:description" content="windows C:\boot.ini  //查看系统版本   C:\Windows\System32\inetsrv\MetaBase.xml  //IIS配置文件   C:\Windows\repair\sam  //存储系统初次安装的密码   C:\Program Files\mysql\my.ini  //Mysql配置   C:\Program Files\mysql\data\mysql\user.MYD  //Mysql root   C:\Windows\php.ini  //php配置信息   C:\Windows\my.ini  //Mysql配置信息">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-12-07T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/tricks/lfi-files/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="LFI - 可利用敏感文件">
+    <meta itemprop="description" content="windowsC:\boot.ini  //查看系统版本 C:\Windows\System32\inetsrv\MetaBase.xml  //IIS配置文件 C:\Windows\repair\sam  //存储系统初次安装的密码 C:\Program Files\mysql\my.ini  //Mysql配置 C:\Program Files\mysql\data\mysql\user.MYD  //Mysql root C:\Windows\php.ini  //php配置信息 C:\Windows\my.ini  //Mysql配置信息">
+    <meta itemprop="datePublished" content="2020-12-07T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">LFI - 可利用敏感文件
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-12-07T00:00:00+08:00">December 7, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>windows</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\boot.ini  //查看系统版本
+ 
+C:\Windows\System32\inetsrv\MetaBase.xml  //IIS配置文件
+ 
+C:\Windows\repair\sam  //存储系统初次安装的密码
+ 
+C:\Program Files\mysql\my.ini  //Mysql配置
+ 
+C:\Program Files\mysql\data\mysql\user.MYD  //Mysql root
+ 
+C:\Windows\php.ini  //php配置信息
+ 
+C:\Windows\my.ini  //Mysql配置信息
+</code></pre></div></div>
+
+<p>linux</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/passwd
+ 
+/etc/shadow
+ 
+/etc/hosts
+ 
+/root/.bash_history   //root的bash历史记录
+ 
+/root/.ssh/authorized_keys
+ 
+/root/.mysql_history  //mysql的bash历史记录
+ 
+/root/.wget-hsts
+ 
+/opt/nginx/conf/nginx.conf  //nginx的配置文件
+ 
+/var/www/html/index.html    
+ 
+/etc/my.cnf
+ 
+/etc/httpd/conf/httpd.conf  //httpd的配置文件
+ 
+ 
+/proc/self/fd/fd[0-9]*(文件标识符)
+ 
+/proc/mounts
+ 
+/porc/config.gz
+ 
+/proc/sched_debug // 提供cpu上正在运行的进程信息，可以获得进程的pid号，可以配合后面需要pid的利用
+ 
+/proc/mounts // 挂载的文件系统列表
+ 
+/proc/net/arp //arp表，可以获得内网其他机器的地址
+ 
+/proc/net/route //路由表信息
+ 
+/proc/net/tcp and /proc/net/udp // 活动连接的信息
+ 
+/proc/net/fib_trie // 路由缓存
+ 
+/proc/version  // 内核版本
+ 
+/proc/[PID]/cmdline // 可能包含有用的路径信息
+ 
+/proc/[PID]/environ //  程序运行的环境变量信息，可以用来包含getshell
+ 
+/proc/[PID]/cwd     // 当前进程的工作目录
+ 
+/proc/[PID]/fd/[#] // 访问file descriptors，某写情况可以读取到进程正在使用的文件，比如access.log
+ 
+# ssh
+ 
+/root/.ssh/id_rsa
+ 
+/root/.ssh/id_rsa.pub
+ 
+/root/.ssh/authorized_keys
+ 
+/etc/ssh/sshd_config
+ 
+/var/log/secure
+ 
+/etc/sysconfig/network-scripts/ifcfg-eth0
+ 
+/etc/syscomfig/network-scripts/ifcfg-eth1
+</code></pre></div></div>
+<p>session usual path</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/lib/php/sess_PHPSESSID
+/var/lib/php/sess_PHPSESSID
+/tmp/sess_PHPSESSID
+/tmp/sessions/sess_PHPSESSID
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#lfi" class="page__taxonomy-item" rel="tag">lfi</a><span class="sep">, </span>
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#tricks" class="page__taxonomy-item" rel="tag">tricks</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-12-07T00:00:00+08:00">December 7, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/linux-tricks/crontab/" class="pagination--pager" title="Linux - Crontab
+">Previous</a>
+    
+    
+      <a href="/vul/Redis/" class="pagination--pager" title="Redis未授权访问实战
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

