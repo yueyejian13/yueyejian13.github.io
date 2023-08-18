@@ -53,6 +53,12 @@ var store = [{
         "url": "/linux-tricks/chmod/",
         "teaser": null
       },{
+        "title": "写下服务器的笔记",
+        "excerpt":"写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。 换源 备份源文件 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 更改文件权限使其可编辑 $ sudo chmod 777 /etc/apt/sources.list Ubuntu 18.04 阿里源 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-backports...","categories": ["linux-tricks"],
+        "tags": ["linux"],
+        "url": "/linux-tricks/server/",
+        "teaser": null
+      },{
         "title": "Linux - Crontab",
         "excerpt":"简介 最近在打CTF的时候了解到了/etc/crontab这个文件，借机了解一下。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本，精确到分。 命令格式 crontab [-u user] file crontab [-u user] [ -e | -l | -r ] 命令参数 Crontab分类 系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存。文件存放在 /etc/crontab 中。 个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置 。各用户的crontab文件存放在/var/spool/cron目录 日志文件 如果运行出错，linux会发邮件到 /var/mail/mail 或者 /var/spool/mail/mail 使用实例 每5分钟执行一次 /reset.sh */5 * * * * sh /reset.sh 每晚21: 30重启 cron 30 21 * * *...","categories": ["linux-tricks"],
         "tags": ["linux"],

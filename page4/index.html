@@ -276,6 +276,55 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
+        <a href="/ctf/ezsqli/" rel="permalink">GXYCTF2020 - Ezsqli
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-03-06T00:00:00+08:00">March 6, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GXYCTF2020 - Ezsqli
+0x00 判断注入类型
+先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
         <a href="/tricks/mysql/" rel="permalink">除了information_schema之外几个可以利用的表
 </a>
       
@@ -457,55 +506,6 @@ information_schema.tables、information_schema.columns是在sql注入中最最�
 0x00 关于堆叠注入
 堆叠注入的危害很大，可以用于执行任何SQL语句。
 在sql中，分号表示一条语句的结束。如果在分号的后面再加一条语句，那么这条语句也可以被执行
-</p>
-  </article>
-</div>
-
-  
-    
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/ctf/geekchall/" rel="permalink">极客大挑战2019 - SQLI
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2020-01-08T00:00:00+08:00">January 8, 2020</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">极客大挑战2019 - SQLI
-0x00 题目描述
-极客大挑战2019的sql注入系列一共有5个题目，感觉非常有意思啊，就好像自己化身为了一名黑客
 </p>
   </article>
 </div>

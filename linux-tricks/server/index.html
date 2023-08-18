@@ -1,0 +1,757 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>写下服务器的笔记 - Yueyejian’s Blog</title>
+<meta name="description" content="写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="写下服务器的笔记">
+<meta property="og:url" content="http://localhost:4000/linux-tricks/server/">
+
+
+  <meta property="og:description" content="写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-07-08T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/linux-tricks/server/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://yueyejian13.github.io">
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Somewhere in China.</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="写下服务器的笔记">
+    <meta itemprop="description" content="写下服务器的笔记前言最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。">
+    <meta itemprop="datePublished" content="2020-07-08T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">写下服务器的笔记
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-07-08T00:00:00+08:00">July 8, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#写下服务器的笔记">写下服务器的笔记</a><ul><li><a href="#前言">前言</a></li><li><a href="#换源">换源</a></li><li><a href="#安装docker">安装docker</a></li><li><a href="#搭建vulhub">搭建vulhub</a></li><li><a href="#利用docker搭建sqli-labsdvwaupload-labs">利用docker搭建sqli-labs、dvwa、upload-labs、…</a></li><li><a href="#安装lamp">安装LAMP</a><ul><li><a href="#apache2-web服务器">Apache2 web服务器</a></li><li><a href="#mysql-数据库">MySQL 数据库</a></li><li><a href="#php">PHP</a></li></ul></li><li><a href="#cp命令复制多个文件">cp命令复制多个文件</a></li><li><a href="#php连接mysql">php连接mysql</a></li><li><a href="#standard_init_linuxgo211-exec-user-process-caused-no-such-file-or-directory">standard_init_linux.go:211: exec user process caused “no such file or directory”</a></li><li><a href="#tips-for-linuxdocker">tips for linux&amp;docker</a></li><li><a href="#iptables封禁ip">iptables封禁ip</a></li><li><a href="#find命令">find命令</a></li><li><a href="#远程传输文件">远程传输文件</a></li><li><a href="#su-root失败">su root失败</a></li><li><a href="#删除的时候显示h">删除的时候显示^H</a></li><li><a href="#linux下使用openvpn连接hack-the-box的vpn失败的解决方案">Linux下使用openvpn连接hack the box的VPN失败的解决方案</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="写下服务器的笔记">写下服务器的笔记</h1>
+<h2 id="前言">前言</h2>
+<p>最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。</p>
+
+<h2 id="换源">换源</h2>
+
+<p>备份源文件</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo  cp</span>   /etc/apt/sources.list   /etc/apt/sources.list.bak
+</code></pre></div></div>
+<p>更改文件权限使其可编辑</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo  chmod  </span>777  /etc/apt/sources.list
+</code></pre></div></div>
+
+<p>Ubuntu 18.04 阿里源</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+</code></pre></div></div>
+<p>别忘了更新一下</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt update
+</code></pre></div></div>
+
+<p>Ubuntu 18.04，代号 Bionic Beaver，这个版本完整的版本号是18.04 LTS（Long Term Support），是一个长期支持版本（10年）。</p>
+
+<h2 id="安装docker">安装docker</h2>
+<p>用安装脚本一键安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>curl <span class="nt">-fsSL</span> https://get.docker.com | bash <span class="nt">-s</span> docker <span class="nt">--mirror</span> Aliyun
+</code></pre></div></div>
+
+<p><strong>安装docker-compose</strong></p>
+<blockquote>
+  <p>Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration.</p>
+</blockquote>
+
+<p>先安装一个pip</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt <span class="nb">install </span>python-pip
+</code></pre></div></div>
+<p>再用pip安装docker-compose</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pip <span class="nb">install </span>docker-compose 
+<span class="nv">$ </span>docker-compose <span class="nt">--version</span>  //测试是否安装成功
+</code></pre></div></div>
+<p>报错了，执行以下语句，再继续安装docker-compose</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir</span> ~/.pip/
+<span class="nv">$ </span><span class="nb">cd</span> ~/.pip/
+<span class="nv">$ </span>vim pip.conf 
+<span class="c"># 添加以下代码</span>
+<span class="o">[</span>global]
+index-url<span class="o">=</span>https://mirrors.aliyun.com/pypi/simple/
+<span class="nv">$ </span>pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip  <span class="c"># 更新pip</span>
+</code></pre></div></div>
+
+<p>有可能启动不了docker-compose，用官方的三条命令安装</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version  //测试是否安装成功
+</code></pre></div></div>
+
+<h2 id="搭建vulhub">搭建vulhub</h2>
+
+<p>这是官方的搭建步骤</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Download project</span>
+wget https://github.com/vulhub/vulhub/archive/master.zip <span class="nt">-O</span> vulhub-master.zip
+unzip vulhub-master.zip
+<span class="nb">cd </span>vulhub-master
+
+<span class="c"># Enter the directory of vulnerability/environment</span>
+<span class="nb">cd </span>flask/ssti
+
+<span class="c"># Compile environment</span>
+docker-compose build
+
+<span class="c"># Run environment</span>
+docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+<p>但是在wget的时候因为是国内的服务器所以下载速度太慢了。</p>
+
+<p>于是我先用科学上网在本机下好了这个包，再用Xshell的好兄弟Xftp传到了服务器里</p>
+
+<p><img src="/images/linux/server/0.jpg" alt="" /></p>
+
+<p>解压</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>unzip vulhub-master.zip
+</code></pre></div></div>
+<p>切换到想要开启的漏洞环境中</p>
+
+<p><img src="/images/linux/server/1.jpg" alt="" /></p>
+
+<p>输入以下命令即可运行一个容器</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compile (optional) </span>
+<span class="nv">$ </span>docker-compose build 
+
+<span class="c"># Run </span>
+<span class="nv">$ </span>docker-compose up <span class="nt">-d</span> 
+</code></pre></div></div>
+<p><strong>docker加速</strong></p>
+
+<p>加速地址在阿里云的<a href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors">容器镜像服务</a>中获取</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/docker 
+<span class="nv">$ </span>vim /etc/docker/daemon.json 
+<span class="c"># 加入以下代码 {   "registry-mirrors": ["加速器地址"] }  </span>
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl daemon-reload 
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl restart docker 
+</code></pre></div></div>
+<h2 id="利用docker搭建sqli-labsdvwaupload-labs">利用docker搭建sqli-labs、dvwa、upload-labs、…</h2>
+<p><strong>sqli-labs</strong></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker pull acgpiano/sqli-labs 
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">--name</span> sqli <span class="nt">-p</span> 80:80 <span class="nt">--rm</span> acgpiano/sqli-labs
+//-p 必不可少，将docker的端口映射到本地端口←
+</code></pre></div></div>
+<p><strong>upload-labs</strong></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker pull c0ny1/upload-labs
+</code></pre></div></div>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">--name</span> upload <span class="nt">-p</span> 8080:80 <span class="nt">--rm</span> c0ny1/upload-labs
+</code></pre></div></div>
+<p><strong>dvwa</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker pull citizenstig/dvwa
+</code></pre></div></div>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">--name</span> upload <span class="nt">-p</span> 8000:80 <span class="nt">--rm</span> citizenstig/dvwa
+</code></pre></div></div>
+<p>停止所有容器：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker stop <span class="si">$(</span>docker ps <span class="nt">-a</span> <span class="nt">-q</span><span class="si">)</span>
+</code></pre></div></div>
+
+<h2 id="安装lamp">安装LAMP</h2>
+<h3 id="apache2-web服务器">Apache2 web服务器</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt <span class="nb">install </span>apache2
+</code></pre></div></div>
+<p>安装的时候遇到了以下情况</p>
+
+<p><img src="/images/linux/server/2.jpg" alt="" /></p>
+
+<p>考虑到可能是之前开了docker，80端口被占用了，于是先把docker关了</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl stop docker
+</code></pre></div></div>
+<p>再查看一下apache2的状态</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl status apache2
+</code></pre></div></div>
+<p>发现还是刚才那样 Failed to start The Apache HTTP Server. 令人绝望的是，重新安装也还是这样。</p>
+
+<p>于是在网上找到一个教程，两行命令解决</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt purge apache2 //删除应用程序同时删除配置文件
+<span class="nv">$ </span>apt <span class="nb">install </span>apache2
+</code></pre></div></div>
+<p>可能是之前端口被占用的时候配置文件出错了吧。</p>
+
+<p>开启、关闭和重启 Apache服务的命令，和之前我的 centos7 vps 不同（apache2 处为 httpd）</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start apache2 
+
+<span class="nv">$ </span>systemctl stop apache2 
+
+<span class="nv">$ </span>systemctl restart apache2 
+</code></pre></div></div>
+<h3 id="mysql-数据库">MySQL 数据库</h3>
+<p><a href="https://www.cnblogs.com/opsprobe/p/9126864.html">https://www.cnblogs.com/opsprobe/p/9126864.html</a></p>
+
+<h3 id="php">PHP</h3>
+<p>只需要一行命令</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt <span class="nb">install </span>php
+</code></pre></div></div>
+<p>查看php版本信息</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php <span class="nt">-v</span>
+</code></pre></div></div>
+<p><img src="/images/linux/server/3.jpg" alt="" /></p>
+
+<p>把 Apache 的默认页面的优先权给 index.php，也可以自定义默认页面。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/apache2/mods-enabled/dir.conf //把index.php排在前面
+</code></pre></div></div>
+<p>修改配置文件后，重启一下Apache服务器</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl restart apache2
+</code></pre></div></div>
+<p>在 /var/www/html 中写入一个 index.php文件，内容为 &lt;?php phpinfo(); ?&gt;</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /var/www/html/index.php
+</code></pre></div></div>
+<p>访问服务器ip，看到这个结果就代表成功了</p>
+
+<p><img src="/images/linux/server/4.jpg" alt="" /></p>
+
+<h2 id="cp命令复制多个文件">cp命令复制多个文件</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp {apple.php,bitch.php,cat.txt} /var/www/html/
+</code></pre></div></div>
+<h2 id="php连接mysql">php连接mysql</h2>
+<p>最近给校赛出题，需要连接数据库，然后到网上搜了一下，给出的代码是这样的</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="nb">mysql_connect</span><span class="p">(</span><span class="s2">"localhost"</span><span class="p">,</span><span class="s2">"ctfer"</span><span class="p">,</span><span class="s2">"123456"</span><span class="p">,</span><span class="s2">"user"</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$conn</span><span class="o">-&gt;</span><span class="n">connect_error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">die</span><span class="p">(</span><span class="s2">"连接失败: "</span> <span class="mf">.</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="n">connect_error</span><span class="p">);</span>
+<span class="p">}</span> 
+<span class="k">echo</span> <span class="s2">"连接成功"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+<p>但是网页上一片空白，可能是哪里出错了，于是我打开了apache服务器的 error.log</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>位置: /var/log/apache2/error.log
+</code></pre></div></div>
+<p>发现了错误，原来是 <strong>php高版本不再使用mysql_connect()来连接数据库</strong>，用<strong>mysqli_connect()</strong>代替</p>
+
+<p><img src="/images/linux/server/5.jpg" alt="" /></p>
+
+<p>有一种更方便的办法就是让网页直接显示错误信息，弄好了是这个样子</p>
+
+<p><img src="/images/linux/server/6.jpg" alt="" /></p>
+
+<p>先通过phpinfo找到php的配置文件php.in的位置</p>
+
+<p><img src="/images/linux/server/7.jpg" alt="" /></p>
+
+<p>在配置文件的头部添加两行代码</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ini_set("display_errors", "stderr");  //ini_set函数作用：为一个配置选项设置值
+error_reporting(E_ALL);  //显示所有的错误信息
+</code></pre></div></div>
+
+<p>like this</p>
+
+<p><img src="/images/linux/server/8.jpg" alt="" /></p>
+
+<p>重启apache服务器即可</p>
+
+<p>接下来我把 mysql_connect() 改成了mysqli_connect()，结果还是报错了</p>
+
+<p><img src="/images/linux/server/9.jpg" alt="" /></p>
+
+<p>原因是php没有添加mysqli扩展</p>
+
+<p><strong>如果源码安装的PHP就用源码的方式解决，如果apt install安装的PHP就用apt install的方式解决</strong></p>
+
+<p>我当时是用apt install 来安装php的，所以解决这个问题只需要2行命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt <span class="nb">install </span>php-mysql
+<span class="nv">$ </span>systemctl restart apache2
+</code></pre></div></div>
+<p>命令执行后，再查看phpinfo页面，这时发现了mysqli扩展</p>
+
+<p><img src="/images/linux/server/10.jpg" alt="" /></p>
+
+<p>这时候再测试一下，发现已经可以连接上数据库了</p>
+
+<h2 id="standard_init_linuxgo211-exec-user-process-caused-no-such-file-or-directory">standard_init_linux.go:211: exec user process caused “no such file or directory”</h2>
+
+<p>做Dockerfile的时候运行容器报这个错误，打开vim看看文件格式</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>:set ff
+</code></pre></div></div>
+
+<p>如果显示fileformat=dos，输入以下命令把dos改成unix即可</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>:set <span class="nv">ff</span><span class="o">=</span>unix
+</code></pre></div></div>
+<h2 id="tips-for-linuxdocker">tips for linux&amp;docker</h2>
+<p>分析文件，可查看文件最近修改时间等等</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">stat</span> <span class="o">[</span>filename]
+</code></pre></div></div>
+<p>docker 批量停止运行中的容器</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker stop <span class="si">$(</span>docker ps <span class="nt">-q</span><span class="si">)</span>
+</code></pre></div></div>
+<p>删除所有容器</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker <span class="nb">rm</span> <span class="si">$(</span>docker ps <span class="nt">-a</span> <span class="nt">-q</span><span class="si">)</span>
+</code></pre></div></div>
+<p>删除所有镜像</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker rmi <span class="si">$(</span>docker images<span class="si">)</span>
+</code></pre></div></div>
+
+<h2 id="iptables封禁ip">iptables封禁ip</h2>
+
+<p>比如要办 202.206.96.49</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>iptables <span class="nt">-I</span> INPUT <span class="nt">-s</span> 202.206.96.49 <span class="nt">-j</span> DROP //也可以办一个网段
+</code></pre></div></div>
+<p>解禁</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>iptables <span class="nt">-D</span> INPUT <span class="nt">-s</span> 202.206.96.49 <span class="nt">-j</span> DROP
+</code></pre></div></div>
+
+<p>查看当前规则</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>iptables <span class="nt">-L</span> <span class="nt">-n</span>  //numeric
+</code></pre></div></div>
+<p>清空封掉的IP地址</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>iptables <span class="nt">-F</span>
+</code></pre></div></div>
+
+<p>更多：
+https://www.jb51.net/article/135785.htm</p>
+<h2 id="find命令">find命令</h2>
+<p>在根目录中按照文件名来查找（区分大小写）
+shell</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ find ./ name filename
+</code></pre></div></div>
+
+<p>在根目录中按照文件名来查找（不区分大小写）</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>find ./ iname filename
+</code></pre></div></div>
+<p>找flag</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find ./ <span class="nt">-name</span> <span class="s2">"flag*"</span> |xargs <span class="nb">grep</span> <span class="s2">"flag*"</span>
+</code></pre></div></div>
+
+<p>更多：
+https://blog.csdn.net/m0_38121874/article/details/77019127</p>
+
+<h2 id="远程传输文件">远程传输文件</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>scp ubuntu@120.92.139.111:/flag /home  //输入远程用户密码即可
+</code></pre></div></div>
+<hr />
+
+<p><strong>新服务器</strong></p>
+<h2 id="su-root失败">su root失败</h2>
+
+<p>真邪门，一直切换 root用户都认证失败，自己的服务器还root不了？</p>
+
+<p>网上查找原因后发现原来是因为root没有初始化。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>passwd root
+</code></pre></div></div>
+<p>然后输入两次密码就行了</p>
+
+<h2 id="删除的时候显示h">删除的时候显示^H</h2>
+
+<p>经常在某些程序中输入命令，输入错了一个字却删除不了出现的是按下的是Backspace 出现的却是^H。这时候在系统命令处执行</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">stty </span>erase ^H
+</code></pre></div></div>
+<p>即可解决问题</p>
+
+<h2 id="linux下使用openvpn连接hack-the-box的vpn失败的解决方案">Linux下使用openvpn连接hack the box的VPN失败的解决方案</h2>
+<p>https://gaoxiaodiao.com/other-sharing/the-solution-of-openvpn-connect-htb-failed/</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#linux-tricks" class="page__taxonomy-item" rel="tag">linux-tricks</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-07-08T00:00:00+08:00">July 8, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/linux-tricks/chmod/" class="pagination--pager" title="Linux - 查看和修改文件权限
+">Previous</a>
+    
+    
+      <a href="/linux-tricks/crontab/" class="pagination--pager" title="Linux - Crontab
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
