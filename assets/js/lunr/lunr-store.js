@@ -134,6 +134,6 @@ var store = [{
         "title": "HackTheBox - Active",
         "excerpt":"HackTheBox - Active About Active Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment. Nmap # Nmap 7.93 scan initiated Mon Aug 14 07:08:47 2023 as: nmap -n -v -sC -sS -sV --min-rate=1500 -oN nmap.txt 10.10.10.100 Increasing...","categories": ["hack-the-box"],
         "tags": ["windows","active-directory","smb"],
-        "url": "/hack-the-box/Active/",
+        "url": "/hack-the-box/active/",
         "teaser": null
       }]
