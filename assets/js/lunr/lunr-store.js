@@ -79,13 +79,13 @@ var store = [{
       },{
         "title": "CVE-2016-4437 - Shiro反序列化",
         "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["vulhub"],
-        "tags": ["shiro","unserialize","web"],
+        "tags": ["shiro","unserialize","web","rce"],
         "url": "/vulhub/CVE-2016-4437/",
         "teaser": null
       },{
         "title": "MS17-010 - 永恒之蓝",
         "excerpt":"MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。 0x01 影响版本 WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0 0x02 环境搭建 靶机winXP（关闭防火墙） 192.168.32.131 攻击机kali 192.168.32.128 0x03 漏洞检测 通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞 打开msf，搜索ms17-010 选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机 用到的命令： $ msfconsole $ search ms17-101 $ use 1 $ show options $ set rhost 192.168.32.0/24 $ run 结果显示靶机存在漏洞...","categories": ["vul"],
-        "tags": ["windows","smb","msf"],
+        "tags": ["windows","smb","msf","rce"],
         "url": "/vul/ms17-010/",
         "teaser": null
       },{
@@ -115,13 +115,13 @@ var store = [{
       },{
         "title": "HackTheBox - Holiday",
         "excerpt":"HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning...","categories": ["hack-the-box"],
-        "tags": ["node","linux","web","sqli","xss","rce"],
+        "tags": ["node","linux","web","sqli","xss","rce","privilege-escalation"],
         "url": "/hack-the-box/holiday/",
         "teaser": null
       },{
         "title": "HackTheBox - Lame",
         "excerpt":"HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement. Nmap 扫一下端口 ┌──(kali㉿kali)-[~/htb/lame] └─$ cat nmap.txt # Nmap...","categories": ["hack-the-box"],
-        "tags": ["linux","msf","samba"],
+        "tags": ["linux","msf","samba","rce","smb"],
         "url": "/hack-the-box/lame/",
         "teaser": null
       },{
@@ -129,5 +129,11 @@ var store = [{
         "excerpt":"HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many. Nmap ┌──(kali㉿kali)-[~/htb/Brainfuck] └─$ cat nmap.txt #...","categories": ["hack-the-box"],
         "tags": ["linux","web","wordpress","smtp","vigenere","ssh","privilege-escalation"],
         "url": "/hack-the-box/brainfuck/",
+        "teaser": null
+      },{
+        "title": "HackTheBox - Active",
+        "excerpt":"HackTheBox - Active About Active Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment. Nmap # Nmap 7.93 scan initiated Mon Aug 14 07:08:47 2023 as: nmap -n -v -sC -sS -sV --min-rate=1500 -oN nmap.txt 10.10.10.100 Increasing...","categories": ["hack-the-box"],
+        "tags": ["windows","active-directory","smb"],
+        "url": "/hack-the-box/Active/",
         "teaser": null
       }]
