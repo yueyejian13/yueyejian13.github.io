@@ -1,0 +1,474 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>HackTheBox - Legacy &amp;&amp; Blue - Yueyejian’s Blog</title>
+<meta name="description" content="HackTheBox - Legacy &amp;&amp; Blue HackTheBox - Legacy About Legacy Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="HackTheBox - Legacy &amp;&amp; Blue">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/legacy-blue/">
+
+
+  <meta property="og:description" content="HackTheBox - Legacy &amp;&amp; Blue HackTheBox - Legacy About Legacy Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-09-12T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/legacy-blue/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a>
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a>yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">ワノ国</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="HackTheBox - Legacy &amp;&amp; Blue">
+    <meta itemprop="description" content="HackTheBox - Legacy &amp;&amp; BlueHackTheBox - LegacyAbout LegacyLegacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.">
+    <meta itemprop="datePublished" content="2023-09-12T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Legacy &amp;&amp; Blue
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-09-12T00:00:00+08:00">September 12, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#hackthebox---legacy--blue">HackTheBox - Legacy &amp;&amp; Blue</a><ul><li><a href="#hackthebox---legacy">HackTheBox - Legacy</a><ul><li><a href="#about-legacy">About Legacy</a></li><li><a href="#nmap">Nmap</a></li><li><a href="#msf">MSF</a></li></ul></li><li><a href="#hackthebox---blue">HackTheBox - Blue</a><ul><li><a href="#about-blue">About Blue</a></li><li><a href="#nmap-1">Nmap</a></li><li><a href="#msf-1">MSF</a></li><li><a href="#getshell">GetShell</a></li><li><a href="#getflag">GetFlag</a></li></ul></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="hackthebox---legacy--blue">HackTheBox - Legacy &amp;&amp; Blue</h1>
+<h2 id="hackthebox---legacy">HackTheBox - Legacy</h2>
+<h3 id="about-legacy">About Legacy</h3>
+<p>Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.</p>
+
+<p><img src="/images/hackthebox/legacy/0.png" alt="" /></p>
+
+<h3 id="nmap">Nmap</h3>
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v -sC -sV --min-rate=1500 10.10.10.4</code></p>
+
+<p><img src="/images/hackthebox/legacy/1.png" alt="" /></p>
+
+<p>再用nmap自带的smb漏扫脚本去扫描，扫描出了<code class="language-plaintext highlighter-rouge">ms17-010</code>以及<code class="language-plaintext highlighter-rouge">ms08-067</code>漏洞                                                          <br />
+<code class="language-plaintext highlighter-rouge"># nmap -n -v --script=smb-vul* --min-rate=1500 10.10.10.4</code></p>
+
+<p><img src="/images/hackthebox/legacy/2.png" alt="" /></p>
+
+<h3 id="msf">MSF</h3>
+<p>MSF启动！
+<img src="/images/hackthebox/legacy/3.png" alt="" /></p>
+
+<p>设置好参数，一键getshell</p>
+
+<p><img src="/images/hackthebox/legacy/4.png" alt="" /></p>
+
+<h2 id="hackthebox---blue">HackTheBox - Blue</h2>
+
+<h3 id="about-blue">About Blue</h3>
+<p>Blue, while possibly the most simple machine on Hack The Box, demonstrates the severity of the EternalBlue exploit, which has been used in multiple large-scale ransomware and crypto-mining attacks since it was leaked publicly.</p>
+
+<p><img src="/images/hackthebox/blue/0.png" alt="" /></p>
+
+<h3 id="nmap-1">Nmap</h3>
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v -sC -sV --min-rate=1500 10.10.10.40</code></p>
+
+<p><img src="/images/hackthebox/blue/1.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge"># nmap -n -v --script=smb-vul*  --min-rate=1500 10.10.10.40</code> 用一样的方法检测出了永恒之蓝漏洞</p>
+
+<p><img src="/images/hackthebox/blue/2.png" alt="" /></p>
+
+<h3 id="msf-1">MSF</h3>
+<p>MSF启动！这次是一只很可爱的小牛                                                            <br />
+<img src="/images/hackthebox/blue/4.png" alt="" /></p>
+
+<p>直接<code class="language-plaintext highlighter-rouge">search ms17-010</code><code class="language-plaintext highlighter-rouge">use 0</code>可以看到这个exp在这些OS版本下可利用，正好我们的靶机是win7</p>
+
+<p><img src="/images/hackthebox/blue/3.png" alt="" /></p>
+
+<h3 id="getshell">GetShell</h3>
+
+<p><img src="/images/hackthebox/blue/5.png" alt="" /></p>
+
+<h3 id="getflag">GetFlag</h3>
+
+<p><img src="/images/hackthebox/blue/6.png" alt="" /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#msf" class="page__taxonomy-item" rel="tag">msf</a><span class="sep">, </span>
+    
+      <a href="/tags/#smb" class="page__taxonomy-item" rel="tag">smb</a><span class="sep">, </span>
+    
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-09-12T00:00:00+08:00">September 12, 2023</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/hack-the-box/active/" class="pagination--pager" title="HackTheBox - Active
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

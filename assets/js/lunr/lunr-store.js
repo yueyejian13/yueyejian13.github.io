@@ -136,4 +136,10 @@ var store = [{
         "tags": ["windows","active-directory","smb"],
         "url": "/hack-the-box/active/",
         "teaser": null
+      },{
+        "title": "HackTheBox - Legacy && Blue",
+        "excerpt":"HackTheBox - Legacy &amp;&amp; Blue HackTheBox - Legacy About Legacy Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access. Nmap # nmap -n -v -sC -sV --min-rate=1500 10.10.10.4 再用nmap自带的smb漏扫脚本去扫描，扫描出了ms17-010以及ms08-067漏洞 # nmap...","categories": ["hack-the-box"],
+        "tags": ["windows","smb","msf"],
+        "url": "/hack-the-box/legacy-blue/",
+        "teaser": null
       }]
