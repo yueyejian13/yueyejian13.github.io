@@ -276,6 +276,107 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
+        <a href="/tricks/lfi-files/" rel="permalink">LFI - 可利用敏感文件
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-12-07T00:00:00+08:00">December 7, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">windows
+C:\boot.ini  //查看系统版本
+ 
+C:\Windows\System32\inetsrv\MetaBase.xml  //IIS配置文件
+ 
+C:\Windows\repair\sam  //存储系统初次安装的密码
+ 
+C:\Program Files\mysql\my.ini  /...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/linux-tricks/crontab/" rel="permalink">Linux - Crontab
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-11-22T00:00:00+08:00">November 22, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">简介
+最近在打CTF的时候了解到了/etc/crontab这个文件，借机了解一下。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本，精确到分。
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
         <a href="/linux-tricks/server/" rel="permalink">写下服务器的笔记
 </a>
       
@@ -414,103 +515,6 @@ ThinkPHP6.0.0-6.0.1任意文件操作漏洞
 </div>
 
   
-    
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/ctf/ezsqli/" rel="permalink">GXYCTF2020 - Ezsqli
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2020-03-06T00:00:00+08:00">March 6, 2020</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">GXYCTF2020 - Ezsqli
-0x00 判断注入类型
-先测试一下，发现过滤了 union select, or 等等，报错注入也没用。输入 1&amp;&amp;1=1 和输入1&amp;&amp;1=2 时，发现回显不同，所以存在布尔盲注。
-</p>
-  </article>
-</div>
-
-  
-    
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/tricks/mysql/" rel="permalink">除了information_schema之外几个可以利用的表
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2020-03-05T00:00:00+08:00">March 5, 2020</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">除了information_schema之外几个可以利用的表
-0x00 前言
-information_schema.tables、information_schema.columns是在sql注入中最最最常见的可利用的表了。如果information_schema被过滤了怎么办？接下来看看MySQL下还有哪些可以...</p>
-  </article>
-</div>
-
-  
 </div>
 
 
@@ -556,12 +560,19 @@ information_schema.tables、information_schema.columns是在sql注入中最最�
         <li><a href="/page4/" class="disabled current">4</a></li>
       
     
+      
+        
+        
+        
+        <li><a href="/page5/">5</a></li>
+      
+    
 
     
     
 
     
-      <li><a href="/page5/">5</a></li>
+      <li><a href="/page6/">6</a></li>
     
 
     

