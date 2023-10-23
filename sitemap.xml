@@ -53,7 +53,7 @@
 <lastmod>2022-04-13T00:00:00+08:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/vulhub/CVE-2016-4437/</loc>
+<loc>http://localhost:4000/vul/CVE-2016-4437/</loc>
 <lastmod>2022-04-20T00:00:00+08:00</lastmod>
 </url>
 <url>
@@ -69,11 +69,11 @@
 <lastmod>2023-03-28T00:00:00+08:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/vulhub/CVE-2017-12615/</loc>
+<loc>http://localhost:4000/vul/CVE-2017-12615/</loc>
 <lastmod>2023-04-15T00:00:00+08:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/vulhub/CVE-2020-1938/</loc>
+<loc>http://localhost:4000/vul/CVE-2020-1938/</loc>
 <lastmod>2023-04-16T00:00:00+08:00</lastmod>
 </url>
 <url>
@@ -95,6 +95,10 @@
 <url>
 <loc>http://localhost:4000/hack-the-box/legacy-blue/</loc>
 <lastmod>2023-09-12T00:00:00+08:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/hack-the-box/forest/</loc>
+<lastmod>2023-09-13T00:00:00+08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/tags/</loc>

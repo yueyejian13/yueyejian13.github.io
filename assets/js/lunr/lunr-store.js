@@ -78,9 +78,9 @@ var store = [{
         "teaser": null
       },{
         "title": "CVE-2016-4437 - Shiro反序列化",
-        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["vulhub"],
+        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["vul"],
         "tags": ["shiro","unserialize","web","rce"],
-        "url": "/vulhub/CVE-2016-4437/",
+        "url": "/vul/CVE-2016-4437/",
         "teaser": null
       },{
         "title": "MS17-010 - 永恒之蓝",
@@ -102,15 +102,15 @@ var store = [{
         "teaser": null
       },{
         "title": "CVE-2017-12615 - Tomcat任意文件写入",
-        "excerpt":"CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境 查看配置文件conf/web.xml中readonly的设置 漏洞复现 访问主页，抓包后修改数据包 可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用/）来绕过了限制。 改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功 再用冰蝎连接即可 Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过 POC &amp;&amp; EXP #CVE-2017-12615 POC import requests import optparse import os parse = optparse.OptionParser(usage = 'python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]') parse.add_option('-u','--url',dest='URL',help='target url') parse.add_option('-p','--port',dest='PORT',help='target port[default:8080]',default='8080') parse.add_option('-f',dest='FILE',help='target list') options,args =...","categories": ["vulhub"],
+        "excerpt":"CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境 查看配置文件conf/web.xml中readonly的设置 漏洞复现 访问主页，抓包后修改数据包 可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用/）来绕过了限制。 改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功 再用冰蝎连接即可 Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过 POC &amp;&amp; EXP #CVE-2017-12615 POC import requests import optparse import os parse = optparse.OptionParser(usage = 'python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]') parse.add_option('-u','--url',dest='URL',help='target url') parse.add_option('-p','--port',dest='PORT',help='target port[default:8080]',default='8080') parse.add_option('-f',dest='FILE',help='target list') options,args =...","categories": ["vul"],
         "tags": ["tomcat","web"],
-        "url": "/vulhub/CVE-2017-12615/",
+        "url": "/vul/CVE-2017-12615/",
         "teaser": null
       },{
         "title": "CVE-2020-1938 - Ghostcat",
-        "excerpt":"CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。 Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。 0x01 影响范围 Tomcat 9.x &lt; 9.0.31 Tomcat 8.x &lt; 8.5.51 Tomcat 7.x &lt; 7.0.100 Tomcat 6.x 0x02 环境搭建（vulhub） 0x03 漏洞检测...","categories": ["vulhub"],
+        "excerpt":"CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。 Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。 0x01 影响范围 Tomcat 9.x &lt; 9.0.31 Tomcat 8.x &lt; 8.5.51 Tomcat 7.x &lt; 7.0.100 Tomcat 6.x 0x02 环境搭建（vulhub） 0x03 漏洞检测...","categories": ["vul"],
         "tags": ["tomcat","web","ajp","lfi"],
-        "url": "/vulhub/CVE-2020-1938/",
+        "url": "/vul/CVE-2020-1938/",
         "teaser": null
       },{
         "title": "HackTheBox - Holiday",
@@ -141,5 +141,11 @@ var store = [{
         "excerpt":"HackTheBox - Legacy &amp;&amp; Blue HackTheBox - Legacy About Legacy Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access. Nmap # nmap -n -v -sC -sV --min-rate=1500 10.10.10.4 再用nmap自带的smb漏扫脚本去扫描，扫描出了ms17-010以及ms08-067漏洞 # nmap...","categories": ["hack-the-box"],
         "tags": ["windows","smb","msf"],
         "url": "/hack-the-box/legacy-blue/",
+        "teaser": null
+      },{
+        "title": "HackTheBox - Forest",
+        "excerpt":"HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled...","categories": ["hack-the-box"],
+        "tags": ["windows","active-directory"],
+        "url": "/hack-the-box/forest/",
         "teaser": null
       }]

@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-12T17:27:04+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Legacy &amp;amp;&amp;amp; Blue</title><link href="http://localhost:4000/hack-the-box/legacy-blue/" rel="alternate" type="text/html" title="HackTheBox - Legacy &amp;amp;&amp;amp; Blue" /><published>2023-09-12T00:00:00+08:00</published><updated>2023-09-12T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/legacy-blue</id><content type="html" xml:base="http://localhost:4000/hack-the-box/legacy-blue/"><![CDATA[<h1 id="hackthebox---legacy--blue">HackTheBox - Legacy &amp;&amp; Blue</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-23T09:36:51+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">HackTheBox - Forest</title><link href="http://localhost:4000/hack-the-box/forest/" rel="alternate" type="text/html" title="HackTheBox - Forest" /><published>2023-09-13T00:00:00+08:00</published><updated>2023-09-13T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/forest</id><content type="html" xml:base="http://localhost:4000/hack-the-box/forest/"><![CDATA[<h1 id="hackthebox---forest">HackTheBox - Forest</h1>
+<h2 id="about-forest">About Forest</h2>
+<p>Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.</p>
+
+<p><img src="/images/hackthebox/forest/0.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="windows" /><category term="active-directory" /><summary type="html"><![CDATA[HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.]]></summary></entry><entry><title type="html">HackTheBox - Legacy &amp;amp;&amp;amp; Blue</title><link href="http://localhost:4000/hack-the-box/legacy-blue/" rel="alternate" type="text/html" title="HackTheBox - Legacy &amp;amp;&amp;amp; Blue" /><published>2023-09-12T00:00:00+08:00</published><updated>2023-09-12T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/legacy-blue</id><content type="html" xml:base="http://localhost:4000/hack-the-box/legacy-blue/"><![CDATA[<h1 id="hackthebox---legacy--blue">HackTheBox - Legacy &amp;&amp; Blue</h1>
 <h2 id="hackthebox---legacy">HackTheBox - Legacy</h2>
 <h3 id="about-legacy">About Legacy</h3>
 <p>Legacy is a fairly straightforward beginner-level machine which demonstrates the potential security risks of SMB on Windows. Only one publicly available exploit is required to obtain administrator access.</p>
@@ -1243,7 +1247,7 @@ root@holiday:/root# <span class="nb">cat </span>root.txt
 <h2 id="小结">小结</h2>
 <p>这是我pawd的第一台hackthebox靶机，看到这个界面心里难免有些激动，虽然是看walkthrough做出来的，但是也花了大概一两天的时间拿下靶机以及完成记录。就当做是一个新的开始吧！走起~</p>
 
-<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vulhub/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
+<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vul/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。</p>
 
@@ -1334,7 +1338,7 @@ exploit
 <h2 id="0x05-参考">0x05 参考</h2>
 <p>https://www.chaitin.cn/zh/ghostcat</p>
 
-<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vulhub&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry><entry><title type="html">CVE-2017-12615 - Tomcat任意文件写入</title><link href="http://localhost:4000/vulhub/CVE-2017-12615/" rel="alternate" type="text/html" title="CVE-2017-12615 - Tomcat任意文件写入" /><published>2023-04-15T00:00:00+08:00</published><updated>2023-04-15T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2017-12615</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2017-12615/"><![CDATA[<h1 id="cve-2017-12615---tomcat任意文件写入">CVE-2017-12615 - Tomcat任意文件写入</h1>
+<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry><entry><title type="html">CVE-2017-12615 - Tomcat任意文件写入</title><link href="http://localhost:4000/vul/CVE-2017-12615/" rel="alternate" type="text/html" title="CVE-2017-12615 - Tomcat任意文件写入" /><published>2023-04-15T00:00:00+08:00</published><updated>2023-04-15T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2017-12615</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2017-12615/"><![CDATA[<h1 id="cve-2017-12615---tomcat任意文件写入">CVE-2017-12615 - Tomcat任意文件写入</h1>
 <h2 id="环境搭建">环境搭建</h2>
 <p>用vulhub的环境</p>
 
@@ -1513,7 +1517,7 @@ exploit
   <li>
     <p>使用WAF产品进行防御</p>
   </li>
-</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vulhub&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry><entry><title type="html">SQL注入Getshell的几种方式</title><link href="http://localhost:4000/tricks/sqli-getshell/" rel="alternate" type="text/html" title="SQL注入Getshell的几种方式" /><published>2023-03-28T00:00:00+08:00</published><updated>2023-03-28T00:00:00+08:00</updated><id>http://localhost:4000/tricks/sqli-getshell</id><content type="html" xml:base="http://localhost:4000/tricks/sqli-getshell/"><![CDATA[<h1 id="sql注入getshell的几种方式">SQL注入Getshell的几种方式</h1>
+</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry><entry><title type="html">SQL注入Getshell的几种方式</title><link href="http://localhost:4000/tricks/sqli-getshell/" rel="alternate" type="text/html" title="SQL注入Getshell的几种方式" /><published>2023-03-28T00:00:00+08:00</published><updated>2023-03-28T00:00:00+08:00</updated><id>http://localhost:4000/tricks/sqli-getshell</id><content type="html" xml:base="http://localhost:4000/tricks/sqli-getshell/"><![CDATA[<h1 id="sql注入getshell的几种方式">SQL注入Getshell的几种方式</h1>
 <p>SQL注入不仅阔以导致数据泄露，也有阔能getshell哦</p>
 
 <h2 id="0x01-into-outfile">0x01 into outfile</h2>
@@ -1897,48 +1901,4 @@ $
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
     <span class="nf">main</span><span class="p">()</span>
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="hikvision" /><category term="unserialize" /><summary type="html"><![CDATA[body=”laCurrentLanguage” &amp;&amp; country=”CN”]]></summary></entry><entry><title type="html">CVE-2016-4437 - Shiro反序列化</title><link href="http://localhost:4000/vulhub/CVE-2016-4437/" rel="alternate" type="text/html" title="CVE-2016-4437 - Shiro反序列化" /><published>2022-04-20T00:00:00+08:00</published><updated>2022-04-20T00:00:00+08:00</updated><id>http://localhost:4000/vulhub/CVE-2016-4437</id><content type="html" xml:base="http://localhost:4000/vulhub/CVE-2016-4437/"><![CDATA[<h1 id="cve-2016-4437---shiro反序列化">CVE-2016-4437 - Shiro反序列化</h1>
-<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
-<p>Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。
-Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。</p>
-
-<h2 id="0x01-影响范围">0x01 影响范围</h2>
-
-<p><strong>Apache Shiro &lt;=1.2.4</strong></p>
-
-<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
-<p>使用vulhub搭建环境</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
-</code></pre></div></div>
-<p><img src="/images/vulhub/CVE-2016-4437/0.jpg" alt="" /></p>
-
-<h2 id="0x03-漏洞原理">0x03 漏洞原理</h2>
-<p>Shiro的身份认证工作流程：</p>
-
-<p>通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化</p>
-
-<p>以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞</p>
-
-<h2 id="0x04-漏洞检测">0x04 漏洞检测</h2>
-
-<p>尝试登录，登录的返回包中有<strong>rememberMe=deleteMe</strong>字段</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/1.jpg" alt="" /></p>
-
-<p>或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在<strong>rememberMe=deleteMe</strong>字段</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/2.jpg" alt="" /></p>
-
-<p>则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞</p>
-
-<p>https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/3.jpg" alt="" /></p>
-
-<p>当命令框可输入，代表存在漏洞</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/4.jpg" alt="" /></p>
-
-<p>可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vulhub" /><category term="shiro" /><category term="unserialize" /><category term="web" /><category term="rce" /><summary type="html"><![CDATA[CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="hikvision" /><category term="unserialize" /><summary type="html"><![CDATA[body=”laCurrentLanguage” &amp;&amp; country=”CN”]]></summary></entry></feed>

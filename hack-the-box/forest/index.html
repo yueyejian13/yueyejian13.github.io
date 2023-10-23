@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>CVE-2016-4437 - Shiro反序列化 - Yueyejian’s Blog</title>
-<meta name="description" content="CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。">
+<!-- begin _includes/seo.html --><title>HackTheBox - Forest - Yueyejian’s Blog</title>
+<meta name="description" content="HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
 
 
   <meta name="author" content="yueyejian">
@@ -22,26 +22,26 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Yueyejian's Blog">
-<meta property="og:title" content="CVE-2016-4437 - Shiro反序列化">
-<meta property="og:url" content="http://localhost:4000/vulhub/CVE-2016-4437/">
+<meta property="og:title" content="HackTheBox - Forest">
+<meta property="og:url" content="http://localhost:4000/hack-the-box/forest/">
 
 
-  <meta property="og:description" content="CVE-2016-4437 - Shiro反序列化 0x00 漏洞概述 Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-04-20T00:00:00+08:00">
+  <meta property="og:description" content="HackTheBox - Forest About Forest Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
 
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/vulhub/CVE-2016-4437/">
+
+  <meta property="article:published_time" content="2023-09-13T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/hack-the-box/forest/">
 
 
 
@@ -255,15 +255,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="CVE-2016-4437 - Shiro反序列化">
-    <meta itemprop="description" content="CVE-2016-4437 - Shiro反序列化0x00 漏洞概述Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。">
-    <meta itemprop="datePublished" content="2022-04-20T00:00:00+08:00">
+    <meta itemprop="headline" content="HackTheBox - Forest">
+    <meta itemprop="description" content="HackTheBox - ForestAbout ForestForest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.">
+    <meta itemprop="datePublished" content="2023-09-13T00:00:00+08:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">CVE-2016-4437 - Shiro反序列化
+          <h1 id="page-title" class="page__title" itemprop="headline">HackTheBox - Forest
 </h1>
           
 
@@ -273,7 +273,7 @@
       <span class="page__meta-date">
         <i class="far fa-calendar-alt" aria-hidden="true"></i>
         
-        <time datetime="2022-04-20T00:00:00+08:00">April 20, 2022</time>
+        <time datetime="2023-09-13T00:00:00+08:00">September 13, 2023</time>
       </span>
     
 
@@ -286,7 +286,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          1 minute read
         
       </span>
     
@@ -301,57 +301,16 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-              <ul class="toc__menu"><li><a href="#cve-2016-4437---shiro反序列化">CVE-2016-4437 - Shiro反序列化</a><ul><li><a href="#0x00-漏洞概述">0x00 漏洞概述</a></li><li><a href="#0x01-影响范围">0x01 影响范围</a></li><li><a href="#0x02-环境搭建">0x02 环境搭建</a></li><li><a href="#0x03-漏洞原理">0x03 漏洞原理</a></li><li><a href="#0x04-漏洞检测">0x04 漏洞检测</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#hackthebox---forest">HackTheBox - Forest</a><ul><li><a href="#about-forest">About Forest</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <h1 id="cve-2016-4437---shiro反序列化">CVE-2016-4437 - Shiro反序列化</h1>
-<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
-<p>Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。
-Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。</p>
+        <h1 id="hackthebox---forest">HackTheBox - Forest</h1>
+<h2 id="about-forest">About Forest</h2>
+<p>Forest in an easy difficulty Windows Domain Controller (DC), for a domain in which Exchange Server has been installed. The DC is found to allow anonymous LDAP binds, which is used to enumerate domain objects. The password for a service account with Kerberos pre-authentication disabled can be cracked to gain a foothold. The service account is found to be a member of the Account Operators group, which can be used to add users to privileged Exchange groups. The Exchange group membership is leveraged to gain DCSync privileges on the domain and dump the NTLM hashes.</p>
 
-<h2 id="0x01-影响范围">0x01 影响范围</h2>
-
-<p><strong>Apache Shiro &lt;=1.2.4</strong></p>
-
-<h2 id="0x02-环境搭建">0x02 环境搭建</h2>
-<p>使用vulhub搭建环境</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker-compose up -d
-</code></pre></div></div>
-<p><img src="/images/vulhub/CVE-2016-4437/0.jpg" alt="" /></p>
-
-<h2 id="0x03-漏洞原理">0x03 漏洞原理</h2>
-<p>Shiro的身份认证工作流程：</p>
-
-<p>通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化</p>
-
-<p>以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞</p>
-
-<h2 id="0x04-漏洞检测">0x04 漏洞检测</h2>
-
-<p>尝试登录，登录的返回包中有<strong>rememberMe=deleteMe</strong>字段</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/1.jpg" alt="" /></p>
-
-<p>或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在<strong>rememberMe=deleteMe</strong>字段</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/2.jpg" alt="" /></p>
-
-<p>则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞</p>
-
-<p>https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/3.jpg" alt="" /></p>
-
-<p>当命令框可输入，代表存在漏洞</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/4.jpg" alt="" /></p>
-
-<p>可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell</p>
-
-<p><img src="/images/vulhub/CVE-2016-4437/5.jpg" alt="" /></p>
-
+<p><img src="/images/hackthebox/forest/0.png" alt="" /></p>
 
         
       </section>
@@ -368,13 +327,9 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/tags/#rce" class="page__taxonomy-item" rel="tag">rce</a><span class="sep">, </span>
+      <a href="/tags/#active-directory" class="page__taxonomy-item" rel="tag">active-directory</a><span class="sep">, </span>
     
-      <a href="/tags/#shiro" class="page__taxonomy-item" rel="tag">shiro</a><span class="sep">, </span>
-    
-      <a href="/tags/#unserialize" class="page__taxonomy-item" rel="tag">unserialize</a><span class="sep">, </span>
-    
-      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
+      <a href="/tags/#windows" class="page__taxonomy-item" rel="tag">windows</a>
     
     </span>
   </p>
@@ -391,7 +346,7 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/categories/#vulhub" class="page__taxonomy-item" rel="tag">vulhub</a>
+      <a href="/categories/#hack-the-box" class="page__taxonomy-item" rel="tag">hack-the-box</a>
     
     </span>
   </p>
@@ -399,7 +354,7 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-04-20T00:00:00+08:00">April 20, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-09-13T00:00:00+08:00">September 13, 2023</time></p>
 
 
       </footer>
@@ -409,12 +364,11 @@ Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储�
       
   <nav class="pagination">
     
-      <a href="/vul/Redis/" class="pagination--pager" title="Redis未授权访问实战
+      <a href="/hack-the-box/legacy-blue/" class="pagination--pager" title="HackTheBox - Legacy &amp;&amp; Blue
 ">Previous</a>
     
     
-      <a href="/vul/ms17-010/" class="pagination--pager" title="MS17-010 - 永恒之蓝
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
