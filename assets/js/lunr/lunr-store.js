@@ -172,4 +172,10 @@ var store = [{
         "tags": ["hikvision","nday","web"],
         "url": "/vul/hikvision/",
         "teaser": null
+      },{
+        "title": "Jndi",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/JNDI/",
+        "teaser": null
       }]

