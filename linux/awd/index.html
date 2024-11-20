@@ -23,7 +23,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Yueyejian's Blog">
 <meta property="og:title" content="2020河北省赛线下经验总结">
-<meta property="og:url" content="http://localhost:4000/tricks/awd/">
+<meta property="og:url" content="http://localhost:4000/linux/awd/">
 
 
   <meta property="og:description" content="0x00 写在前面 这是在比赛开始之前，分工后自己简单写的一个比赛思路。 1. 修改ssh {passwd}  &amp;&amp;   修改mysql{set password = password(&#39;password&#39;);}  2. 备份源码 3. 扫描源码 4. 简单审计 上waf 删除一句话 删站观察是否check 5. 利用一句话去打别人 流量混淆  webshell混淆  权限维持 6. （主机发现） 7. 提权 办ip 修改php.ini禁用危险函数 8. 目录扫描 漏洞挖掘  0x01 开干 SSH连上之后，居然发现自己是root！因为于是我找到php配置文件 php.ini，禁用了一些危险函数，上完 waf之后就开始攻击别的队伍了。">
@@ -41,7 +41,7 @@
 
 
 
-<link rel="canonical" href="http://localhost:4000/tricks/awd/">
+<link rel="canonical" href="http://localhost:4000/linux/awd/">
 
 
 
@@ -466,7 +466,13 @@ http://127.0.0.1/FCKeditor/_whatsnew.html
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/tags/#awd" class="page__taxonomy-item" rel="tag">awd</a>
+      <a href="/tags/#awd" class="page__taxonomy-item" rel="tag">awd</a><span class="sep">, </span>
+    
+      <a href="/tags/#ctf" class="page__taxonomy-item" rel="tag">ctf</a><span class="sep">, </span>
+    
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a><span class="sep">, </span>
+    
+      <a href="/tags/#php" class="page__taxonomy-item" rel="tag">php</a>
     
     </span>
   </p>
@@ -483,7 +489,7 @@ http://127.0.0.1/FCKeditor/_whatsnew.html
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/categories/#tricks" class="page__taxonomy-item" rel="tag">tricks</a>
+      <a href="/categories/#linux" class="page__taxonomy-item" rel="tag">linux</a>
     
     </span>
   </p>
