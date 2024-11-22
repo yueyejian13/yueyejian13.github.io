@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-11-20T17:02:42+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Shellcode加密</title><link href="http://localhost:4000/antivirus-evasion/shellcode/" rel="alternate" type="text/html" title="Shellcode加密" /><published>2024-11-20T00:00:00+08:00</published><updated>2024-11-20T00:00:00+08:00</updated><id>http://localhost:4000/antivirus-evasion/shellcode</id><content type="html" xml:base="http://localhost:4000/antivirus-evasion/shellcode/"><![CDATA[<h1 id="shellcode加密">Shellcode加密</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-11-22T16:38:03+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yueyejian’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>yueyejian</name></author><entry><title type="html">Shellcode加密</title><link href="http://localhost:4000/antivirus-evasion/shellcode/" rel="alternate" type="text/html" title="Shellcode加密" /><published>2024-11-20T00:00:00+08:00</published><updated>2024-11-20T00:00:00+08:00</updated><id>http://localhost:4000/antivirus-evasion/shellcode</id><content type="html" xml:base="http://localhost:4000/antivirus-evasion/shellcode/"><![CDATA[<h1 id="shellcode加密">Shellcode加密</h1>
 <h2 id="0x00-写在前面">0x00 写在前面</h2>
 <p>今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。</p>
 
@@ -25,69 +25,6 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull egee/sgn
 
 docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
-</code></pre></div></div>
-
-<p>用以下小工具可以轻松提取shellcode的16进制数组：</p>
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
-<span class="c">//sctool by yueyejian</span>
-
-<span class="k">import</span> <span class="p">(</span>
-	<span class="s">"encoding/hex"</span>
-	<span class="s">"flag"</span>
-	<span class="s">"fmt"</span>
-	<span class="s">"io/ioutil"</span>
-	<span class="s">"strings"</span>
-<span class="p">)</span>
-
-<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="c">// 定义 -f 参数，用于指定文件名</span>
-	<span class="n">filename</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"Path to the binary file (e.g., payload.bin)"</span><span class="p">)</span>
-	<span class="n">flag</span><span class="o">.</span><span class="n">Parse</span><span class="p">()</span>
-
-	<span class="c">// 检查是否提供了文件名</span>
-	<span class="k">if</span> <span class="o">*</span><span class="n">filename</span> <span class="o">==</span> <span class="s">""</span> <span class="p">{</span>
-		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Error: No file specified. Use -f to specify the file path."</span><span class="p">)</span>
-		<span class="k">return</span>
-	<span class="p">}</span>
-
-	<span class="c">// 读取指定的二进制文件</span>
-	<span class="n">data</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">ioutil</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="o">*</span><span class="n">filename</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Error reading file '%s': %v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-		<span class="k">return</span>
-	<span class="p">}</span>
-
-	<span class="c">// 1. 紧凑的十六进制字符串</span>
-	<span class="n">compactHex</span> <span class="o">:=</span> <span class="n">hex</span><span class="o">.</span><span class="n">EncodeToString</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-	<span class="c">// 2. C 风格转义字符串</span>
-	<span class="k">var</span> <span class="n">escapedHex</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
-	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
-		<span class="n">escapedHex</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"</span><span class="se">\\</span><span class="s">x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-	<span class="p">}</span>
-
-	<span class="c">// 3. C 风格数组</span>
-	<span class="k">var</span> <span class="n">cArray</span> <span class="n">strings</span><span class="o">.</span><span class="n">Builder</span>
-	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"{"</span><span class="p">)</span>
-	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">data</span> <span class="p">{</span>
-		<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"0x%02x"</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-		<span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="m">1</span> <span class="p">{</span>
-			<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">", "</span><span class="p">)</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="n">cArray</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="s">"}"</span><span class="p">)</span>
-
-	<span class="c">// 打印结果</span>
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"紧凑的十六进制字符串:"</span><span class="p">)</span>
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">compactHex</span><span class="p">)</span>
-
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格转义字符串:"</span><span class="p">)</span>
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">escapedHex</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
-
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">C 风格数组:"</span><span class="p">)</span>
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"[]byte"</span> <span class="o">+</span> <span class="n">cArray</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
-<span class="p">}</span>
-
 </code></pre></div></div>
 
 <h2 id="0x03-shellcode-loader">0x03 Shellcode Loader</h2>
@@ -149,7 +86,22 @@ docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
 	<span class="n">syscall</span><span class="o">.</span><span class="n">Syscall</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<p>可以过火绒静态检测，可以命令执行，但是会在安全日志下留下记录</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;antivirus-evasion&quot;]" /><category term="golang" /><summary type="html"><![CDATA[Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。]]></summary></entry><entry><title type="html">fastjson-1.2.24-RCE</title><link href="http://localhost:4000/exploit/fastjson/" rel="alternate" type="text/html" title="fastjson-1.2.24-RCE" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/exploit/fastjson</id><content type="html" xml:base="http://localhost:4000/exploit/fastjson/"><![CDATA[<h1 id="fastjson-1224-rce">Fastjson-1.2.24-RCE</h1>
+<p>可以过火绒静态检测，可以命令执行，但是只要一上线就会被内存检测给检测出来并在安全日志下留下记录。用CS的Stageless的Payload或者用MSF的<code class="language-plaintext highlighter-rouge">windows/x64/meterpreter/reverse_tcp_rc4</code>并在生成和监听时都设置好rc4password都可以安静上线，但是一执行命令，也会在安全日志留下记录。</p>
+
+<p>我分别测试了Cobalt Strike和MSF所生成的Stageless Shellcode，都会在执行命令的时候被火绒的内存防护检测到。
+<img src="/images/antivirus/shellcode/2.png" alt="" /></p>
+
+<p>这应该是这两款C2在执行命令的时候都会产生含有其特征的流量导致的。那么怎么避免产生含有特征的命令执行流量呢？</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>选用不同payload（x）
+添加ssl证书加密msf流量（x）
+加密stager（x）
+二次开发Cobalt Strike（待尝试）
+换用其他远控软件（待尝试）
+
+</code></pre></div></div>
+
+<p>先把oscp教程里面的免杀内容学了</p>]]></content><author><name>yueyejian</name></author><category term="[&quot;antivirus-evasion&quot;]" /><category term="golang" /><summary type="html"><![CDATA[Shellcode加密 0x00 写在前面 今年6月份辞掉了我那份摸鱼的工作，至今为止，已经找了快3个月的工作了，个人认为是如今的经济大环境差以及网络安全的发展迅速，导致了像我这样没有什么特长的web狗很难找到一份心仪的工作。]]></summary></entry><entry><title type="html">fastjson-1.2.24-RCE</title><link href="http://localhost:4000/exploit/fastjson/" rel="alternate" type="text/html" title="fastjson-1.2.24-RCE" /><published>2024-04-08T00:00:00+08:00</published><updated>2024-04-08T00:00:00+08:00</updated><id>http://localhost:4000/exploit/fastjson</id><content type="html" xml:base="http://localhost:4000/exploit/fastjson/"><![CDATA[<h1 id="fastjson-1224-rce">Fastjson-1.2.24-RCE</h1>
 <h2 id="0x00-漏洞概述">0x00 漏洞概述</h2>
 <p>fastjson是一个由阿里巴巴开发的Java库，用于处理json数据。fastjson在17年的1.2.24版本首次爆出了一个RCE漏洞，原理是<code class="language-plaintext highlighter-rouge">jndi注入</code>。很快阿里发布了新的版本1.2.25，通过<code class="language-plaintext highlighter-rouge">checkAutoType()</code>这个函数来防御这个漏洞。</p>
 
