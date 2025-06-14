@@ -190,4 +190,10 @@ var store = [{
         "tags": ["golang"],
         "url": "/antivirus-evasion/shellcode/",
         "teaser": null
+      },{
+        "title": "cs上线linux系统",
+        "excerpt":"cs上线linux系统   cs是默认不支持linux主机上线的，但是可以通过安装插件实现，因为一些原因，只支持https beacon   https://github.com/gloxec/CrossC2/releases  下载这三样东西，第三个根据cs客户端的类型进行选择    解压好放在client目录下的script文件夹中    编辑一下cna文件，路径不能带有中文，上下拼接起来需可执行，注意要用双斜杠    复制服务端的.cobaltstrike.beacon_keys文件（隐藏文件）到客户端的主目录下   在cs客户端找到script manager，加载script文件夹下的cna文件以及CrossC2Kit文件夹下的另外两个cna文件，cs上面就会显示这个插件了    首先新建一个正常的https的监听，然后再从插件处建立一个反弹https监听    注意，profile要和服务端的profile一致，端口可以改，listener要选之前创建好的监听器    生成的木马在客户端目录下，上传到kali中执行，成功上线    执行系统命令   ","categories": ["antivirus-evasion"],
+        "tags": ["cobaltstrike"],
+        "url": "/antivirus-evasion/cs%E4%B8%8A%E7%BA%BFlinux%E7%B3%BB%E7%BB%9F/",
+        "teaser": null
       }]

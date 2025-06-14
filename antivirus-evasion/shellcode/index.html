@@ -411,7 +411,24 @@ docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
 
 </code></pre></div></div>
 
-<p>先把oscp教程里面的免杀内容学了</p>
+<p>杀软的常见组件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>文件检测引擎
+文件检测引擎提供文件全盘扫描以及文件实时检测功能，为了检测刚刚下载的文件，实时扫描器需要通过专门设计的微过滤驱动程序识别内核级别的事件
+内存检测引擎
+检测每个进程的内存空间，匹配内存数据的二进制特征或者检测可能造成内存注入的可疑API调用。就算加了很复杂的壳，病毒加载到内存也会脱去外壳还原为真实数据。
+网络检测引擎
+网络检测引擎检测本地网络接口上传输的流量，一旦匹配上恶意软件的流量规则，网络检测引擎就会断开C2和受害主机的连接
+反编译
+将机器语言转换成汇编语言，重现原始程序代码部分
+沙箱模拟器
+杀毒软件提供的隔离环境，恶意软件可在里面安全运行不对计算机造成威胁，一旦恶意软件在沙箱中运行了，就可以根据已知的规则对其进行彻底分析
+浏览器插件
+每一个谷歌标签都是一个沙箱，这是浏览器的沙箱保护机制，国外的杀软通常会使用浏览器插件来分析和检测可能在浏览器内执行的可疑内容
+机器学习引擎
+机器学习引擎正在成为杀软的重要组成部分，它能靠AI和云查杀来识别各种未知或者变种的威胁
+</code></pre></div></div>
+
 
         
       </section>
@@ -467,7 +484,8 @@ docker run -it -v /tmp/:/tmp/ egee/sgn -a 64 /tmp/shellcode
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/antivirus-evasion/cs%E4%B8%8A%E7%BA%BFlinux%E7%B3%BB%E7%BB%9F/" class="pagination--pager" title="cs上线linux系统
+">Next</a>
     
   </nav>
 
