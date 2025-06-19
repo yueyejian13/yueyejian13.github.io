@@ -1,0 +1,520 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Malleable C2 - Yueyejian’s Blog</title>
+<meta name="description" content="Malleable C2 0x00 写在前面 上上篇文章shellcode加密写完后面遗留了一个问题，如何规避杀软查杀从内存中查杀c2和受害主机之间的流量特征，当时的我怎么会想到，cs官方早在2014年就给出了一份标准答案">
+
+
+  <meta name="author" content="yueyejian">
+  
+  <meta property="article:author" content="yueyejian">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Yueyejian's Blog">
+<meta property="og:title" content="Malleable C2">
+<meta property="og:url" content="http://localhost:4000/antivirus-evasion/malleable/">
+
+
+  <meta property="og:description" content="Malleable C2 0x00 写在前面 上上篇文章shellcode加密写完后面遗留了一个问题，如何规避杀软查杀从内存中查杀c2和受害主机之间的流量特征，当时的我怎么会想到，cs官方早在2014年就给出了一份标准答案">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2025-06-17T00:00:00+08:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/antivirus-evasion/malleable/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "yueyejian",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Yueyejian's Blog
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a>
+        <img src="/assets/images/avatar.jpg" alt="yueyejian" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a>yueyejian</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">ワノ国</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://yueyejian13.github.io" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-home" aria-hidden="true"></i><span class="label">首页</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/yueyejian13" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://paypal.me/yueyejian?country.x=C2&locale.x=zh_XC" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">buymeacoffee</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Malleable C2">
+    <meta itemprop="description" content="Malleable C20x00 写在前面上上篇文章shellcode加密写完后面遗留了一个问题，如何规避杀软查杀从内存中查杀c2和受害主机之间的流量特征，当时的我怎么会想到，cs官方早在2014年就给出了一份标准答案">
+    <meta itemprop="datePublished" content="2025-06-17T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Malleable C2
+</h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2025-06-17T00:00:00+08:00">June 17, 2025</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#malleable-c2">Malleable C2</a><ul><li><a href="#0x00-写在前面">0x00 写在前面</a></li><li><a href="#0x01-malleable-c2-profile">0x01 Malleable C2 profile</a></li><li><a href="#0x02-c2lint检查profile">0x02 c2lint检查profile</a></li><li><a href="#0x03-http-ssluser-agent伪造">0x03 http ssl&amp;&amp;user agent伪造</a></li><li><a href="#0x04-reflective-dll-prepend">0x04 Reflective DLL prepend</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="malleable-c2">Malleable C2</h1>
+<h2 id="0x00-写在前面">0x00 写在前面</h2>
+<p>上上篇文章<a href="https://yueyejian13.github.io/antivirus-evasion/shellcode/">shellcode加密</a>写完后面遗留了一个问题，如何规避杀软查杀从内存中查杀c2和受害主机之间的流量特征，当时的我怎么会想到，cs官方早在2014年就给出了一份标准答案</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.cobaltstrike.com/product/features/malleable-c2
+</code></pre></div></div>
+
+<h2 id="0x01-malleable-c2-profile">0x01 Malleable C2 profile</h2>
+
+<p>必看，写的非常好，很入门的一篇文章</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://bluescreenofjeff.com/2017-01-24-how-to-write-malleable-c2-profiles-for-cobalt-strike/
+</code></pre></div></div>
+
+<p>要研究Malleable C2 profile首先要理解Beacon和Teamserver是怎么通信的</p>
+
+<p>在Stage建立之后，Beacon首先会向服务器发送一个HTTP GET请求，里面包含了主机的元数据（metadata），这个请求的Response会返回睡眠间隔，让Beacon决定多久再给服务器发一次请求。如果我们在Client下发了指令，那这条指令就会在Beacon向服务器发送带有元数据的GET请求的时在Response里面体现，Beacon执行指令之后会将输出结果放在一个数据包里面默认向服务器发送一个POST请求，最后Teamserver返回的Response会被Beacon无视</p>
+
+<p><img src="\images\antivirus\malleable\1.jpg" alt="" /></p>
+
+<p>第三步的POST请求从cs3.6版本开始也可以在profile的http-post部分改成GET请求，这取决于目标环境，另外，数据包中的header也要尽量地模拟成目标环境中的流量</p>
+
+<h2 id="0x02-c2lint检查profile">0x02 c2lint检查profile</h2>
+<p>c2lint是cs自带的工具，默认躺在服务端文件夹里面，可以用它来检查profile的可用性，非常的棒，输出结果看得我头皮发麻，既输出了一些profile的关键数据，还生成了虚假的流量让我们可以很直观地看到cs经过流量伪造之后的数据包数据</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./c2lint jquery-c2.4.5.profile
+</code></pre></div></div>
+
+<h2 id="0x03-http-ssluser-agent伪造">0x03 http ssl&amp;&amp;user agent伪造</h2>
+
+<p>首先，prefile中的ssl证书信息直接可以copy目标域名的证书信息，来达到流量混淆的效果，但是有的网站没有证书信息，那也有很多选择比如母公司、供应商之类的</p>
+
+<p>profile中的user agent选项会生效在http流量中，一下是一些常见的user agent</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.useragentstring.com/pages/useragentstring.php
+</code></pre></div></div>
+
+<p>如果可以知道目标真实在用的user agent那是最好的，有些牛逼的组织对流量的监控是很严格的</p>
+
+<h2 id="0x04-reflective-dll-prepend">0x04 Reflective DLL prepend</h2>
+
+<p>下面这个python脚本会把一些十六进制的无害机器码打乱，转化成c语言的格式，用来替换profile文件中的<code class="language-plaintext highlighter-rouge">stage</code>部分的<code class="language-plaintext highlighter-rouge">transform rDLL stage</code>中的<code class="language-plaintext highlighter-rouge">prepend</code>字段，让内存中的rDLL更难被杀软检测出来</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import random
+
+# Define the byte strings to shuffle
+byte_strings = ["40", "41", "42", "6690", "40", "43", "44", "45", "46", "47", "48", "49", "4c", "90", "0f1f00", "660f1f0400", "0f1f0400", "0f1f00", "0f1f00", "87db", "87c9", "87d2", "6687db", "6687c9", "6687d2"]
+
+# Shuffle the byte strings
+random.shuffle(byte_strings)
+
+# Create a new list to store the formatted bytes
+formatted_bytes = []
+
+# Loop through each byte string in the shuffled list
+for byte_string in byte_strings:
+    # Check if the byte string has more than 2 characters
+    if len(byte_string) &gt; 2:
+        # Split the byte string into chunks of two characters
+        byte_list = [byte_string[i:i+2] for i in range(0, len(byte_string), 2)]
+        # Add \x prefix to each byte and join them
+        formatted_bytes.append(''.join([f'\\x{byte}' for byte in byte_list]))
+    else:
+        # Add \x prefix to the single byte
+        formatted_bytes.append(f'\\x{byte_string}')
+        
+# Join the formatted bytes into a single string
+formatted_string = ''.join(formatted_bytes)
+
+# Print the formatted byte string
+print(formatted_string)
+</code></pre></div></div>
+
+<p>Malleable C2 profile文件中stage部分的这段配置主要用于对生成的Beacon Reflective DLL进行变形处理（transform），以规避杀软、EDR 的特征检测</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    # The transform-x86 and transform-x64 blocks pad and transform Beacon's Reflective DLL stage. These blocks support three commands: prepend, append, and strrep.
+    transform-x86 { # transform the x86 rDLL stage
+        prepend "\x90\x90\x90\x90\x90\x90\x90\x90\x90"; # prepend nops
+        strrep "ReflectiveLoader" "execute"; # Change this text
+        strrep "This program cannot be run in DOS mode" ""; # Remove this text
+        strrep "beacon.dll" ""; # Remove this text
+    }
+    transform-x64 { # transform the x64 rDLL stage
+        prepend "\x90\x90\x90\x90\x90\x90\x90\x90\x90"; # prepend nops
+        strrep "ReflectiveLoader" "execute"; # Change this text in the Beacon DLL
+        strrep "beacon.x64.dll" ""; # Remove this text in the Beacon DLL
+    }
+
+    stringw "jQuery"; # Add this string to the DLL
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#cobaltstrike" class="page__taxonomy-item" rel="tag">cobaltstrike</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#antivirus-evasion" class="page__taxonomy-item" rel="tag">antivirus-evasion</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2025-06-17T00:00:00+08:00">June 17, 2025</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/antivirus-evasion/cs%E4%B8%8A%E7%BA%BFlinux%E7%B3%BB%E7%BB%9F/" class="pagination--pager" title="Cobalt Strike上线linux系统
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019-2024 Yueyejian. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

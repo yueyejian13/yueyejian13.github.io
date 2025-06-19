@@ -191,9 +191,15 @@ var store = [{
         "url": "/antivirus-evasion/shellcode/",
         "teaser": null
       },{
-        "title": "cs上线linux系统",
-        "excerpt":"cs上线linux系统   cs是默认不支持linux主机上线的，但是可以通过安装插件实现，因为一些原因，只支持https beacon   https://github.com/gloxec/CrossC2/releases  下载这三样东西，第三个根据cs客户端的类型进行选择    解压好放在client目录下的script文件夹中    编辑一下cna文件，路径不能带有中文，上下拼接起来需可执行，注意要用双斜杠    复制服务端的.cobaltstrike.beacon_keys文件（隐藏文件）到客户端的主目录下   在cs客户端找到script manager，加载script文件夹下的cna文件以及CrossC2Kit文件夹下的另外两个cna文件，cs上面就会显示这个插件了    首先新建一个正常的https的监听，然后再从插件处建立一个反弹https监听    注意，profile要和服务端的profile一致，端口可以改，listener要选之前创建好的监听器    生成的木马在客户端目录下，上传到kali中执行，成功上线    执行系统命令   ","categories": ["antivirus-evasion"],
+        "title": "Cobalt Strike上线linux系统",
+        "excerpt":"Cobalt Strike上线linux系统  cs是默认不支持linux主机上线的，但是可以通过安装插件实现，因为一些原因，只支持https beacon   https://github.com/gloxec/CrossC2/releases  下载这三样东西，第三个根据cs客户端的类型进行选择    解压好放在client目录下的script文件夹中    编辑一下cna文件，路径不能带有中文，上下拼接起来需可执行，注意要用双斜杠    复制服务端的.cobaltstrike.beacon_keys文件（隐藏文件）到客户端的主目录下   在cs客户端找到script manager，加载script文件夹下的cna文件以及CrossC2Kit文件夹下的另外两个cna文件，cs上面就会显示这个插件了    首先新建一个正常的https的监听，然后再从插件处建立一个反弹https监听    注意，profile要和服务端的profile一致，端口可以改，listener要选之前创建好的监听器    生成的木马在客户端目录下，上传到kali中执行，成功上线    执行系统命令   ","categories": ["antivirus-evasion"],
         "tags": ["cobaltstrike"],
         "url": "/antivirus-evasion/cs%E4%B8%8A%E7%BA%BFlinux%E7%B3%BB%E7%BB%9F/",
+        "teaser": null
+      },{
+        "title": "Malleable C2",
+        "excerpt":"Malleable C2 0x00 写在前面 上上篇文章shellcode加密写完后面遗留了一个问题，如何规避杀软查杀从内存中查杀c2和受害主机之间的流量特征，当时的我怎么会想到，cs官方早在2014年就给出了一份标准答案 https://www.cobaltstrike.com/product/features/malleable-c2 0x01 Malleable C2 profile 必看，写的非常好，很入门的一篇文章 https://bluescreenofjeff.com/2017-01-24-how-to-write-malleable-c2-profiles-for-cobalt-strike/ 要研究Malleable C2 profile首先要理解Beacon和Teamserver是怎么通信的 在Stage建立之后，Beacon首先会向服务器发送一个HTTP GET请求，里面包含了主机的元数据（metadata），这个请求的Response会返回睡眠间隔，让Beacon决定多久再给服务器发一次请求。如果我们在Client下发了指令，那这条指令就会在Beacon向服务器发送带有元数据的GET请求的时在Response里面体现，Beacon执行指令之后会将输出结果放在一个数据包里面默认向服务器发送一个POST请求，最后Teamserver返回的Response会被Beacon无视 第三步的POST请求从cs3.6版本开始也可以在profile的http-post部分改成GET请求，这取决于目标环境，另外，数据包中的header也要尽量地模拟成目标环境中的流量 0x02 c2lint检查profile c2lint是cs自带的工具，默认躺在服务端文件夹里面，可以用它来检查profile的可用性，非常的棒，输出结果看得我头皮发麻，既输出了一些profile的关键数据，还生成了虚假的流量让我们可以很直观地看到cs经过流量伪造之后的数据包数据 ./c2lint jquery-c2.4.5.profile 0x03 http ssl&amp;&amp;user agent伪造 首先，prefile中的ssl证书信息直接可以copy目标域名的证书信息，来达到流量混淆的效果，但是有的网站没有证书信息，那也有很多选择比如母公司、供应商之类的 profile中的user agent选项会生效在http流量中，一下是一些常见的user agent http://www.useragentstring.com/pages/useragentstring.php 如果可以知道目标真实在用的user agent那是最好的，有些牛逼的组织对流量的监控是很严格的 0x04 Reflective DLL prepend 下面这个python脚本会把一些十六进制的无害机器码打乱，转化成c语言的格式，用来替换profile文件中的stage部分的transform rDLL stage中的prepend字段，让内存中的rDLL更难被杀软检测出来 import random # Define the byte strings to shuffle...","categories": ["antivirus-evasion"],
+        "tags": ["cobaltstrike"],
+        "url": "/antivirus-evasion/malleable/",
         "teaser": null
       }]
